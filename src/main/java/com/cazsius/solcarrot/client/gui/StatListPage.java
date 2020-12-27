@@ -14,9 +14,9 @@ final class StatListPage extends Page {
 		
 		ProgressInfo progressInfo = foodData.progressInfo;
 		ProgressGraph progressGraph = new ProgressGraph(foodData, getCenterX(), (int) mainStack.frame.getMinY() + 43);
-		children.add(progressGraph);
+		//children.add(progressGraph);
 		
-		mainStack.addChild(new UIBox(progressGraph.frame, new Color(0, 0, 0, 0))); // invisible placeholder box
+		//mainStack.addChild(new UIBox(progressGraph.frame, new Color(0, 0, 0, 0))); // invisible placeholder box
 		
 		mainStack.addChild(makeSeparatorLine());
 		

@@ -3,11 +3,17 @@ package com.cazsius.solcarrot.client.gui;
 import com.cazsius.solcarrot.SOLCarrot;
 import com.cazsius.solcarrot.SOLCarrotConfig;
 import com.cazsius.solcarrot.client.gui.elements.*;
+import com.cazsius.solcarrot.tracking.FoodInstance;
 import com.cazsius.solcarrot.tracking.FoodList;
+import com.cazsius.solcarrot.tracking.benefits.BenefitInfo;
+import com.cazsius.solcarrot.tracking.benefits.BenefitsHandler;
+import com.electronwill.nightconfig.core.Config;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import javafx.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +22,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +42,8 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 	static final Color fullBlack = Color.BLACK;
 	static final Color lessBlack = new Color(0, 0, 0, 128);
 	static final Color leastBlack = new Color(0, 0, 0, 64);
+	static final Color activeGreen = new Color(29, 104, 29, 255);
+	static final Color inactiveRed = new Color(104, 29, 29, 255);
 	
 	private final List<UIElement> elements = new ArrayList<>();
 	private UIImage background;
@@ -45,7 +53,7 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 	private PageFlipButton prevPageButton;
 	
 	private PlayerEntity player;
-	private FoodData foodData;
+	private Set<Map.Entry<FoodInstance, Integer>> foodData;
 	
 	private final List<Page> pages = new ArrayList<>();
 	private int currentPageNumber = 0;
@@ -63,7 +71,7 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 	public void init() {
 		super.init();
 		
-		foodData = new FoodData(FoodList.get(player));
+		foodData = FoodList.get(player).getData();
 		
 		background = new UIImage(bookImage);
 		background.setCenterX(width / 2);
@@ -98,22 +106,41 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 	
 	private void initPages() {
 		pages.clear();
+
+		double foodDiversity = FoodList.foodDiversity(foodData);
+		pages.add(new DiversityPage(foodDiversity, background.frame));
+
+		List<Item> foods = foodData.stream().map(Map.Entry::getKey).map(FoodInstance::getItem).collect(Collectors.toList());
+		addPages("food_queue_label", foods);
+
+		Pair<List<BenefitInfo>, List<BenefitInfo>> benefits = BenefitsHandler.getBenefitInfo(foodDiversity);
+		List<BenefitInfo> activeBenefits = benefits.getKey();
+		List<BenefitInfo> inactiveBenefits = benefits.getValue();
 		
-		pages.add(new StatListPage(foodData, background.frame));
-		
-		pages.add(new ConfigInfoPage(foodData, background.frame));
-		
-		addPages("eaten_foods", foodData.eatenFoods);
-		
+		addPages("active_benefits_header", activeBenefits, activeGreen);
+
 		if (SOLCarrotConfig.shouldShowUneatenFoods()) {
-			addPages("uneaten_foods", foodData.uneatenFoods);
+			addPages("inactive_benefits_header", inactiveBenefits, inactiveRed);
 		}
 	}
 	
+	private void addPages(String headerLocalizationPath, List<BenefitInfo> benefitInfoList, Color activeColor) {
+		String header = localized("gui", "food_book." + headerLocalizationPath);
+
+		//String header = localized("gui", "food_book." + headerLocalizationPath, items.size());
+		//List<ItemStack> stacks = items.stream().map(ItemStack::new).collect(Collectors.toList());
+		pages.addAll(BenefitsPage.pages(background.frame, header, benefitInfoList, activeColor));
+	}
+
 	private void addPages(String headerLocalizationPath, List<Item> items) {
 		String header = localized("gui", "food_book." + headerLocalizationPath, items.size());
 		List<ItemStack> stacks = items.stream().map(ItemStack::new).collect(Collectors.toList());
-		pages.addAll(ItemListPage.pages(background.frame, header, stacks));
+		Map<FoodInstance, Integer> foodMap = new HashMap<>();
+		for (Map.Entry<FoodInstance, Integer> entry : foodData) {
+			foodMap.put(entry.getKey(), entry.getValue());
+		}
+
+		pages.addAll(FoodListPage.pages(background.frame, header, stacks, foodMap));
 	}
 	
 	@Override

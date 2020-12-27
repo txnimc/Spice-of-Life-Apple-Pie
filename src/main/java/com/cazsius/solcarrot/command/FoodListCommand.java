@@ -3,6 +3,7 @@ package com.cazsius.solcarrot.command;
 import com.cazsius.solcarrot.SOLCarrot;
 import com.cazsius.solcarrot.lib.Localization;
 import com.cazsius.solcarrot.tracking.*;
+import com.cazsius.solcarrot.tracking.benefits.BenefitsHandler;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -77,6 +78,7 @@ public final class FoodListCommand {
 			throw new CommandException(localizedComponent("no_permissions"));
 		
 		FoodList.get(target).clearFood();
+		BenefitsHandler.updatePlayer(target);
 		CapabilityHandler.syncFoodList(target);
 		
 		IFormattableTextComponent feedback = localizedComponent("clear.success");

@@ -17,4 +17,9 @@ public interface FoodCapability extends ICapabilitySerializable<CompoundNBT> {
 	 @return whether or not the given food has been eaten.
 	 */
 	boolean hasEaten(Item item);
+
+	/**
+	 * @return the food diversity score of the current food queue.
+	 */
+	double foodDiversity();
 }

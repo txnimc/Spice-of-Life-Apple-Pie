@@ -7,11 +7,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-final class ItemListPage extends Page {
-	private static final int itemsPerRow = 5;
-	private static final int rowsPerPage = 6;
-	private static final int itemsPerPage = itemsPerRow * rowsPerPage;
-	private static final int itemSpacing = UIItemStack.size + 4;
+public class ItemListPage extends Page {
+	protected static final int itemsPerRow = 5;
+	protected static final int rowsPerPage = 6;
+	protected static final int itemsPerPage = itemsPerRow * rowsPerPage;
+	protected static final int itemSpacing = UIItemStack.size + 4;
 	
 	static List<ItemListPage> pages(Rectangle frame, String header, List<ItemStack> items) {
 		List<ItemListPage> pages = new ArrayList<>();
@@ -22,7 +22,7 @@ final class ItemListPage extends Page {
 		return pages;
 	}
 	
-	private ItemListPage(Rectangle frame, String header, List<ItemStack> items) {
+	protected ItemListPage(Rectangle frame, String header, List<ItemStack> items) {
 		super(frame, header);
 		
 		int minX = (1 - itemsPerRow) * itemSpacing / 2;

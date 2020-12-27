@@ -2,6 +2,8 @@ package com.cazsius.solcarrot;
 
 import com.cazsius.solcarrot.tracking.CapabilityHandler;
 import com.cazsius.solcarrot.tracking.FoodList;
+import com.cazsius.solcarrot.tracking.benefits.Benefit;
+import com.cazsius.solcarrot.utils.BenefitsParser;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Food;
@@ -21,6 +23,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static com.cazsius.solcarrot.utils.BenefitsParser.parse;
 import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 
 @Mod.EventBusSubscriber(modid = SOLCarrot.MOD_ID, bus = MOD)
@@ -36,6 +39,8 @@ public final class SOLCarrotConfig {
 		Pair<Server, ForgeConfigSpec> specPair = new Builder().configure(Server::new);
 		SERVER = specPair.getLeft();
 		SERVER_SPEC = specPair.getRight();
+
+		SERVER.benefitsList = BenefitsParser.parse(getBenefitsUnparsed());
 	}
 	
 	public static final Client CLIENT;
@@ -84,7 +89,13 @@ public final class SOLCarrotConfig {
 	public static List<String> getWhitelist() {
 		return new ArrayList<>(SERVER.whitelist.get());
 	}
-	
+
+	public static List<String> getBenefitsUnparsed() { return new ArrayList<>(SERVER.benefitsUnparsed.get()); }
+
+	public static List<List<Benefit>> getBenefitsList() { return SERVER.benefitsList; }
+
+	public static List<Double> getThresholds() { return new ArrayList<>(SERVER.thresholds.get()); }
+
 	public static int getMinimumFoodValue() {
 		return SERVER.minimumFoodValue.get();
 	}
@@ -96,6 +107,10 @@ public final class SOLCarrotConfig {
 	public static boolean limitProgressionToSurvival() {
 		return SERVER.limitProgressionToSurvival.get();
 	}
+
+	public static Integer size() {
+		return SERVER.queueSize.get();
+	}
 	
 	public static class Server {
 		public final IntValue baseHearts;
@@ -105,9 +120,16 @@ public final class SOLCarrotConfig {
 		public final ConfigValue<List<? extends String>> blacklist;
 		public final ConfigValue<List<? extends String>> whitelist;
 		public final IntValue minimumFoodValue;
+
+		public final IntValue queueSize;
 		
 		public final BooleanValue shouldResetOnDeath;
 		public final BooleanValue limitProgressionToSurvival;
+
+		public final ConfigValue<List<? extends Double>> thresholds;
+		public final ConfigValue<List<? extends String>> benefitsUnparsed;
+
+		public List<List<Benefit>> benefitsList;
 		
 		Server(Builder builder) {
 			builder.push("milestones");
@@ -144,7 +166,7 @@ public final class SOLCarrotConfig {
 				.translation(localizationPath("minimum_food_value"))
 				.comment("The minimum hunger value foods need to provide in order to count for milestones, in half drumsticks.")
 				.defineInRange("minimumFoodValue", 1, 0, 1000);
-			
+
 			builder.pop();
 			builder.push("miscellaneous");
 			
@@ -157,8 +179,26 @@ public final class SOLCarrotConfig {
 				.translation(localizationPath("limit_progression_to_survival"))
 				.comment("If true, eating foods outside of survival mode (e.g. creative/adventure) is not tracked and thus does not contribute towards progression.")
 				.define("limitProgressionToSurvival", false);
+
+			queueSize = builder
+					.translation(localizationPath("queue_size"))
+					.comment("How many foods should be tracked. I.e., how many food items eaten in the past should count toward food diversity.")
+					.defineInRange("queueSize", 32, 1, 512);
 			
 			builder.pop();
+			builder.push("Custom Effects");
+
+			thresholds = builder
+					.translation(localizationPath("thresholds"))
+					.comment("A list of numbers of diversity values, in ascending order.")
+					.defineList("thresholds", Lists.newArrayList(1.2, 2.0, 15.0, 20.0, 25.0), e -> e instanceof Double);
+
+			benefitsUnparsed = builder
+					.translation(localizationPath("benefits_unparsed"))
+					.comment("A list of numbers of diversity values, in ascending order.")
+					.defineList("benefits_unparsed", Lists.newArrayList(
+							"attribute,generic.max_health,2;effect,strength,1", "attribute,generic.max_health,2;effect,strength,2"),
+							e -> e instanceof String);
 		}
 	}
 	

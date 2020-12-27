@@ -9,6 +9,7 @@ import static com.cazsius.solcarrot.lib.Localization.localized;
 abstract class Page extends UIElement {
 	final UIStack mainStack;
 	final int spacing = 6;
+	final UILabel headerLabel;
 	
 	Page(Rectangle frame, String header) {
 		super(frame);
@@ -17,13 +18,17 @@ abstract class Page extends UIElement {
 		mainStack.axis = UIStack.Axis.VERTICAL;
 		mainStack.spacing = spacing;
 		
-		UILabel headerLabel = new UILabel(header);
+		headerLabel = new UILabel(header);
 		mainStack.addChild(headerLabel);
 		
 		mainStack.addChild(makeSeparatorLine());
 		
 		children.add(mainStack);
 		updateMainStack();
+	}
+
+	public void setHeaderTooltip(String tooltip) {
+		headerLabel.tooltip = tooltip;
 	}
 	
 	void updateMainStack() {

@@ -57,4 +57,13 @@ public final class FoodInstance {
 	public Item getItem() {
 		return item;
 	}
+
+	@Override
+	public String toString() {
+		String enc = encode();
+		if (enc == null)
+			return "null";
+		else
+			return enc;
+	}
 }
