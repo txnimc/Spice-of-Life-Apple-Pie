@@ -11,9 +11,9 @@ credits = "Lewis_McReu for some coding assistance"
 authors = "Cazsius, Talonos, juliand665"
 
 [[mods]]
-	modId = "solcarrot"
+	modId = "solpotato"
 	version = "${file.jarVersion}"
-	displayName = "Spice of Life: Carrot Edition"
+	displayName = "Spice of Life: Potato Edition"
 	description = '''
 A mod designed to encourage dietary variety!
 

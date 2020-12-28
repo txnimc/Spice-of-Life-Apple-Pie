@@ -2,7 +2,7 @@
 	"parent": "minecraft:recipes/root",
 	"rewards": {
 		"recipes": [
-			"solcarrot:food_book"
+			"solpotato:food_book"
 		]
 	},
 	"criteria": {
@@ -25,7 +25,7 @@
 		"has_the_recipe": {
 			"trigger": "minecraft:recipe_unlocked",
 			"conditions": {
-				"recipe": "solcarrot:food_book"
+				"recipe": "solpotato:food_book"
 			}
 		}
 	},

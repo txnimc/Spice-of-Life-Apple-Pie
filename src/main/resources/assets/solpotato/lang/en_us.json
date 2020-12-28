@@ -1,0 +1,87 @@
+{
+	"tooltip.solpotato.hearty.not_eaten": "Not yet eaten! What does it taste like?",
+	"tooltip.solpotato.hearty.eaten": "Eaten: Assisted in adding hearts",
+	"tooltip.solpotato.cheap.eaten": "Eaten: No noticeable effect",
+	"tooltip.solpotato.cheap": "This food is not nourishing enough to improve your health.",
+	"tooltip.solpotato.disabled.blacklist": "This food is in the blacklist and thus cannot improve your health.",
+	"tooltip.solpotato.disabled.whitelist": "This food is not in the whitelist and thus cannot improve your health.",
+	"tooltip.solpotato.disabled.eaten": "Eaten: No noticeable effect",
+	
+	"command.solpotato.foodlist.no_permissions": "You do not have the permissions necessary to apply this command to other players!",
+	
+	"command.solpotato.foodlist.size.desc.foods_eaten.singular": "You've eaten one unique food!",
+	"command.solpotato.foodlist.size.desc.foods_eaten.plural": "You've eaten %s unique foods!",
+	"command.solpotato.foodlist.size.desc.milestone.max": "You sadly cannot gain any more health from trying new foods.",
+	"command.solpotato.foodlist.size.desc.milestone.more": "You need %s more to increase your max health.",
+	
+	"command.solpotato.foodlist.clear.success": "Food list reset!",
+	
+	"command.solpotato.foodlist.sync.success": "Food list synchronized!",
+	
+	"message.solpotato.chat_wrapper": "[SoL: Carrot] %s",
+	"message.solpotato.hearts.singular": "a heart",
+	"message.solpotato.hearts.plural": "%s hearts",
+	"message.solpotato.milestone_achieved": "What a unique flavor! You've gained %s!",
+	"message.solpotato.finished.chat": "Your desire to seek unique foods is finally satisfied.",
+	"message.solpotato.finished.hotbar": "You've gained %s. Your desire to seek unique foods is finally satisfied.",
+	
+	"item.solpotato.food_book": "Food Book",
+	"item.solpotato.food_container": "Lunchbox",
+	"item.solpotato.container_label": "Lunchbox",
+	
+	"gui.solpotato.food_book.stats": "Overview",
+	"gui.solpotato.food_book.eaten_foods": "Already Tasted: %s",
+	"gui.solpotato.food_book.uneaten_foods": "Not Yet Tried: %s",
+	"gui.solpotato.food_book.config": "Configuration",
+
+	"gui.solpotato.food_book.stats.current_diversity": "Current Food Diversity",
+	"gui.solpotato.food_book.active_benefits_header": "Active Benefits",
+	"gui.solpotato.food_book.inactive_benefits_header": "Inactive Benefits",
+	"gui.solpotato.food_book.benefits.threshold_label": "Threshold",
+	"gui.solpotato.food_book.benefits.active_tooltip": "Because your food diversity is greater than this threshold, this benefit is active.",
+	"gui.solpotato.food_book.benefits.inactive_tooltip": "If your food diversity becomes greater than this threshold, this benefit will activate.",
+	"gui.solpotato.food_book.food_queue_label": "Food Eaten",
+	"gui.solpotato.food_book.queue.food_queue_tooltip": "A list of all foods eaten in the past that contribute to your food diversity.",
+
+	"gui.solpotato.food_book.fraction": "%1$s/%2$s",
+	
+	"gui.solpotato.food_book.stats.foods_tasted": "Foods Tasted",
+	"gui.solpotato.food_book.stats.hearts_gained": "Hearts Gained",
+	"gui.solpotato.food_book.stats.tooltip.progress": "%s More Until Next Milestone",
+	"gui.solpotato.food_book.stats.tooltip.progress.max": "Highest Milestone Reached!",
+	"gui.solpotato.food_book.stats.tooltip.previous_milestone": "Last Milestone: %s",
+	"gui.solpotato.food_book.stats.tooltip.next_milestone": "Next Milestone: %s",
+	"gui.solpotato.food_book.stats.tooltip.total_foods": "%s Total Foods",
+	"gui.solpotato.food_book.stats.tooltip.foods_tasted": "Foods Tasted: %s",
+	"gui.solpotato.food_book.stats.tooltip.hearts_per_milestone.singular": "1 Heart per Milestone",
+	"gui.solpotato.food_book.stats.tooltip.hearts_per_milestone.plural": "%s Hearts per Milestone",
+	
+	"gui.solpotato.food_book.config.minimum_food_value": "Minimum Food Value",
+	"gui.solpotato.food_book.config.tooltip.minimum_food_value": "The minimum hunger value foods need to provide in order to count towards milestones.",
+	"gui.solpotato.food_book.config.hearty_fraction": "Nourishing Foods",
+	"gui.solpotato.food_book.config.tooltip.hearty_fraction": "Out of %1$s foods, %2$s are nourishing enough to improve your health.",
+	"gui.solpotato.food_book.config.eaten_cheap_foods": "Boring Foods Tasted",
+	"gui.solpotato.food_book.config.tooltip.eaten_cheap_foods": "Out of the %1$s foods that aren't nourishing enough to improve your health, you've eaten %2$s.",
+	"gui.solpotato.food_book.config.blacklist": "Blacklisted Foods",
+	"gui.solpotato.food_book.config.whitelist": "Whitelisted Foods",
+	"gui.solpotato.food_book.config.tooltip.blacklist": "How many foods have been disabled by the blacklist.",
+	"gui.solpotato.food_book.config.tooltip.whitelist": "How many foods the whitelist allows.",
+
+	"gui.solpotato.food_book.queue.tooltip.contribution_label": "Diversity Contribution",
+	"gui.solpotato.food_book.queue.tooltip.last_eaten_label": "Last Eaten",
+	"gui.solpotato.food_book.queue.tooltip.last_eaten_label_2": "meals ago",
+	
+	"config.solpotato.base_hearts": "Base Hearts",
+	"config.solpotato.hearts_per_milestone": "Hearts per Milestone",
+	"config.solpotato.milestones": "Milestones",
+	"config.solpotato.is_food_tooltip_enabled": "Enable Food Tooltip",
+	"config.solpotato.should_show_progress_above_hotbar": "Show Progress Above Hotbar",
+	"config.solpotato.should_show_uneaten_foods": "Show Uneaten Foods",
+	"config.solpotato.should_play_milestone_sounds": "Enable Milestone Sounds",
+	"config.solpotato.should_spawn_intermediate_particles": "Enable Intermediate Particles",
+	"config.solpotato.should_spawn_milestone_particles": "Enable Milestone Particles",
+	"config.solpotato.food_blacklist": "Blacklist",
+	"config.solpotato.food_whitelist": "Whitelist (disables blacklist)",
+	"config.solpotato.minimum_food_value": "Minimum Food Value",
+	"config.solpotato.reset_on_death": "Reset on Death"
+}
