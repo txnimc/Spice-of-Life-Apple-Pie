@@ -11,6 +11,8 @@ Basically, instead of using the carrot, we use the potato! Whatever that means..
 
 Note that the Potato edition is compatible with the Carrot edition, should you also want permanent max health bonuses when eating new foods for the first time.
 
+[Example config here](https://github.com/Kevun1/Spice-of-Life-Potato-Edition/blob/1.16/GitHub/solpotato-server.toml)
+
 ### Features
 
 This mod keeps track of the past 32 (configurable) foods you've eaten, and assigns a diversity score based on how diverse those foods are. The greater the variety of foods you've eaten, the higher your diversity score is, with a greater weight on recently eaten foods. You are then given various benefits depending on how high your current diversity score is. 
