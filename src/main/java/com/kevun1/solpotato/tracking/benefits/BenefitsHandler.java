@@ -4,7 +4,8 @@ import com.kevun1.solpotato.SOLPotato;
 import com.kevun1.solpotato.SOLPotatoConfig;
 import com.kevun1.solpotato.tracking.CapabilityHandler;
 import com.kevun1.solpotato.tracking.FoodList;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.GameType;
@@ -138,6 +139,6 @@ public class BenefitsHandler {
             }
         }
 
-        return new Pair<>(activeBenefitInfo, inactiveBenefitInfo);
+        return new ImmutablePair<>(activeBenefitInfo, inactiveBenefitInfo);
     }
 }

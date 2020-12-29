@@ -8,7 +8,7 @@ import com.kevun1.solpotato.tracking.FoodList;
 import com.kevun1.solpotato.tracking.benefits.BenefitInfo;
 import com.kevun1.solpotato.tracking.benefits.BenefitsHandler;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
