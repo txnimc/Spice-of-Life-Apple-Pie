@@ -174,7 +174,7 @@ public final class SOLPotatoConfig {
 					.comment(" A list of diversity value thresholds, in ascending order. When the player's food diversity reaches a threshold,\n"
 							+" they will get the benefits associated with that threshold.\n"
 							+"\n")
-					.defineList("thresholds", Lists.newArrayList(1.2, 2.0, 15.0, 20.0, 25.0), e -> e instanceof Double);
+					.defineList("thresholds", Lists.newArrayList(3.0, 5.0, 7.0, 10.0, 13.0, 18.0, 25.0, 31.0), e -> e instanceof Double);
 
 			benefitsUnparsed = builder
 					.translation(localizationPath("benefits_unparsed"))
@@ -198,7 +198,14 @@ public final class SOLPotatoConfig {
 							+" and Strength II at the corresponding threshold.\n"
 							+"\n")
 					.defineList("benefitsUnparsed", Lists.newArrayList(
-							"attribute,generic.max_health,2;effect,strength,1", "attribute,generic.max_health,2;effect,strength,2"),
+							"attribute,generic.max_health,2",
+							"attribute,generic.max_health,2;effect,strength,0",
+							"attribute,generic.max_health,2;effect,regeneration,0",
+							"attribute,generic.max_health,2;effect,speed,0",
+							"attribute,generic.max_health,2;attribute,generic.armor_toughness,2",
+							"attribute,generic.armor_toughness,2;effect,strength,1",
+							"attribute,generic.max_health,4",
+							"attribute,generic.max_health,6"),
 							e -> e instanceof String);
 
 			builder.pop();
