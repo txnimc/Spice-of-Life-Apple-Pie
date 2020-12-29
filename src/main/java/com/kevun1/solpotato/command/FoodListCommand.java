@@ -78,6 +78,7 @@ public final class FoodListCommand {
 			throw new CommandException(localizedComponent("no_permissions"));
 		
 		FoodList.get(target).clearFood();
+		BenefitsHandler.removeAllBenefits(target);
 		BenefitsHandler.updatePlayer(target);
 		CapabilityHandler.syncFoodList(target);
 		

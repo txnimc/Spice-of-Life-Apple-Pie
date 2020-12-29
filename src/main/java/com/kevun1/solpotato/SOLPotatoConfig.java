@@ -18,16 +18,18 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.regex.Pattern;
 
 import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 
-@Mod.EventBusSubscriber(modid = SOLPotato.MOD_ID, bus = MOD)
+@Mod.EventBusSubscriber(modid = SOLPotato.MOD_ID)
 public final class SOLPotatoConfig {
 	private static String localizationPath(String path) {
 		return "config." + SOLPotato.MOD_ID + "." + path;
@@ -40,9 +42,6 @@ public final class SOLPotatoConfig {
 		Pair<Server, ForgeConfigSpec> specPair = new Builder().configure(Server::new);
 		SERVER = specPair.getLeft();
 		SERVER_SPEC = specPair.getRight();
-
-		SERVER.benefitsList = BenefitsParser.parse(getBenefitsUnparsed());
-
 	}
 	
 	public static final Client CLIENT;
@@ -74,20 +73,15 @@ public final class SOLPotatoConfig {
 	}
 
 	@SubscribeEvent
-	public static void onConfigLoad(ModConfig.Loading event) {
+	public static void onServerStart(FMLServerStartingEvent event) {
 		/* Very dangerous: If SERVER.benefitsList gets changed without calling BenefitsHandler#removeAllBenefits
 		on all players, players will get stuck with a modified attribute forever, since attribute modifiers are
 		created with a temporary UUID. removeAllBenefits is called whenever a player logs out, and the only instance
 		of updating benefitsList is here, which only gets called on server load. Thus, everything is fine as long
 		as parsing only takes place here.
 		However, there should be a safer way to handle attribute modifiers.
-
-		TODO: store benefitsList in a manager class, and only parse from config on server load. When updating, should
-		call BenefitsHandler#removeAllBenefits on all players on server to be extra safe. Alternatively, store
-		attribute modifier UUIDs as part of FoodCapability of players.
 		 */
-
-		SERVER.benefitsList = BenefitsParser.parse(getBenefitsUnparsed());
+		SERVER.setBenefitsList(BenefitsParser.parse(getBenefitsUnparsed()));
 		SERVER.complexityMap = ComplexityParser.parse(getComplexityUnparsed());
 	}
 
@@ -163,13 +157,23 @@ public final class SOLPotatoConfig {
 
 		public final ConfigValue<List<? extends String>> complexityUnparsed;
 
+		public void setBenefitsList(List<List<Benefit>> benefitsList) {
+			// Can only set benefits list once for safety. Thus, to reset the config, you have to completely
+			// restart the client. Probably unnecessary, but wanted to be extra safe.
+			if (this.benefitsList != null) {
+				return;
+			}
+			this.benefitsList = benefitsList;
+		}
+
 		Server(Builder builder) {
 			builder.push("Benefits");
 
 			thresholds = builder
 					.translation(localizationPath("thresholds"))
-					.comment("A list of diversity value thresholds, in ascending order. When the player's food diversity reaches a threshold,\n"
-							+"they will get the benefits associated with that threshold.")
+					.comment(" A list of diversity value thresholds, in ascending order. When the player's food diversity reaches a threshold,\n"
+							+" they will get the benefits associated with that threshold.\n"
+							+"\n")
 					.defineList("thresholds", Lists.newArrayList(1.2, 2.0, 15.0, 20.0, 25.0), e -> e instanceof Double);
 
 			benefitsUnparsed = builder
@@ -191,7 +195,8 @@ public final class SOLPotatoConfig {
 							+" To add multiple benefits to the same threshold, separate them by a semicolon ';'\n"
 							+" Make sure that you have NO SPACES!\n"
 							+" As an example, 'attribute,generic.max_health,2;effect,strength,1' will give both +2 max hp\n"
-							+" and Strength II at the corresponding threshold.")
+							+" and Strength II at the corresponding threshold.\n"
+							+"\n")
 					.defineList("benefitsUnparsed", Lists.newArrayList(
 							"attribute,generic.max_health,2;effect,strength,1", "attribute,generic.max_health,2;effect,strength,2"),
 							e -> e instanceof String);
@@ -201,12 +206,14 @@ public final class SOLPotatoConfig {
 
 			blacklist = builder
 					.translation(localizationPath("blacklist"))
-					.comment("Foods in this list won't contribute to food diversity.")
+					.comment(" Foods in this list won't contribute to food diversity.\n"
+							+"\n")
 					.defineList("blacklist", Lists.newArrayList(), e -> e instanceof String);
 
 			whitelist = builder
 					.translation(localizationPath("whitelist"))
-					.comment("When this list contains anything, the blacklist is ignored and instead only foods from here count.")
+					.comment("\n When this list contains anything, the blacklist is ignored and instead only foods from here count.\n"
+							+"\n")
 					.defineList("whitelist", Lists.newArrayList(), e -> e instanceof String);
 
 			builder.pop();
@@ -214,21 +221,24 @@ public final class SOLPotatoConfig {
 
 			shouldResetOnDeath = builder
 					.translation(localizationPath("reset_on_death"))
-					.comment("Whether or not to reset food diversity on death, effectively losing all benefits.")
+					.comment(" Whether or not to reset food diversity on death, effectively losing all benefits.\n"
+							+"\n")
 					.define("resetOnDeath", false);
 
 			limitProgressionToSurvival = builder
 					.translation(localizationPath("limit_progression_to_survival"))
-					.comment("If true, eating foods outside of survival mode (e.g. creative/adventure) is not tracked.")
+					.comment("\n If true, eating foods outside of survival mode (e.g. creative/adventure) is not tracked.\n"
+							+"\n")
 					.define("limitProgressionToSurvival", false);
 
 			queueSize = builder
 					.translation(localizationPath("queue_size"))
-					.comment(" How many foods should be tracked. I.e., how many food items eaten in the past should count toward food diversity.\n"
+					.comment("\n How many foods should be tracked. I.e., how many food items eaten in the past should count toward food diversity.\n"
 							+" Note that the larger this is, the higher your potential diversity value can be, so keep this mind\n"
 							+" if you are defining custom thresholds/benefits above.\n"
 							+" !!!If you update queueSize, and leave the other advanced options unchanged,\n"
-							+" make sure you change endDecay (below) to match queueSize, or else nothing will change!!!")
+							+" make sure you change endDecay (below) to match queueSize, or else nothing will change!!!\n"
+							+"\n")
 					.defineInRange("queueSize", 32, 1, 1000);
 
 			builder.pop();
@@ -240,31 +250,36 @@ public final class SOLPotatoConfig {
 							+" Please look at the explanation on the wiki on the github to see how these values work.\n"
 							+"\n"
 							+" Lowest possible diversity contribution a food can give. This is a multiplier, not an\n"
-							+" absolute value!")
+							+" absolute value!\n"
+							+"\n")
 					.defineInRange("minContribution", 0.0, 0.0, 1.0);
 
 			defaultContribution = builder
 					.translation(localizationPath("default_contribution"))
-					.comment("The default diversity value when you eat a food. There is little reason to ever change this.")
+					.comment("\n The default diversity value when you eat a food. There is little reason to ever change this.\n"
+							+"\n")
 					.defineInRange("defaultContribution", 1.0, 0.0, 100.0);
 
 			endDecay = builder
 					.translation(localizationPath("end_decay"))
-					.comment("How many meals in the past should the diversity penalty stop from.\n"
-							+"**Needs to be less than queueSize and greater than startDecay!!!**\n"
-							+"Note that if you update queueSize, to retain the default behavior, you need to also\n"
-							+"set endDecay equal to the queueSize")
+					.comment("\n How many meals in the past should the diversity penalty stop from.\n"
+							+" **Needs to be less than queueSize and greater than startDecay!!!**\n"
+							+" Note that if you update queueSize, to retain the default behavior, you need to also\n"
+							+" set endDecay equal to the queueSize\n"
+							+"\n")
 					.defineInRange("endDecay", 32, 0, 1000);
 
 			startDecay = builder
 					.translation(localizationPath("start_decay"))
-					.comment("How many meals in the past should the diversity time penalty start to apply.\n"
-							+"**Needs to be less than queueSize and less than or equal to endDecay!!!**")
+					.comment("\n How many meals in the past should the diversity time penalty start to apply.\n"
+							+" **Needs to be less than queueSize and less than or equal to endDecay!!!**\n"
+							+"\n")
 					.defineInRange("startDecay", 0, 0, 1000);
 
 			shouldForbiddenCount = builder
 					.translation(localizationPath("should_forbidden_count"))
-					.comment("Whether blacklisted foods should still take a spot in the queue, even if they don't contribute any diversity.")
+					.comment("\n Whether blacklisted foods should still take a spot in the queue, even if they don't contribute any diversity.\n"
+							+"\n")
 					.define("shouldForbiddenCount", true);
 
 			builder.pop();
@@ -276,9 +291,10 @@ public final class SOLPotatoConfig {
 							+" The complexity value of a food is how much diversity points it gives. \n"
 							+" The base diversity value of foods not defined here is equal to defaultContribution.\n"
 							+" Each entry in the list should be a string defining one food, and the format is [registry name],[value]\n"
-							+" Note that tags are NOT currently supported.")
+							+" Note that tags are NOT currently supported.\n"
+							+"\n")
 					.defineList("complexityUnparsed", Lists.newArrayList(
-							"minecraft:golden_carrot,2", "minecraft:golden_carrot,2"),
+							"minecraft:golden_carrot,2", "minecraft:golden_carrot,2", "minecraft:enchanted_golden_apple,5"),
 							e -> e instanceof String);
 
 			builder.pop();
@@ -300,12 +316,14 @@ public final class SOLPotatoConfig {
 			
 			isFoodTooltipEnabled = builder
 				.translation(localizationPath("is_food_tooltip_enabled"))
-				.comment("If true, foods indicate in their tooltips the last time they've been eaten, and their current diversity contribution.")
+				.comment(" If true, foods indicate in their tooltips the last time they've been eaten, and their current diversity contribution."
+						+"\n")
 				.define("isFoodTooltipEnabled", true);
 
 			shouldShowInactiveBenefits = builder
 				.translation(localizationPath("should_show_inactive_benefits"))
-				.comment("If true, the food book lists benefits that you haven't acquired yet, in addition to the ones you have.")
+				.comment("\n If true, the food book lists benefits that you haven't acquired yet, in addition to the ones you have.\n"
+						+"\n")
 				.define("shouldShowInactiveBenefits", true);
 			
 			builder.pop();

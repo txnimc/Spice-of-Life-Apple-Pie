@@ -74,7 +74,5 @@ public final class CapabilityHandler {
 			target.connection.getNetworkManager(),
 			NetworkDirection.PLAY_TO_CLIENT
 		);
-		
-//		MaxHealthHandler.updateFoodHPModifier(player);
 	}
 }

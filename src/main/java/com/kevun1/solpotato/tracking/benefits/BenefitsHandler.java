@@ -9,10 +9,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.GameType;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
 import java.util.*;
 
@@ -40,6 +43,9 @@ public class BenefitsHandler {
         }
 
         List<List<Benefit>> benefitsList = SOLPotatoConfig.getBenefitsList();
+//        if (benefitsList == null) {
+//            return;
+//        }
         List<Double> thresholds = SOLPotatoConfig.getThresholds();
 
         for (int i = 0; i < thresholds.size(); i++) {
