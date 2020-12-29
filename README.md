@@ -3,6 +3,7 @@
 </p>
 A mod designed to encourage dietary variety! This project is a fork of Spice of Life: Carrot Edition, and has the same goal of rewarding the player for eating a variety of food. However, there are two main differences:
 
+
 1. Rather than permanently giving the player max health when they eat a new food, this mod gives variable benefits depending on how diverse the player's *current* diet is. So if the player receives benefits for eating a bunch of new foods, they have to **maintain** that level of diversity to keep those benefits. This is to encourage automation of a variety of food production systems, rather than encouraging the player to eat each food once. 
 2. The benefits for dietary diversity are completely customizable and not just limited to max health. Benefits can be modifiers of any attribute like max health, attack damage, armor, movement speed, etc., or any potion effect, from vanilla or any mod. The thresholds for acquiring benefits, the exact calculation for food diversity, how much any individual food contributes to diversity, and more are all configurable.
 
