@@ -46,6 +46,8 @@ This mod also features 3 commands:
   - There are no plans for anything other than 1.16 Forge at the moment.
 - How do I make custom benefits?
   - Check the wiki
+- Is it possible to have penalties for low diversity, in addition to benefits for high diversity?
+  - There is no built in support for penalties, but yes, the config is powerful enough to make benefits into penalties. See the wiki for more details, but you can make benefits with negative attribute modifiers or negative potion effects that act as penalties. 
 - Help! Something isn't working!
   - If you use wrong syntax in the config, stuff will not work. If you haven't touched your config/can't figure what's wrong, please report issues [here](https://github.com/Kevun1/Spice-of-Life-Potato-Edition/issues).
 - The Lunchbag and Lunchbox don't work with AppleSkin!
