@@ -49,7 +49,7 @@ This mod also features 3 commands:
 - How do I make custom benefits?
   - Read the config, then read the wiki if you are still unsure.
 - Is it possible to have penalties for low diversity, in addition to benefits for high diversity?
-  - There is no built in support for penalties, but yes, the config is powerful enough to make benefits into penalties. You can make benefits with negative attribute modifiers or negative potion effects that act as penalties. 
+  - There is no built in support for penalties, but yes, the config is powerful enough to make benefits into penalties. You can make benefits with negative attribute modifiers or negative potion effects that act as penalties. The philosophy of the mod is still in line with Carrot edition, though, meaning that food diversity should be encouraged with benefits, not punishments.
 - Help! Something isn't working!
   - If you use wrong syntax in the config, stuff will not work. If you haven't touched your config/can't figure what's wrong, please report issues [here](https://github.com/Kevun1/Spice-of-Life-Potato-Edition/issues).
 - The Lunchbag and Lunchbox don't work with AppleSkin!
