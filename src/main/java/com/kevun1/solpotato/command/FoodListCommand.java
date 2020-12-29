@@ -12,6 +12,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Food;
 import net.minecraft.util.text.*;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -32,6 +33,7 @@ public final class FoodListCommand {
 			literal(name)
 				.then(withPlayerArgumentOrSender(literal("sync"), FoodListCommand::syncFoodList))
 				.then(withPlayerArgumentOrSender(literal("clear"), FoodListCommand::clearFoodList))
+				.then(withPlayerArgumentOrSender(literal("diversity"), FoodListCommand::displayDiversity))
 		);
 	}
 	
@@ -48,6 +50,18 @@ public final class FoodListCommand {
 				.executes((context) -> command.run(context, EntityArgument.getPlayer(context, target)))
 			);
 	}
+
+	static int displayDiversity(CommandContext<CommandSource> context, PlayerEntity target) {
+		boolean isOp = context.getSource().hasPermissionLevel(2);
+		boolean isTargetingSelf = isTargetingSelf(context, target);
+		if (!isOp && !isTargetingSelf)
+			throw new CommandException(localizedComponent("no_permissions"));
+
+		double diversity = FoodList.get(target).foodDiversity();
+		IFormattableTextComponent feedback = localizedComponent("diversity_feedback", diversity);
+		sendFeedback(context.getSource(), feedback);
+		return Command.SINGLE_SUCCESS;
+	}
 	
 	static int syncFoodList(CommandContext<CommandSource> context, PlayerEntity target) {
 		CapabilityHandler.syncFoodList(target);
@@ -60,7 +74,7 @@ public final class FoodListCommand {
 	static int clearFoodList(CommandContext<CommandSource> context, PlayerEntity target) {
 		boolean isOp = context.getSource().hasPermissionLevel(2);
 		boolean isTargetingSelf = isTargetingSelf(context, target);
-		if (!isOp && isTargetingSelf)
+		if (!isOp && !isTargetingSelf)
 			throw new CommandException(localizedComponent("no_permissions"));
 		
 		FoodList.get(target).clearFood();

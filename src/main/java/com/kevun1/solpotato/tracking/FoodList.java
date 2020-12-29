@@ -5,6 +5,7 @@ import com.kevun1.solpotato.api.FoodCapability;
 import com.kevun1.solpotato.api.SOLPotatoAPI;
 import javafx.util.Pair;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.*;
 import net.minecraft.util.Direction;
@@ -224,6 +225,14 @@ public final class FoodList implements FoodCapability {
 		return uniqueFoods.entrySet();
 	}
 
+	public int getLastEaten(Item food) {
+		if (!hasEaten(food)) {
+			return -1;
+		}
+
+		return uniqueFoods.get(new FoodInstance(food));
+	}
+
 	@Override
 	public boolean hasEaten(Item food) {
 		if (!food.isFood()) return false;
@@ -236,12 +245,6 @@ public final class FoodList implements FoodCapability {
 	
 	public Set<FoodInstance> getEatenFoods() {
 		return uniqueFoods.keySet();
-	}
-	
-	// TODO: is this actually desirable? it doesn't filter at all
-	@Override
-	public int getEatenFoodCount() {
-		return uniqueFoods.size();
 	}
 
 	public static final class Storage implements Capability.IStorage<FoodCapability> {

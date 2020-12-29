@@ -9,12 +9,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
  */
 public interface FoodCapability extends ICapabilitySerializable<CompoundNBT> {
 	/**
-	 @return how many unique foods have been eaten.
-	 */
-	int getEatenFoodCount();
-	
-	/**
-	 @return whether or not the given food has been eaten.
+	 @return whether or not the given food is being tracked.
 	 */
 	boolean hasEaten(Item item);
 

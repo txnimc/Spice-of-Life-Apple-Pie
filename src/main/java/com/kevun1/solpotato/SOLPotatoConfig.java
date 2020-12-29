@@ -164,77 +164,107 @@ public final class SOLPotatoConfig {
 		public final ConfigValue<List<? extends String>> complexityUnparsed;
 
 		Server(Builder builder) {
-			builder.push("filtering");
-			
-			blacklist = builder
-				.translation(localizationPath("blacklist"))
-				.comment("Foods in this list won't affect the player's health nor show up in the food book.")
-				.defineList("blacklist", Lists.newArrayList(), e -> e instanceof String);
-			
-			whitelist = builder
-				.translation(localizationPath("whitelist"))
-				.comment("When this list contains anything, the blacklist is ignored and instead only foods from here count.")
-				.defineList("whitelist", Lists.newArrayList(), e -> e instanceof String);
-
-			builder.pop();
-			builder.push("miscellaneous");
-			
-			shouldResetOnDeath = builder
-				.translation(localizationPath("reset_on_death"))
-				.comment("Whether or not to reset the food list on death, effectively losing all bonus hearts.")
-				.define("resetOnDeath", false);
-			
-			limitProgressionToSurvival = builder
-				.translation(localizationPath("limit_progression_to_survival"))
-				.comment("If true, eating foods outside of survival mode (e.g. creative/adventure) is not tracked and thus does not contribute towards progression.")
-				.define("limitProgressionToSurvival", false);
-
-			queueSize = builder
-					.translation(localizationPath("queue_size"))
-					.comment("How many foods should be tracked. I.e., how many food items eaten in the past should count toward food diversity.")
-					.defineInRange("queueSize", 32, 1, 1000);
-			
-			builder.pop();
-			builder.push("benefits");
+			builder.push("Benefits");
 
 			thresholds = builder
 					.translation(localizationPath("thresholds"))
-					.comment("A list of numbers of diversity values, in ascending order.")
+					.comment("A list of diversity value thresholds, in ascending order. When the player's food diversity reaches a threshold,\n"
+							+"they will get the benefits associated with that threshold.")
 					.defineList("thresholds", Lists.newArrayList(1.2, 2.0, 15.0, 20.0, 25.0), e -> e instanceof Double);
 
 			benefitsUnparsed = builder
 					.translation(localizationPath("benefits_unparsed"))
-					.comment("A list of numbers of diversity values, in ascending order.")
+					.comment(" \n Define custom benefits here. Each entry in the list corresponds to a benefit that will be obtained\n"
+							+" at the corresponding diversity threshold defined the list above. For example, the first entry in\n"
+							+" this list will be applied when the player's food diversity reaches the number in the first entry in\n"
+							+" the threshold list above.\n"
+							+" Each benefit is a string with the following form: [type],[registry name],[value] (without the brackets)\n"
+							+" The type can either be 'attribute' for attribute modifiers or 'effect' for potion effects\n"
+							+" Registry names for common vanila attributes are \n"
+							+" generic.max_health, generic.knockback_resistance, generic.movement_speed, generic.luck, \n"
+							+" generic.attack_damage, generic.attack_speed, generic.armor, generic.armor_toughness \n"
+							+" The value of attributes is the numerical number that will be added to that attribute\n"
+							+" Use a negative number for subtraction. Multiplicative modifiers are not supported.\n"
+							+" For potion effects, the value is an integer and is the potion effect amplifier. Note\n"
+							+" that the amplifier is 0 indexed, so minecraft:strength,1 corresponds to Strength II\n"
+							+"\n"
+							+" To add multiple benefits to the same threshold, separate them by a semicolon ';'\n"
+							+" Make sure that you have NO SPACES!\n"
+							+" As an example, 'attribute,generic.max_health,2;effect,strength,1' will give both +2 max hp\n"
+							+" and Strength II at the corresponding threshold.")
 					.defineList("benefitsUnparsed", Lists.newArrayList(
 							"attribute,generic.max_health,2;effect,strength,1", "attribute,generic.max_health,2;effect,strength,2"),
 							e -> e instanceof String);
+
+			builder.pop();
+			builder.push("Filtering");
+
+			blacklist = builder
+					.translation(localizationPath("blacklist"))
+					.comment("Foods in this list won't contribute to food diversity.")
+					.defineList("blacklist", Lists.newArrayList(), e -> e instanceof String);
+
+			whitelist = builder
+					.translation(localizationPath("whitelist"))
+					.comment("When this list contains anything, the blacklist is ignored and instead only foods from here count.")
+					.defineList("whitelist", Lists.newArrayList(), e -> e instanceof String);
+
+			builder.pop();
+			builder.push("Miscellaneous");
+
+			shouldResetOnDeath = builder
+					.translation(localizationPath("reset_on_death"))
+					.comment("Whether or not to reset food diversity on death, effectively losing all benefits.")
+					.define("resetOnDeath", false);
+
+			limitProgressionToSurvival = builder
+					.translation(localizationPath("limit_progression_to_survival"))
+					.comment("If true, eating foods outside of survival mode (e.g. creative/adventure) is not tracked.")
+					.define("limitProgressionToSurvival", false);
+
+			queueSize = builder
+					.translation(localizationPath("queue_size"))
+					.comment(" How many foods should be tracked. I.e., how many food items eaten in the past should count toward food diversity.\n"
+							+" Note that the larger this is, the higher your potential diversity value can be, so keep this mind\n"
+							+" if you are defining custom thresholds/benefits above.\n"
+							+" !!!If you update queueSize, and leave the other advanced options unchanged,\n"
+							+" make sure you change endDecay (below) to match queueSize, or else nothing will change!!!")
+					.defineInRange("queueSize", 32, 1, 1000);
 
 			builder.pop();
 			builder.push("Advanced");
 
 			minContribution = builder
 					.translation(localizationPath("min_contribution"))
-					.comment("Lowest possible diversity contribution a food can give.")
+					.comment(" These config options all affect the technical details of how diversity is calculated.\n"
+							+" Please look at the explanation on the wiki on the github to see how these values work.\n"
+							+"\n"
+							+" Lowest possible diversity contribution a food can give. This is a multiplier, not an\n"
+							+" absolute value!")
 					.defineInRange("minContribution", 0.0, 0.0, 1.0);
 
 			defaultContribution = builder
 					.translation(localizationPath("default_contribution"))
-					.comment("The default diversity value of the most recent food eaten.")
+					.comment("The default diversity value when you eat a food. There is little reason to ever change this.")
 					.defineInRange("defaultContribution", 1.0, 0.0, 100.0);
 
 			endDecay = builder
 					.translation(localizationPath("end_decay"))
-					.comment("How many meals in the past should the diversity penalty stop from. Needs to be < queue_size and > start_decay")
+					.comment("How many meals in the past should the diversity penalty stop from.\n"
+							+"**Needs to be less than queueSize and greater than startDecay!!!**\n"
+							+"Note that if you update queueSize, to retain the default behavior, you need to also\n"
+							+"set endDecay equal to the queueSize")
 					.defineInRange("endDecay", 32, 0, 1000);
 
 			startDecay = builder
 					.translation(localizationPath("start_decay"))
-					.comment("How many meals in the past should the diversity time penalty start to apply. Needs to be < queue_size and <= end_decay.")
+					.comment("How many meals in the past should the diversity time penalty start to apply.\n"
+							+"**Needs to be less than queueSize and less than or equal to endDecay!!!**")
 					.defineInRange("startDecay", 0, 0, 1000);
 
 			shouldForbiddenCount = builder
 					.translation(localizationPath("should_forbidden_count"))
-					.comment("Whether blacklisted foods or foods that don't contribute any diversity should still take a spot in the queue.")
+					.comment("Whether blacklisted foods should still take a spot in the queue, even if they don't contribute any diversity.")
 					.define("shouldForbiddenCount", true);
 
 			builder.pop();
@@ -242,49 +272,41 @@ public final class SOLPotatoConfig {
 
 			complexityUnparsed = builder
 					.translation(localizationPath("complexity_unparsed"))
-					.comment("Define custom complexity values for individual foods here.")
+					.comment(" Define custom complexity values for individual foods here.\n"
+							+" The complexity value of a food is how much diversity points it gives. \n"
+							+" The base diversity value of foods not defined here is equal to defaultContribution.\n"
+							+" Each entry in the list should be a string defining one food, and the format is [registry name],[value]\n"
+							+" Note that tags are NOT currently supported.")
 					.defineList("complexityUnparsed", Lists.newArrayList(
 							"minecraft:golden_carrot,2", "minecraft:golden_carrot,2"),
 							e -> e instanceof String);
 
-
+			builder.pop();
 		}
 	}
 
 	public static boolean isFoodTooltipEnabled() {
 		return CLIENT.isFoodTooltipEnabled.get();
 	}
-	
-	public static boolean shouldShowProgressAboveHotbar() {
-		return CLIENT.shouldShowProgressAboveHotbar.get();
-	}
-	
-	public static boolean shouldShowUneatenFoods() {
-		return CLIENT.shouldShowUneatenFoods.get();
-	}
-	
+
+	public static boolean shouldShowInactiveBenefits() { return CLIENT.shouldShowInactiveBenefits.get(); }
+
 	public static class Client {
 		public final BooleanValue isFoodTooltipEnabled;
-		public final BooleanValue shouldShowProgressAboveHotbar;
-		public final BooleanValue shouldShowUneatenFoods;
+		public final BooleanValue shouldShowInactiveBenefits;
 		
 		Client(Builder builder) {
 			builder.push("miscellaneous");
 			
 			isFoodTooltipEnabled = builder
 				.translation(localizationPath("is_food_tooltip_enabled"))
-				.comment("If true, foods indicate in their tooltips whether or not they have been eaten.")
+				.comment("If true, foods indicate in their tooltips the last time they've been eaten, and their current diversity contribution.")
 				.define("isFoodTooltipEnabled", true);
-			
-			shouldShowProgressAboveHotbar = builder
-				.translation(localizationPath("should_show_progress_above_hotbar"))
-				.comment("Whether the messages notifying you of reaching new milestones should be displayed above the hotbar or in chat.")
-				.define("shouldShowProgressAboveHotbar", true);
-			
-			shouldShowUneatenFoods = builder
-				.translation(localizationPath("should_show_uneaten_foods"))
-				.comment("If true, the food book also lists foods that you haven't eaten, in addition to the ones you have.")
-				.define("shouldShowUneatenFoods", true);
+
+			shouldShowInactiveBenefits = builder
+				.translation(localizationPath("should_show_inactive_benefits"))
+				.comment("If true, the food book lists benefits that you haven't acquired yet, in addition to the ones you have.")
+				.define("shouldShowInactiveBenefits", true);
 			
 			builder.pop();
 		}

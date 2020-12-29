@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    "A A",
+    "AAA"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:paper"
+    }
+  },
+  "result": {
+    "item": "solpotato:lunchbag"
+  }
+}

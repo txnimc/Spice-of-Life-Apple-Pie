@@ -55,11 +55,20 @@ public class FoodContainer extends Container {
         containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             nslots = h.getSlots();
             this.endInv = h.getSlots();
+            int slotsPerRow = h.getSlots();
+            if (h.getSlots() > 9) {
+                slotsPerRow = h.getSlots() / 2;
+            }
+            int xStart = (2*8 + 9*18 - slotsPerRow * 18) / 2;
+            int yStart = 17 + 18;
+            if (h.getSlots() > 9) {
+                yStart = 17 + (84-36-23)/2;
+            }
             for (int j = 0; j < h.getSlots(); j++) {
-                int row = j / 9;
-                int col = j % 9;
-                int xPos = 8 + col * 18;
-                int yPos = 8 + row * 18;
+                int row = j / slotsPerRow;
+                int col = j % slotsPerRow;
+                int xPos = xStart + col * 18;
+                int yPos = yStart + row * 18;
                 this.addSlot(new FoodSlot(h, j, xPos, yPos));
             }
         });

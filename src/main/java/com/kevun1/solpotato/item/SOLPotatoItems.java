@@ -13,14 +13,18 @@ import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 
 @Mod.EventBusSubscriber(modid = SOLPotato.MOD_ID, bus = MOD)
 public final class SOLPotatoItems {
-	public static FoodContainerItem container;
+	//public static FoodContainerItem container;
 
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		IForgeRegistry<Item> registry = event.getRegistry();
 		register(registry, new FoodBookItem(), "food_book");
-		container = new FoodContainerItem(9);
-		register(registry, container, "food_container");
+		FoodContainerItem lunchbox = new FoodContainerItem(9, "lunchbox");
+		register(registry, lunchbox, "lunchbox");
+		FoodContainerItem lunchbag = new FoodContainerItem(5, "lunchbag");
+		register(registry, lunchbag, "lunchbag");
+		FoodContainerItem golden_lunchbox = new FoodContainerItem(14, "golden_lunchbox");
+		register(registry, golden_lunchbox, "golden_lunchbox");
 	}
 	
 	public static <T extends IForgeRegistryEntry<T>> void register(IForgeRegistry<T> registry, T entry, String name) {

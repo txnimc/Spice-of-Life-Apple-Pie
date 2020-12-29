@@ -1,13 +1,17 @@
 package com.kevun1.solpotato;
 
-import com.kevun1.solpotato.client.ClientRegistry;
+import com.kevun1.solpotato.client.ClientEvents;
+import com.kevun1.solpotato.client.SOLClientRegistry;
 import com.kevun1.solpotato.communication.FoodListMessage;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLFingerprintViolationEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
@@ -33,14 +37,7 @@ public final class SOLPotato {
 	public static ResourceLocation resourceLocation(String path) {
 		return new ResourceLocation(MOD_ID, path);
 	}
-	
-	// TODO: not sure if this is even implemented anymore
-	@SubscribeEvent
-	public static void onFingerprintViolation(FMLFingerprintViolationEvent event) {
-		// This complains if jar not signed, even if certificateFingerprint is blank
-		LOGGER.warn("Invalid Fingerprint!");
-	}
-	
+
 	@SubscribeEvent
 	public static void setUp(FMLCommonSetupEvent event) {
 		channel.messageBuilder(FoodListMessage.class, 0)
@@ -52,9 +49,10 @@ public final class SOLPotato {
 
 	@SubscribeEvent
 	public static void setupClient(FMLClientSetupEvent event) {
-		ClientRegistry.setup();
+		SOLClientRegistry.setup();
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> SOLClientRegistry::registerKeybinds);
 	}
-	
+
 	public SOLPotato() {
 		SOLPotatoConfig.setUp();
 	}

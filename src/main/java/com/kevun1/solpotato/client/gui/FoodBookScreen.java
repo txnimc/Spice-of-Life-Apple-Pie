@@ -119,7 +119,7 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 		
 		addPages("active_benefits_header", activeBenefits, activeGreen);
 
-		if (SOLPotatoConfig.shouldShowUneatenFoods()) {
+		if (SOLPotatoConfig.shouldShowInactiveBenefits()) {
 			addPages("inactive_benefits_header", inactiveBenefits, inactiveRed);
 		}
 	}

@@ -1,5 +1,6 @@
 package com.kevun1.solpotato.client.gui.elements;
 
+import com.kevun1.solpotato.client.TooltipHandler;
 import com.kevun1.solpotato.tracking.FoodInstance;
 import com.kevun1.solpotato.tracking.FoodList;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -41,11 +42,7 @@ public class UIFoodQueueItem extends UIItemStack{
 
         double contribution = FoodList.calculateDiversityContribution(new FoodInstance(itemStack.getItem()), lastEaten);
 
-        tooltip.add(new StringTextComponent(localized("gui", "food_book.queue.tooltip.contribution_label")
-            + ": " + String.format("%.2f", contribution)).mergeStyle(TextFormatting.GRAY));
-        tooltip.add(new StringTextComponent(localized("gui", "food_book.queue.tooltip.last_eaten_label")
-            + ": " + lastEaten + " " + localized("gui", "food_book.queue.tooltip.last_eaten_label_2"))
-            .mergeStyle(TextFormatting.GRAY));
+        TooltipHandler.addDiversityInfoTooltips(tooltip, contribution, lastEaten);
 
         return tooltip;
     }

@@ -22,13 +22,22 @@ public class FoodContainerScreen extends ContainerScreen<FoodContainer> {
     protected void drawGuiContainerBackgroundLayer(MatrixStack matrices, float partialTicks, int x, int y) {
         this.drawBackground(matrices, new ResourceLocation(SOLPotato.MOD_ID, "textures/gui/inventory.png"));
         this.container.containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-          for (int i = 0; i < h.getSlots(); i++) {
-            int row = (int) i / 9;
-            int col = i % 9;
-            int xPos = 7 + col * 18;
-            int yPos = 7 + row * 18;
+            int slotsPerRow = h.getSlots();
+            if (h.getSlots() > 9) {
+                slotsPerRow = h.getSlots() / 2;
+            }
+            int xStart = (2*8 + 9*18 - slotsPerRow * 18) / 2;
+            int yStart = 17 + 18;
+            if (h.getSlots() > 9) {
+                yStart = 17 + (84-36-23)/2;
+            }
+            for (int i = 0; i < h.getSlots(); i++) {
+                int row = i / slotsPerRow;
+                int col = i % slotsPerRow;
+                int xPos = xStart - 1 + col * 18;
+                int yPos = yStart - 1 + row * 18;
 
-            this.drawSlot(matrices, xPos, yPos);
+                this.drawSlot(matrices, xPos, yPos);
           }
         });
     }

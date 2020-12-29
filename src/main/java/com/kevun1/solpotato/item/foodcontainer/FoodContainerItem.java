@@ -1,22 +1,16 @@
 package com.kevun1.solpotato.item.foodcontainer;
 
-import com.kevun1.solpotato.client.ContainerScreenRegistry;
 import com.kevun1.solpotato.tracking.FoodList;
 import com.kevun1.solpotato.tracking.FoodTracker;
-import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.event.world.NoteBlockEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -24,11 +18,13 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nullable;
 
 public class FoodContainerItem extends Item {
+    private String displayName;
     private int nslots;
 
-    public FoodContainerItem(int nslots) {
+    public FoodContainerItem(int nslots, String displayName) {
         super(new Properties().group(ItemGroup.MISC).maxStackSize(1).setNoRepair());
 
+        this.displayName = displayName;
         this.nslots = nslots;
     }
 
@@ -43,15 +39,43 @@ public class FoodContainerItem extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        if (!worldIn.isRemote && playerIn.isCrouching()) {
-            NetworkHooks.openGui((ServerPlayerEntity) playerIn, new FoodContainerProvider(), playerIn.getPosition());
+    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
+        if (!world.isRemote && player.isCrouching()) {
+            NetworkHooks.openGui((ServerPlayerEntity) player, new FoodContainerProvider(displayName), player.getPosition());
         }
 
-        if (!playerIn.isCrouching()) {
-            return super.onItemRightClick(worldIn, playerIn, handIn);
+        if (!player.isCrouching()) {
+            return processRightClick(world, player, hand);
         }
-        return ActionResult.resultPass(playerIn.getHeldItem(handIn));
+        return ActionResult.resultPass(player.getHeldItem(hand));
+    }
+
+    private ActionResult<ItemStack> processRightClick(World world, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getHeldItem(hand);
+        if (isInventoryEmpty(stack)) {
+            return ActionResult.resultPass(stack);
+        }
+
+        if (player.canEat(false)) {
+            player.setActiveHand(hand);
+            return ActionResult.resultConsume(stack);
+        }
+        return ActionResult.resultFail(stack);
+    }
+
+    private static boolean isInventoryEmpty(ItemStack container) {
+        ItemStackHandler handler = getInventory(container);
+        if (handler == null) {
+            return true;
+        }
+
+        for (int i = 0; i < handler.getSlots(); i++) {
+            ItemStack stack = handler.getStackInSlot(i);
+            if (!stack.isEmpty() && stack.isFood()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Nullable

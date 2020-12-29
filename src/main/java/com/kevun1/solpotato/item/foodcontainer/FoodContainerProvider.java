@@ -6,13 +6,20 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import com.kevun1.solpotato.lib.Localization;
 
 import javax.annotation.Nullable;
 
 public class FoodContainerProvider implements INamedContainerProvider {
+    private String displayName;
+
+    public FoodContainerProvider(String displayName) {
+        this.displayName = displayName;
+    }
+
     @Override
     public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("item.solpotato.container_label");
+        return new TranslationTextComponent(Localization.keyString("item", "container." + displayName));
     }
 
     @Nullable
