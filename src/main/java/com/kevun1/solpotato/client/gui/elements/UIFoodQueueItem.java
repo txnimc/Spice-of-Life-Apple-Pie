@@ -5,9 +5,7 @@ import com.kevun1.solpotato.tracking.FoodInstance;
 import com.kevun1.solpotato.tracking.FoodList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +34,14 @@ public class UIFoodQueueItem extends UIItemStack{
     }
 
     private List<ITextComponent> getFoodQueueTooltip() {
-        ITextComponent foodName = itemStack.getTooltip(mc.player, NORMAL).get(0);
+        ITextComponent foodName =  new TranslationTextComponent(itemStack.getItem().getTranslationKey(itemStack))
+                .mergeStyle(itemStack.getRarity().color);
+
         List<ITextComponent> tooltip = new ArrayList<>();
         tooltip.add(foodName);
+
+        ITextComponent space = new StringTextComponent("");
+        tooltip.add(space);
 
         double contribution = FoodList.calculateDiversityContribution(new FoodInstance(itemStack.getItem()), lastEaten);
 

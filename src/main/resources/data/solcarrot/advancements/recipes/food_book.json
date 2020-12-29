@@ -6,11 +6,11 @@
 		]
 	},
 	"criteria": {
-		"has_carrot": {
+		"has_potato": {
 			"trigger": "minecraft:inventory_changed",
 			"conditions": {
 				"items": [
-					{ "item": "minecraft:carrot" }
+					{ "item": "minecraft:potato" }
 				]
 			}
 		},
@@ -31,7 +31,7 @@
 	},
 	"requirements": [
 		[
-			"has_carrot",
+			"has_potato",
 			"has_book",
 			"has_the_recipe"
 		]
