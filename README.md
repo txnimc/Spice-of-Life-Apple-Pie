@@ -13,6 +13,8 @@ Note that the Potato edition is compatible with the Carrot edition, should you a
 
 [Example config here](https://github.com/Kevun1/Spice-of-Life-Potato-Edition/blob/1.16/GitHub/solpotato-server.toml)
 
+Note that there are no dependencies for this mod, but [AttributeFix](https://www.curseforge.com/minecraft/mc-mods/attributefix) is necessary if you want certain attributes to go above the default maximium limit.
+
 ### Features
 
 This mod keeps track of the past 32 (configurable) foods you've eaten, and assigns a diversity score based on how diverse those foods are. The greater the variety of foods you've eaten, the higher your diversity score is, with a greater weight on recently eaten foods. You are then given various benefits depending on how high your current diversity score is. 
