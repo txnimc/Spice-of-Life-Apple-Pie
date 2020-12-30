@@ -4,6 +4,10 @@ import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.DoubleNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.ResourceLocationException;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -25,6 +29,16 @@ public final class AttributeBenefit extends Benefit{
         super("attribute", name, value);
 
         id = UUID.randomUUID();
+
+        modifier = new AttributeModifier(id, name + "_modifier_" + value, value, AttributeModifier.Operation.ADDITION);
+
+        isMaxHealth = name.equals("generic.max_health");
+    }
+
+    public AttributeBenefit(String name, double value, String uuid) {
+        super("attribute", name, value);
+
+        id = UUID.fromString(uuid);
 
         modifier = new AttributeModifier(id, name + "_modifier_" + value, value, AttributeModifier.Operation.ADDITION);
 
@@ -83,5 +97,33 @@ public final class AttributeBenefit extends Benefit{
         if (attribute == null || value == 0) {
             markInvalid();
         }
+    }
+
+    public CompoundNBT serializeNBT() {
+        CompoundNBT tag = new CompoundNBT();
+
+        StringNBT type = StringNBT.valueOf(benefitType);
+        StringNBT n = StringNBT.valueOf(name);
+        DoubleNBT v = DoubleNBT.valueOf(value);
+        StringNBT uuid = StringNBT.valueOf(id.toString());
+
+        tag.put("type", type);
+        tag.put("name", n);
+        tag.put("value", v);
+        tag.put("id", uuid);
+
+        return tag;
+    }
+
+    public static AttributeBenefit fromNBT(CompoundNBT tag) {
+        String type = tag.getString("type");
+        if (!type.equals("attribute")) {
+            throw new RuntimeException("Mismatching benefit type");
+        }
+        String n = tag.getString("name");
+        double v = tag.getDouble("value");
+        String uuid = tag.getString("id");
+
+        return new AttributeBenefit(n, v, uuid);
     }
 }

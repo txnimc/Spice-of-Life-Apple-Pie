@@ -2,9 +2,15 @@ package com.kevun1.solpotato.tracking.benefits;
 
 import com.kevun1.solpotato.SOLPotato;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.DoubleNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
+
+import java.util.Objects;
 
 public abstract class Benefit {
-    private final String benefitType;
+    protected final String benefitType;
     protected final String name;
     protected final double value;
     protected boolean invalid = false;
@@ -44,4 +50,6 @@ public abstract class Benefit {
     public double getValue() {
         return value;
     }
+
+    public abstract CompoundNBT serializeNBT();
 }

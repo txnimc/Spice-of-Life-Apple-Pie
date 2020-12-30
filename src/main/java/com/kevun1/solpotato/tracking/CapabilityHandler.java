@@ -4,6 +4,7 @@ import com.kevun1.solpotato.SOLPotato;
 import com.kevun1.solpotato.SOLPotatoConfig;
 import com.kevun1.solpotato.api.FoodCapability;
 import com.kevun1.solpotato.communication.FoodListMessage;
+import com.kevun1.solpotato.tracking.benefits.BenefitsHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -38,12 +39,6 @@ public final class CapabilityHandler {
 	}
 	
 	@SubscribeEvent
-	public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-		// server needs to send any loaded data to the client
-		syncFoodList(event.getPlayer());
-	}
-	
-	@SubscribeEvent
 	public static void onPlayerDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
 		syncFoodList(event.getPlayer());
 	}
@@ -58,6 +53,8 @@ public final class CapabilityHandler {
 		FoodList newInstance = FoodList.get(event.getPlayer());
 		newInstance.deserializeNBT(original.serializeNBT());
 		// can't sync yet; client hasn't attached capabilities yet
+
+		BenefitsHandler.updatePlayer(event.getPlayer());
 	}
 	
 	@SubscribeEvent

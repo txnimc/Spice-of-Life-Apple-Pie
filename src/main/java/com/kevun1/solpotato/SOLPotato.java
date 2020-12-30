@@ -2,6 +2,7 @@ package com.kevun1.solpotato;
 
 import com.kevun1.solpotato.client.ClientEvents;
 import com.kevun1.solpotato.client.SOLClientRegistry;
+import com.kevun1.solpotato.communication.ConfigMessage;
 import com.kevun1.solpotato.communication.FoodListMessage;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -45,6 +46,12 @@ public final class SOLPotato {
 			.decoder(FoodListMessage::new)
 			.consumer(FoodListMessage::handle)
 			.add();
+
+		channel.messageBuilder(ConfigMessage.class, 1)
+				.encoder(ConfigMessage::write)
+				.decoder(ConfigMessage::new)
+				.consumer(ConfigMessage::handle)
+				.add();
 	}
 
 	@SubscribeEvent

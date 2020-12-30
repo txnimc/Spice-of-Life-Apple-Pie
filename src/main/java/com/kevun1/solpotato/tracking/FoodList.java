@@ -1,9 +1,11 @@
 package com.kevun1.solpotato.tracking;
 
+import com.kevun1.solpotato.ConfigHandler;
 import com.kevun1.solpotato.SOLPotatoConfig;
 import com.kevun1.solpotato.api.FoodCapability;
 import com.kevun1.solpotato.api.SOLPotatoAPI;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
@@ -83,7 +85,7 @@ public final class FoodList implements FoodCapability {
 		if (uniqueFood == null)
 			return null;
 
-		return new Pair<>(uniqueFood, lastEaten);
+		return new ImmutablePair<>(uniqueFood, lastEaten);
 	}
 
 	/** used for persistent storage */
@@ -94,7 +96,7 @@ public final class FoodList implements FoodCapability {
 		uniqueFoods.clear();
 		list.stream()
 			.map(nbt-> (CompoundNBT) nbt)
-			.map(nbt -> new Pair<>(nbt.getString(NBT_KEY_UNIQUE_FOOD), nbt.getFloat(NBT_KEY_LAST_EATEN)))
+			.map(nbt -> new ImmutablePair<>(nbt.getString(NBT_KEY_UNIQUE_FOOD), nbt.getFloat(NBT_KEY_LAST_EATEN)))
 			.map(this::deserializeUniqueFood)
 			.filter(Objects::nonNull)
 			.forEach(pair -> uniqueFoods.put(pair.getKey(), pair.getValue()));
@@ -214,11 +216,11 @@ public final class FoodList implements FoodCapability {
 	}
 
 	private static double getComplexity(FoodInstance food) {
-		Map<FoodInstance, Double> complexityMap = SOLPotatoConfig.getComplexityMap();
-		if (!complexityMap.containsKey(food)) {
+		Map<FoodInstance, Double> complexityMap = ConfigHandler.complexityMap;
+		if (complexityMap == null || !complexityMap.containsKey(food)) {
 			return SOLPotatoConfig.defaultContribution();
 		}
-		return SOLPotatoConfig.getComplexityMap().get(food);
+		return ConfigHandler.complexityMap.get(food);
 	}
 
 	public Set<Map.Entry<FoodInstance, Integer>> getData() {

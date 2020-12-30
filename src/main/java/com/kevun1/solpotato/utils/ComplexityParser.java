@@ -52,6 +52,12 @@ public class ComplexityParser {
             }
 
             FoodInstance food = new FoodInstance(item);
+
+            if (food.encode() == null) {
+                SOLPotato.LOGGER.warn("Item does not exist: " + foodString);
+                continue;
+            }
+
             complexityMap.put(food, complexity);
         }
         return complexityMap;

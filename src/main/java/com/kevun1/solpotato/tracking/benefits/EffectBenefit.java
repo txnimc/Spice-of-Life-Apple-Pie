@@ -2,6 +2,9 @@ package com.kevun1.solpotato.tracking.benefits;
 
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.DoubleNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.ResourceLocationException;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -74,5 +77,31 @@ public final class EffectBenefit extends Benefit{
         if (value < 0 || value > 255) {
             markInvalid();
         }
+    }
+
+    @Override
+    public CompoundNBT serializeNBT() {
+        CompoundNBT tag = new CompoundNBT();
+
+        StringNBT type = StringNBT.valueOf(benefitType);
+        StringNBT n = StringNBT.valueOf(name);
+        DoubleNBT v = DoubleNBT.valueOf(value);
+
+        tag.put("type", type);
+        tag.put("name", n);
+        tag.put("value", v);
+
+        return tag;
+    }
+
+    public static EffectBenefit fromNBT(CompoundNBT tag) {
+        String type = tag.getString("type");
+        if (!type.equals("effect")) {
+            throw new RuntimeException("Mismatching benefit type");
+        }
+        String n = tag.getString("name");
+        double v = tag.getDouble("value");
+
+        return new EffectBenefit(n, v);
     }
 }

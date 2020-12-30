@@ -72,19 +72,6 @@ public final class SOLPotatoConfig {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onServerStart(FMLServerStartingEvent event) {
-		/* Very dangerous: If SERVER.benefitsList gets changed without calling BenefitsHandler#removeAllBenefits
-		on all players, players will get stuck with a modified attribute forever, since attribute modifiers are
-		created with a temporary UUID. removeAllBenefits is called whenever a player logs out, and the only instance
-		of updating benefitsList is here, which only gets called on server load. Thus, everything is fine as long
-		as parsing only takes place here.
-		However, there should be a safer way to handle attribute modifiers.
-		 */
-		SERVER.setBenefitsList(BenefitsParser.parse(getBenefitsUnparsed()));
-		SERVER.complexityMap = ComplexityParser.parse(getComplexityUnparsed());
-	}
-
 	public static List<String> getBlacklist() {
 		return new ArrayList<>(SERVER.blacklist.get());
 	}
@@ -96,10 +83,6 @@ public final class SOLPotatoConfig {
 	public static List<String> getBenefitsUnparsed() { return new ArrayList<>(SERVER.benefitsUnparsed.get()); }
 
 	public static List<String> getComplexityUnparsed() {return new ArrayList<>(SERVER.complexityUnparsed.get());}
-
-	public static List<List<Benefit>> getBenefitsList() { return SERVER.benefitsList; }
-
-	public static Map<FoodInstance, Double> getComplexityMap() { return SERVER.complexityMap; }
 
 	public static List<Double> getThresholds() { return new ArrayList<>(SERVER.thresholds.get()); }
 
@@ -145,9 +128,6 @@ public final class SOLPotatoConfig {
 		public final ConfigValue<List<? extends Double>> thresholds;
 		public final ConfigValue<List<? extends String>> benefitsUnparsed;
 
-		public List<List<Benefit>> benefitsList;
-		public Map<FoodInstance, Double> complexityMap;
-
 		public final DoubleValue minContribution;
 		public final DoubleValue defaultContribution;
 		public final IntValue endDecay;
@@ -156,15 +136,6 @@ public final class SOLPotatoConfig {
 		public final BooleanValue shouldForbiddenCount;
 
 		public final ConfigValue<List<? extends String>> complexityUnparsed;
-
-		public void setBenefitsList(List<List<Benefit>> benefitsList) {
-			// Can only set benefits list once for safety. Thus, to reset the config, you have to completely
-			// restart the client. Probably unnecessary, but wanted to be extra safe.
-			if (this.benefitsList != null) {
-				return;
-			}
-			this.benefitsList = benefitsList;
-		}
 
 		Server(Builder builder) {
 			builder.push("Benefits");
