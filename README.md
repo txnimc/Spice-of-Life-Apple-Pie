@@ -37,11 +37,11 @@ The ceiling for maxing out your diversity is very high (and can be configured to
 
 This mod also features 3 commands:
 
-- /foodlist diversity  
+- /solpotato diversity  
     Tells you your current diversity score. The score is easily accessed with the Food Book, but this offers another convenient way to do it.
-- /foodlist clear  
+- /solpotato clear  
     Clears the stored list of foods a player has eaten and resets their benefits. This is useful for testing when editing the config or when you want to start over.
-- /foodlist sync  
+- /solpotato sync  
     Forces a sync of the food list to the client, for when something went wrong and it's mismatched.
 
 ### FAQs
