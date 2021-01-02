@@ -1,11 +1,11 @@
 {
 	"tooltip.solpotato.disabled": "This food does not contribute to food diversity.",
 	
-	"command.solpotato.foodlist.no_permissions": "You do not have the permissions necessary to apply this command to other players!",
+	"command.solpotato.solpotato.no_permissions": "You do not have the permissions necessary to apply this command to other players!",
 
-	"command.solpotato.foodlist.clear.success": "Food list reset!",
-	"command.solpotato.foodlist.diversity_feedback": "Food Diversity: %.2f",
-	"command.solpotato.foodlist.sync.success": "Food list synchronized!",
+	"command.solpotato.solpotato.clear.success": "Food list reset!",
+	"command.solpotato.solpotato.diversity_feedback": "Food Diversity: %.2f",
+	"command.solpotato.solpotato.sync.success": "Food list synchronized!",
 
 	"item.solpotato.food_book": "Food Book",
 	"item.solpotato.lunchbox": "Lunchbox",

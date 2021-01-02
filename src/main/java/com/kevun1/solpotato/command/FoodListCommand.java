@@ -25,7 +25,7 @@ import static net.minecraft.command.Commands.literal;
 
 @Mod.EventBusSubscriber(modid = SOLPotato.MOD_ID)
 public final class FoodListCommand {
-	private static final String name = "foodlist";
+	private static final String name = "solpotato";
 	
 	@SubscribeEvent
 	public static void register(RegisterCommandsEvent event) {
