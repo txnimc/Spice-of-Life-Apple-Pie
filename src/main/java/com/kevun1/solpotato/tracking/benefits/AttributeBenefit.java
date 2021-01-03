@@ -1,17 +1,19 @@
 package com.kevun1.solpotato.tracking.benefits;
 
+import com.kevun1.solpotato.ConfigHandler;
+import com.kevun1.solpotato.SOLPotato;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.DoubleNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.ResourceLocationException;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
+import sun.security.krb5.Config;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -55,10 +57,9 @@ public final class AttributeBenefit extends Benefit{
         attr.removeModifier(modifier);
         attr.applyPersistentModifier(modifier);
 
-        // update health immediately
-        if (isMaxHealth) {
+        if (isMaxHealth && !ConfigHandler.isFirstAid) {
+            // increase current health proportionally
             float newHealth = player.getHealth() * player.getMaxHealth() / oldMax;
-            player.setHealth(1.0f);
             player.setHealth(newHealth);
         }
     }

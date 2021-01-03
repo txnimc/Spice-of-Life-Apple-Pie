@@ -12,6 +12,7 @@ import net.minecraft.nbt.*;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -33,6 +34,8 @@ public class ConfigHandler {
     public final static String FOOD_KEY = "food";
     public final static String COMPLEXITY_VALUE_KEY = "complexity";
     public final static String ENTRY_KEY = "entries";
+
+    public static boolean isFirstAid = false;
 
     public static CompoundNBT serializeComplexityMap() {
         CompoundNBT tag = new CompoundNBT();
@@ -105,6 +108,8 @@ public class ConfigHandler {
         thresholds = SOLPotatoConfig.getThresholds();
         List<List<Benefit>> benefits = BenefitsParser.parse(SOLPotatoConfig.getBenefitsUnparsed());
         benefitsList = new BenefitList(benefits);
+
+        isFirstAid = ModList.get().isLoaded("firstaid");
     }
 
     @SubscribeEvent
