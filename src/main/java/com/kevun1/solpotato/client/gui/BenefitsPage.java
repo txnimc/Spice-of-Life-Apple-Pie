@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.potion.Effect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.ResourceLocationException;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
@@ -82,13 +83,13 @@ public class BenefitsPage extends Page {
 
     private String getAttributeName(String name){
         Attribute attribute;
-        IForgeRegistry<Attribute> registry = ForgeRegistries.ATTRIBUTES;
         try {
-            attribute = registry.getValue(new ResourceLocation(name));
+            attribute = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(name));
         }
         catch (ResourceLocationException e) {
             return "Invalid: " + name;
         }
+
         if (attribute == null) {
             return "Invalid: " + name;
         }
@@ -105,6 +106,7 @@ public class BenefitsPage extends Page {
         catch (ResourceLocationException e) {
             return "Invalid: " + name;
         }
+
         if (effect == null) {
             return "Invalid: " + name;
         }

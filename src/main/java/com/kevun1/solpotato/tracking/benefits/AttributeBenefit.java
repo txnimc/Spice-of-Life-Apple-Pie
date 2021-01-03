@@ -6,13 +6,17 @@ import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.DoubleNBT;
 import net.minecraft.nbt.StringNBT;
+import net.minecraft.potion.Effect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.ResourceLocationException;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryManager;
 import sun.security.krb5.Config;
 
 import java.util.Objects;
@@ -53,9 +57,15 @@ public final class AttributeBenefit extends Benefit{
 
         float oldMax = player.getMaxHealth();
 
-        ModifiableAttributeInstance attr = Objects.requireNonNull(player.getAttribute(attribute));
-        attr.removeModifier(modifier);
-        attr.applyPersistentModifier(modifier);
+        try {
+            ModifiableAttributeInstance attr = Objects.requireNonNull(player.getAttribute(attribute));
+            attr.removeModifier(modifier);
+            attr.applyPersistentModifier(modifier);
+        }
+        catch (NullPointerException e) {
+            SOLPotato.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getRegistryName());
+            return;
+        }
 
         if (isMaxHealth && !ConfigHandler.isFirstAid) {
             // increase current health proportionally
@@ -86,9 +96,8 @@ public final class AttributeBenefit extends Benefit{
     }
 
     private void createAttribute() {
-        IForgeRegistry<Attribute> registry = ForgeRegistries.ATTRIBUTES;
         try {
-            attribute = registry.getValue(new ResourceLocation(name));
+            attribute = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(name));
         }
         catch (ResourceLocationException e) {
             markInvalid();

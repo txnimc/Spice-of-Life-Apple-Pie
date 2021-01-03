@@ -7,6 +7,7 @@ import net.minecraft.nbt.DoubleNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.ResourceLocationException;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
@@ -72,6 +73,7 @@ public final class EffectBenefit extends Benefit{
 
         if (effect == null) {
             markInvalid();
+            return;
         }
 
         if (value < 0 || value > 255) {

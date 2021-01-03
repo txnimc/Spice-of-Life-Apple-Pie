@@ -2,6 +2,8 @@ package com.kevun1.solpotato.item;
 
 import com.kevun1.solpotato.SOLPotato;
 import com.kevun1.solpotato.item.foodcontainer.FoodContainerItem;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
