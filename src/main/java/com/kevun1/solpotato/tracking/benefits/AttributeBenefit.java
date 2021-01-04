@@ -17,6 +17,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
+import org.apache.commons.lang3.ObjectUtils;
 import sun.security.krb5.Config;
 
 import java.util.Objects;
@@ -57,15 +58,17 @@ public final class AttributeBenefit extends Benefit{
 
         float oldMax = player.getMaxHealth();
 
+        ModifiableAttributeInstance attr;
         try {
-            ModifiableAttributeInstance attr = Objects.requireNonNull(player.getAttribute(attribute));
-            attr.removeModifier(modifier);
-            attr.applyPersistentModifier(modifier);
+            attr = Objects.requireNonNull(player.getAttribute(attribute));
         }
         catch (NullPointerException e) {
             SOLPotato.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getRegistryName());
             return;
         }
+
+        attr.removeModifier(modifier);
+        attr.applyPersistentModifier(modifier);
 
         if (isMaxHealth && !ConfigHandler.isFirstAid) {
             // increase current health proportionally
@@ -78,7 +81,14 @@ public final class AttributeBenefit extends Benefit{
         if (!checkUsage() || player.world.isRemote)
             return;
 
-        ModifiableAttributeInstance attr = Objects.requireNonNull(player.getAttribute(attribute));
+        ModifiableAttributeInstance attr;
+        try {
+            attr = Objects.requireNonNull(player.getAttribute(attribute));
+        }
+        catch (NullPointerException e) {
+            SOLPotato.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getRegistryName());
+            return;
+        }
         attr.removeModifier(modifier);
     }
 
