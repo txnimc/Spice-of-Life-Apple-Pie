@@ -1,7 +1,7 @@
 <p align="center">
 	<img width=256px src="GitHub/logo.png" />
 </p>
-A mod designed to encourage dietary variety! This project is a fork of Spice of Life: Carrot Edition, and has the same goal of rewarding the player for eating a variety of food. However, there are two main differences: 
+A mod designed to encourage dietary variety! This project is a fork of Spice of Life: Carrot Edition, and has the same goal of rewarding the player for eating a variety of food. However, there are two main differences:  
 
 
 1. Rather than permanently giving the player max health when they eat a new food, this mod gives variable benefits depending on how diverse the player's *current* diet is. So if the player receives benefits for eating a bunch of new foods, they have to **maintain** that level of diversity to keep those benefits. This is to encourage automation of a variety of food production systems, rather than encouraging the player to eat each food once. 
@@ -50,6 +50,8 @@ This mod also features 3 commands:
   - There are no plans for anything other than 1.16 Forge at the moment.
 - How do I make custom benefits?
   - Read the config, then read the wiki if you are still unsure.
+- Where is the server config located?
+  - In newer versions of Forge (post MC 1.12), server configs are generated per world in `saves/[world name]/serverconfig`. They are NOT in the regular `config` folder, which only contains client configs.
 - Is it possible to have penalties for low diversity, in addition to benefits for high diversity?
   - There is no built in support for penalties, but yes, the config is powerful enough to make benefits into penalties. You can make benefits with negative attribute modifiers or negative potion effects that act as penalties. The philosophy of the mod is still in line with Carrot edition, though, meaning that food diversity should be encouraged with benefits, not punishments.
 - Help! Something isn't working!
