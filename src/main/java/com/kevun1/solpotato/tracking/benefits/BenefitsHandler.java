@@ -23,9 +23,6 @@ import java.util.*;
  */
 @Mod.EventBusSubscriber(modid = SOLPotato.MOD_ID)
 public class BenefitsHandler {
-    public static Set<EffectBenefit> effectBenefits = new HashSet<>();
-
-
     @SubscribeEvent
     public static void tickBenefits(LivingEvent.LivingUpdateEvent event) {
         if (!checkEvent(event)) {
@@ -34,6 +31,7 @@ public class BenefitsHandler {
 
         PlayerEntity player = (PlayerEntity) event.getEntity();
 
+        EffectBenefitsCapability effectBenefits = EffectBenefitsCapability.get(player);
         effectBenefits.forEach(b -> b.onTick(player));
     }
 
@@ -42,9 +40,15 @@ public class BenefitsHandler {
             return;
         }
 
+        FoodList foodList = FoodList.get(player);
+        if (foodList.getFoodsEaten() < SOLPotatoConfig.minFoodsToActivate()) {
+            return;
+        }
+
         List<List<Benefit>> benefitsList = ConfigHandler.getBenefitsList();
         List<Double> thresholds = ConfigHandler.thresholds;
 
+        EffectBenefitsCapability effectBenefits = EffectBenefitsCapability.get(player);
         effectBenefits.clear();
 
         for (int i = 0; i < thresholds.size(); i++) {
@@ -52,7 +56,6 @@ public class BenefitsHandler {
             if (i >= benefitsList.size()) {
                 return;
             }
-            benefitsList.get(i).forEach(System.out::println);
             if (diversity >= thresh) {
                 benefitsList.get(i).forEach(b -> b.applyTo(player));
             }
@@ -114,10 +117,14 @@ public class BenefitsHandler {
         return !SOLPotatoConfig.limitProgressionToSurvival() || isInSurvival;
     }
 
-    public static Pair<List<BenefitInfo>, List<BenefitInfo>> getBenefitInfo(double active_threshold) {
+    public static Pair<List<BenefitInfo>, List<BenefitInfo>> getBenefitInfo(double active_threshold, int foodEaten) {
         // Can be called on client
         List<BenefitInfo> activeBenefitInfo = new ArrayList<>();
         List<BenefitInfo> inactiveBenefitInfo = new ArrayList<>();
+
+        if (foodEaten < SOLPotatoConfig.minFoodsToActivate()) {
+            active_threshold = -1;
+        }
 
         List<List<Benefit>> benefitsList = ConfigHandler.getBenefitsList();
         List<Double> thresholds = ConfigHandler.thresholds;

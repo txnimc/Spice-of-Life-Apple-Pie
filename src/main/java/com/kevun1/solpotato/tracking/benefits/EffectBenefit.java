@@ -29,8 +29,8 @@ public final class EffectBenefit extends Benefit{
         if (!checkUsage() || player.world.isRemote)
             return;
 
-        BenefitsHandler.effectBenefits.removeIf(b -> b.getName().equals(name));
-        BenefitsHandler.effectBenefits.add(this);
+        EffectBenefitsCapability effectBenefits = EffectBenefitsCapability.get(player);
+        effectBenefits.addEffectBenefitUnique(this);
     }
 
     public void onTick(PlayerEntity player) {
@@ -51,7 +51,8 @@ public final class EffectBenefit extends Benefit{
         if (!checkUsage() || player.world.isRemote)
             return;
 
-        BenefitsHandler.effectBenefits.remove(this);
+        EffectBenefitsCapability effectBenefits = EffectBenefitsCapability.get(player);
+        effectBenefits.removeEffectBenefit(this);
     }
 
     private boolean checkUsage() {

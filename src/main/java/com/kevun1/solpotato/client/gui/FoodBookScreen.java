@@ -106,14 +106,15 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 		pages.clear();
 
 		double foodDiversity = FoodList.foodDiversity(foodData);
-		pages.add(new DiversityPage(foodDiversity, background.frame));
+		int foodEaten = FoodList.get(player).getFoodsEaten();
+		pages.add(new DiversityPage(foodDiversity, foodEaten, background.frame));
 
 		List<Map.Entry<FoodInstance, Integer>> dataList = new ArrayList<>(foodData);
 		dataList.sort(Map.Entry.comparingByValue());
 		List<Item> foods = dataList.stream().map(Map.Entry::getKey).map(FoodInstance::getItem).collect(Collectors.toList());
 		addPages("food_queue_label", foods);
 
-		Pair<List<BenefitInfo>, List<BenefitInfo>> benefits = BenefitsHandler.getBenefitInfo(foodDiversity);
+		Pair<List<BenefitInfo>, List<BenefitInfo>> benefits = BenefitsHandler.getBenefitInfo(foodDiversity, foodEaten);
 		List<BenefitInfo> activeBenefits = benefits.getKey();
 		List<BenefitInfo> inactiveBenefits = benefits.getValue();
 		

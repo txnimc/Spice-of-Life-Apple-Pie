@@ -5,10 +5,13 @@ import com.kevun1.solpotato.SOLPotatoConfig;
 import com.kevun1.solpotato.api.FoodCapability;
 import com.kevun1.solpotato.communication.FoodListMessage;
 import com.kevun1.solpotato.tracking.benefits.BenefitsHandler;
+import com.kevun1.solpotato.tracking.benefits.EffectBenefitsCapability;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -22,12 +25,17 @@ import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 @Mod.EventBusSubscriber(modid = SOLPotato.MOD_ID)
 public final class CapabilityHandler {
 	private static final ResourceLocation FOOD = SOLPotato.resourceLocation("food");
+	private static final ResourceLocation EFFECT_BENEFITS = SOLPotato.resourceLocation("effect_benefits");
+	@CapabilityInject(EffectBenefitsCapability.class)
+	public static Capability<EffectBenefitsCapability> effectBenefitsCapability;
 	
 	@Mod.EventBusSubscriber(modid = SOLPotato.MOD_ID, bus = MOD)
 	private static final class Setup {
 		@SubscribeEvent
 		public static void setUp(FMLCommonSetupEvent event) {
 			CapabilityManager.INSTANCE.register(FoodCapability.class, new FoodList.Storage(), FoodList::new);
+			CapabilityManager.INSTANCE.register(EffectBenefitsCapability.class,
+					new EffectBenefitsCapability.Storage(), EffectBenefitsCapability::new);
 		}
 	}
 	
@@ -36,6 +44,7 @@ public final class CapabilityHandler {
 		if (!(event.getObject() instanceof PlayerEntity)) return;
 		
 		event.addCapability(FOOD, new FoodList());
+		event.addCapability(EFFECT_BENEFITS, new EffectBenefitsCapability());
 	}
 	
 	@SubscribeEvent

@@ -115,6 +115,10 @@ public final class SOLPotatoConfig {
 	public static Double defaultContribution() {
 		return SERVER.defaultContribution.get();
 	}
+
+	public static Integer minFoodsToActivate() {
+		return SERVER.minFoodsToActivate.get();
+	}
 	
 	public static class Server {
 		public final ConfigValue<List<? extends String>> blacklist;
@@ -127,6 +131,7 @@ public final class SOLPotatoConfig {
 
 		public final ConfigValue<List<? extends Double>> thresholds;
 		public final ConfigValue<List<? extends String>> benefitsUnparsed;
+		public final IntValue minFoodsToActivate;
 
 		public final DoubleValue minContribution;
 		public final DoubleValue defaultContribution;
@@ -178,6 +183,12 @@ public final class SOLPotatoConfig {
 							"attribute,generic.max_health,4",
 							"attribute,generic.max_health,6"),
 							e -> e instanceof String);
+
+			minFoodsToActivate = builder
+					.translation(localizationPath("min_foods_to_activate"))
+					.comment(" The minimum number of foods a player needs to eat before any benefits are applied.\n"
+							 +"\n")
+					.defineInRange("minFoodsToActivate", 0, 0, 1000);
 
 			builder.pop();
 			builder.push("Filtering");

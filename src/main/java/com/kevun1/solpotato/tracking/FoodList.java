@@ -24,12 +24,15 @@ public final class FoodList implements FoodCapability {
 	private static final String NBT_KEY_FOOD_LIST = "foodList";
 	private static final String NBT_KEY_UNIQUE_FOOD = "food";
 	private static final String NBT_KEY_LAST_EATEN = "lastEaten";
+	private static final String NBT_KEY_FOODS_EATEN = "foodsEaten";
 	
 	public static FoodList get(PlayerEntity player) {
 		return (FoodList) player.getCapability(SOLPotatoAPI.foodCapability)
 			.orElseThrow(FoodListNotFoundException::new);
 	}
 
+	private static final int MAX_FOODS_EATEN = 1000;
+	private int foodsEaten = 0;
 	// Keys - foods eaten, Values - lastEaten, i.e. # meals ago the food was last eaten
 	private final Map<FoodInstance, Integer> uniqueFoods = new HashMap<>();
 	
@@ -73,6 +76,7 @@ public final class FoodList implements FoodCapability {
 			.filter(Objects::nonNull)
 			.forEach(list::add);
 		tag.put(NBT_KEY_FOOD_LIST, list);
+		tag.put(NBT_KEY_FOODS_EATEN, IntNBT.valueOf(foodsEaten));
 
 		return tag;
 	}
@@ -100,11 +104,16 @@ public final class FoodList implements FoodCapability {
 			.map(this::deserializeUniqueFood)
 			.filter(Objects::nonNull)
 			.forEach(pair -> uniqueFoods.put(pair.getKey(), pair.getValue()));
+		foodsEaten = tag.getInt(NBT_KEY_FOODS_EATEN);
 	}
 
 	public void addFood(Item food, Map<FoodInstance, Integer> foodMap) {
 		if (!SOLPotatoConfig.shouldCount(food) && !SOLPotatoConfig.shouldForbiddenCount()) {
 			return;
+		}
+
+		if (foodsEaten < MAX_FOODS_EATEN) {
+			foodsEaten++;
 		}
 
 		ArrayList<FoodInstance> toRemove = new ArrayList<>();
@@ -247,6 +256,14 @@ public final class FoodList implements FoodCapability {
 	
 	public Set<FoodInstance> getEatenFoods() {
 		return uniqueFoods.keySet();
+	}
+
+	public int getFoodsEaten() {
+		return foodsEaten;
+	}
+
+	public void resetFoodsEaten() {
+		foodsEaten = 0;
 	}
 
 	public static final class Storage implements Capability.IStorage<FoodCapability> {
