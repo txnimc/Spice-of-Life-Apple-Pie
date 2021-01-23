@@ -50,6 +50,8 @@ This mod also features 3 commands:
   - There are no plans for anything other than 1.16 Forge at the moment.
 - How do I make custom benefits?
   - Read the config, then read the wiki if you are still unsure.
+- Where is the server config located?
+  - In newer versions of Forge (post MC 1.12), server configs are generated per world in `saves/[world name]/serverconfig`. They are NOT in the regular `config` folder, which only contains client configs.
 - Is it possible to have penalties for low diversity, in addition to benefits for high diversity?
   - There is no built in support for penalties, but yes, the config is powerful enough to make benefits into penalties. You can make benefits with negative attribute modifiers or negative potion effects that act as penalties. The philosophy of the mod is still in line with Carrot edition, though, meaning that food diversity should be encouraged with benefits, not punishments.
 - Help! Something isn't working!
