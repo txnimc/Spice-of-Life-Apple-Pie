@@ -19,6 +19,13 @@ public class FoodContainerScreen extends ContainerScreen<FoodContainer> {
     }
 
     @Override
+    public void render(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(ms);
+        super.render(ms, mouseX, mouseY, partialTicks);
+        this.renderHoveredTooltip(ms, mouseX, mouseY);
+    }
+
+    @Override
     protected void drawGuiContainerBackgroundLayer(MatrixStack matrices, float partialTicks, int x, int y) {
         this.drawBackground(matrices, new ResourceLocation(SOLPotato.MOD_ID, "textures/gui/inventory.png"));
         this.container.containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {

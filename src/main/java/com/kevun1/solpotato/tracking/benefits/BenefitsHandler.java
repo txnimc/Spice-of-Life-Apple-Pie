@@ -34,7 +34,7 @@ public class BenefitsHandler {
 
         PlayerEntity player = (PlayerEntity) event.getEntity();
 
-        effectBenefits.forEach(b -> b.applyTo(player));
+        effectBenefits.forEach(b -> b.onTick(player));
     }
 
     public static void updateBenefits(PlayerEntity player, double diversity) {
@@ -45,11 +45,14 @@ public class BenefitsHandler {
         List<List<Benefit>> benefitsList = ConfigHandler.getBenefitsList();
         List<Double> thresholds = ConfigHandler.thresholds;
 
+        effectBenefits.clear();
+
         for (int i = 0; i < thresholds.size(); i++) {
             double thresh = thresholds.get(i);
             if (i >= benefitsList.size()) {
                 return;
             }
+            benefitsList.get(i).forEach(System.out::println);
             if (diversity >= thresh) {
                 benefitsList.get(i).forEach(b -> b.applyTo(player));
             }

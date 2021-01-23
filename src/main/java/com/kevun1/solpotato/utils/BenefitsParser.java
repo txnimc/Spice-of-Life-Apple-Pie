@@ -12,6 +12,7 @@ public class BenefitsParser {
     public static List<List<Benefit>> parse(List<String> unparsed) {
         List<List<Benefit>> allBenefits = new ArrayList<>();
 
+        int thresh = 0;
         for (String s : unparsed) {
             String[] thresholdBenefitsString = s.split(";", 0);
             List<Benefit> thresholdBenefits = new ArrayList<>();
@@ -45,13 +46,14 @@ public class BenefitsParser {
                 }
 
                 if (benefitType.equals("attribute")) {
-                    thresholdBenefits.add(new AttributeBenefit(benefitName, benefitValue));
+                    thresholdBenefits.add(new AttributeBenefit(benefitName, benefitValue, thresh));
                 }
                 else if (benefitType.equals("effect")) {
-                    thresholdBenefits.add(new EffectBenefit(benefitName, benefitValue));
+                    thresholdBenefits.add(new EffectBenefit(benefitName, benefitValue, thresh));
                 }
             }
             allBenefits.add(thresholdBenefits);
+            thresh++;
         }
 
         return allBenefits;

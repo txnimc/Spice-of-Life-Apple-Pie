@@ -6,19 +6,13 @@ import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.DoubleNBT;
 import net.minecraft.nbt.StringNBT;
-import net.minecraft.potion.Effect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.ResourceLocationException;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryManager;
-import org.apache.commons.lang3.ObjectUtils;
-import sun.security.krb5.Config;
+
 
 import java.util.Objects;
 import java.util.UUID;
@@ -32,8 +26,8 @@ public final class AttributeBenefit extends Benefit{
     private Attribute attribute;
     private final boolean isMaxHealth;
 
-    public AttributeBenefit(String name, double value) {
-        super("attribute", name, value);
+    public AttributeBenefit(String name, double value, double threshold) {
+        super("attribute", name, value, threshold);
 
         id = UUID.randomUUID();
 
@@ -42,8 +36,8 @@ public final class AttributeBenefit extends Benefit{
         isMaxHealth = name.equals("generic.max_health");
     }
 
-    public AttributeBenefit(String name, double value, String uuid) {
-        super("attribute", name, value);
+    public AttributeBenefit(String name, double value, double threshold, String uuid) {
+        super("attribute", name, value, threshold);
 
         id = UUID.fromString(uuid);
 
@@ -126,11 +120,13 @@ public final class AttributeBenefit extends Benefit{
         StringNBT n = StringNBT.valueOf(name);
         DoubleNBT v = DoubleNBT.valueOf(value);
         StringNBT uuid = StringNBT.valueOf(id.toString());
+        DoubleNBT thresh = DoubleNBT.valueOf(threshold);
 
         tag.put("type", type);
         tag.put("name", n);
         tag.put("value", v);
         tag.put("id", uuid);
+        tag.put("threshold", thresh);
 
         return tag;
     }
@@ -143,7 +139,8 @@ public final class AttributeBenefit extends Benefit{
         String n = tag.getString("name");
         double v = tag.getDouble("value");
         String uuid = tag.getString("id");
+        double thresh = tag.getDouble("threshold");
 
-        return new AttributeBenefit(n, v, uuid);
+        return new AttributeBenefit(n, v, thresh, uuid);
     }
 }

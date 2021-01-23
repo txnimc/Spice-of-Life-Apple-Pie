@@ -2,8 +2,6 @@ package com.kevun1.solpotato.item;
 
 import com.kevun1.solpotato.SOLPotato;
 import com.kevun1.solpotato.item.foodcontainer.FoodContainerItem;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,7 +13,6 @@ import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 
 @Mod.EventBusSubscriber(modid = SOLPotato.MOD_ID, bus = MOD)
 public final class SOLPotatoItems {
-	//public static FoodContainerItem container;
 
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {

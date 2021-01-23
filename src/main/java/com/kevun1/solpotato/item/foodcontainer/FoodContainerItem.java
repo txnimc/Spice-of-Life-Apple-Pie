@@ -107,10 +107,20 @@ public class FoodContainerItem extends Item {
         if (bestFoodSlot < 0) {
             return stack;
         }
+
         ItemStack bestFood = handler.getStackInSlot(bestFoodSlot);
         if (bestFood.isFood() && !bestFood.isEmpty()) {
-            entity.onFoodEaten(world, bestFood.copy());
-            handler.extractItem(bestFoodSlot, 1, false);
+            ItemStack result = bestFood.onItemUseFinish(world, entity);
+            // put bowls/bottles etc. into player inventory
+            if (!result.isFood()) {
+                handler.setStackInSlot(bestFoodSlot, ItemStack.EMPTY);
+                PlayerEntity playerEntity = (PlayerEntity) entity;
+
+                if (!playerEntity.inventory.addItemStackToInventory(result)) {
+                    playerEntity.dropItem(result, false);
+                }
+            }
+
             if (!world.isRemote) {
                 FoodTracker.updateFoodList(bestFood.getItem(), player);
             }

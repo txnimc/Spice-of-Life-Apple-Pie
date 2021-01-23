@@ -7,7 +7,6 @@ import net.minecraft.nbt.DoubleNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.ResourceLocationException;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
@@ -22,23 +21,30 @@ public final class EffectBenefit extends Benefit{
     private final int DEFAULT_DURATION = 300;
     private final int REAPPLY_DURATION = 200;
 
-    public EffectBenefit(String name, double value) {
-        super("effect", name, value);
+    public EffectBenefit(String name, double value, double threshold) {
+        super("effect", name, value, threshold);
     }
 
     public void applyTo(PlayerEntity player) {
         if (!checkUsage() || player.world.isRemote)
             return;
 
+        BenefitsHandler.effectBenefits.removeIf(b -> b.getName().equals(name));
+        BenefitsHandler.effectBenefits.add(this);
+    }
+
+    public void onTick(PlayerEntity player) {
+        if (!checkUsage() || player.world.isRemote)
+            return;
+
         // Only refresh this effect when less than REAPPLY_DURATION ticks remaining
-        EffectInstance current_effect = player.getActivePotionEffect(effect);
-        if (current_effect != null && current_effect.getAmplifier() >= (int) value
-                && current_effect.getDuration() > REAPPLY_DURATION) {
+        EffectInstance currentEffect = player.getActivePotionEffect(effect);
+        if (currentEffect != null && currentEffect.getAmplifier() >= (int) value
+                && currentEffect.getDuration() > REAPPLY_DURATION) {
             return;
         }
 
         player.addPotionEffect(new EffectInstance(effect, DEFAULT_DURATION, (int) value, false, false));
-        BenefitsHandler.effectBenefits.add(this);
     }
 
     public void removeFrom(PlayerEntity player) {
@@ -88,10 +94,12 @@ public final class EffectBenefit extends Benefit{
         StringNBT type = StringNBT.valueOf(benefitType);
         StringNBT n = StringNBT.valueOf(name);
         DoubleNBT v = DoubleNBT.valueOf(value);
+        DoubleNBT thresh = DoubleNBT.valueOf(threshold);
 
         tag.put("type", type);
         tag.put("name", n);
         tag.put("value", v);
+        tag.put("threshold", thresh);
 
         return tag;
     }
@@ -103,7 +111,8 @@ public final class EffectBenefit extends Benefit{
         }
         String n = tag.getString("name");
         double v = tag.getDouble("value");
+        double thresh = tag.getDouble("threshold");
 
-        return new EffectBenefit(n, v);
+        return new EffectBenefit(n, v, thresh);
     }
 }

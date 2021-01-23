@@ -1,6 +1,5 @@
 package com.kevun1.solpotato;
 
-import com.kevun1.solpotato.client.ClientEvents;
 import com.kevun1.solpotato.client.SOLClientRegistry;
 import com.kevun1.solpotato.communication.ConfigMessage;
 import com.kevun1.solpotato.communication.FoodListMessage;
@@ -11,11 +10,8 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLFingerprintViolationEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
-import net.minecraftforge.registries.IRegistryDelegate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
