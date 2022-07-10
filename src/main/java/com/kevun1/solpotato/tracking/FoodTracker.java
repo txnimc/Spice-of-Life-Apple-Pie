@@ -3,14 +3,12 @@ package com.kevun1.solpotato.tracking;
 import com.kevun1.solpotato.SOLPotato;
 import com.kevun1.solpotato.item.foodcontainer.FoodContainerItem;
 import com.kevun1.solpotato.tracking.benefits.BenefitsHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static com.kevun1.solpotato.lib.Localization.localizedComponent;
 
 @Mod.EventBusSubscriber(modid = SOLPotato.MOD_ID)
 public final class FoodTracker {
@@ -21,16 +19,16 @@ public final class FoodTracker {
 			return;
 		}
 
-		PlayerEntity player = (PlayerEntity) event.getEntity();
+		Player player = (Player) event.getEntity();
 		
 		Item usedItem = event.getItem().getItem();
-		if (!usedItem.isFood()) return;
+		if (!usedItem.isEdible()) return;
 		if (usedItem instanceof FoodContainerItem) return;
 
 		updateFoodList(usedItem, player);
 	}
 
-	public static void updateFoodList(Item food, PlayerEntity player) {
+	public static void updateFoodList(Item food, Player player) {
 		FoodList foodList = FoodList.get(player);
 		foodList.addFood(food);
 

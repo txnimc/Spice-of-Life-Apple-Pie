@@ -5,9 +5,9 @@
  */
 package com.kevun1.solpotato.item.foodcontainer;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -17,7 +17,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class FoodContainerCapabilityProvider implements ICapabilitySerializable<CompoundNBT> {
+public class FoodContainerCapabilityProvider implements ICapabilitySerializable<CompoundTag> {
     private int slots;
     private final LazyOptional<ItemStackHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(slots) {
 
@@ -40,15 +40,15 @@ public class FoodContainerCapabilityProvider implements ICapabilitySerializable<
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
+    public CompoundTag serializeNBT() {
         if (inventory.isPresent()) {
             return inventory.resolve().get().serializeNBT();
         }
-        return new CompoundNBT();
+        return new CompoundTag();
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
+    public void deserializeNBT(CompoundTag nbt) {
         inventory.ifPresent(h -> h.deserializeNBT(nbt));
     }
 }

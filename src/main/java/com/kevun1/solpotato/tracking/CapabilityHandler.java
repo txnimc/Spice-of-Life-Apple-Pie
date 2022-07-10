@@ -6,19 +6,19 @@ import com.kevun1.solpotato.api.FoodCapability;
 import com.kevun1.solpotato.communication.FoodListMessage;
 import com.kevun1.solpotato.tracking.benefits.BenefitsHandler;
 import com.kevun1.solpotato.tracking.benefits.EffectBenefitsCapability;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.network.NetworkDirection;
 
 import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 
@@ -26,22 +26,20 @@ import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 public final class CapabilityHandler {
 	private static final ResourceLocation FOOD = SOLPotato.resourceLocation("food");
 	private static final ResourceLocation EFFECT_BENEFITS = SOLPotato.resourceLocation("effect_benefits");
-	@CapabilityInject(EffectBenefitsCapability.class)
-	public static Capability<EffectBenefitsCapability> effectBenefitsCapability;
+	public static Capability<EffectBenefitsCapability> effectBenefitsCapability = CapabilityManager.get(new CapabilityToken<>() {});
 	
 	@Mod.EventBusSubscriber(modid = SOLPotato.MOD_ID, bus = MOD)
-	private static final class Setup {
+	private static final class RegisterCapabilitiesSubscriber {
 		@SubscribeEvent
-		public static void setUp(FMLCommonSetupEvent event) {
-			CapabilityManager.INSTANCE.register(FoodCapability.class, new FoodList.Storage(), FoodList::new);
-			CapabilityManager.INSTANCE.register(EffectBenefitsCapability.class,
-					new EffectBenefitsCapability.Storage(), EffectBenefitsCapability::new);
+		public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+			event.register(FoodCapability.class);
+			event.register(EffectBenefitsCapability.class);
 		}
 	}
 	
 	@SubscribeEvent
 	public static void attachPlayerCapability(AttachCapabilitiesEvent<Entity> event) {
-		if (!(event.getObject() instanceof PlayerEntity)) return;
+		if (!(event.getObject() instanceof Player)) return;
 		
 		event.addCapability(FOOD, new FoodList());
 		event.addCapability(EFFECT_BENEFITS, new EffectBenefitsCapability());
@@ -56,7 +54,7 @@ public final class CapabilityHandler {
 	public static void onClone(PlayerEvent.Clone event) {
 		if (event.isWasDeath() && SOLPotatoConfig.shouldResetOnDeath()) return;
 		
-		PlayerEntity originalPlayer = event.getOriginal();
+		Player originalPlayer = event.getOriginal();
 		originalPlayer.revive(); // so we can access the capabilities; entity will get removed either way
 		FoodList original = FoodList.get(originalPlayer);
 		FoodList newInstance = FoodList.get(event.getPlayer());
@@ -71,13 +69,13 @@ public final class CapabilityHandler {
 		syncFoodList(event.getPlayer());
 	}
 	
-	public static void syncFoodList(PlayerEntity player) {
-		if (player.world.isRemote) return;
+	public static void syncFoodList(Player player) {
+		if (player.level.isClientSide) return;
 		
-		ServerPlayerEntity target = (ServerPlayerEntity) player;
+		ServerPlayer target = (ServerPlayer) player;
 		SOLPotato.channel.sendTo(
 			new FoodListMessage(FoodList.get(player)),
-			target.connection.getNetworkManager(),
+			target.connection.getConnection(),
 			NetworkDirection.PLAY_TO_CLIENT
 		);
 	}

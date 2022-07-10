@@ -1,6 +1,6 @@
 package com.kevun1.solpotato.item.foodcontainer;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -12,11 +12,11 @@ public class FoodSlot extends SlotItemHandler {
     }
 
     @Override
-    public boolean isItemValid(@Nonnull ItemStack stack)
+    public boolean mayPlace(@Nonnull ItemStack stack)
     {
-        if (!stack.isFood()) {
+        if (!stack.isEdible()) {
             return false;
         }
-        return super.isItemValid(stack);
+        return super.mayPlace(stack);
     }
 }

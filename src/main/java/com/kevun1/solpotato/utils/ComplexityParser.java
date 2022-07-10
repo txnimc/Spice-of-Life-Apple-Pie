@@ -2,10 +2,9 @@ package com.kevun1.solpotato.utils;
 
 import com.kevun1.solpotato.SOLPotato;
 import com.kevun1.solpotato.tracking.FoodInstance;
-import net.minecraft.item.Food;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.ResourceLocationException;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.ResourceLocationException;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
@@ -46,7 +45,7 @@ public class ComplexityParser {
                 continue;
             }
 
-            if (!item.isFood()) {
+            if (!item.isEdible()) {
                 SOLPotato.LOGGER.warn("Item is not food: " + foodString);
                 continue;
             }

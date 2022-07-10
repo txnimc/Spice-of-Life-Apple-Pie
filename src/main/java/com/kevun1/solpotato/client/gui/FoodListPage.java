@@ -3,7 +3,7 @@ package com.kevun1.solpotato.client.gui;
 import com.kevun1.solpotato.client.gui.elements.UIFoodQueueItem;
 import com.kevun1.solpotato.client.gui.elements.UIItemStack;
 import com.kevun1.solpotato.tracking.FoodInstance;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import java.awt.*;
 import java.util.ArrayList;

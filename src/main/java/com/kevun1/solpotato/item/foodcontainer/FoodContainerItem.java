@@ -2,16 +2,17 @@ package com.kevun1.solpotato.item.foodcontainer;
 
 import com.kevun1.solpotato.tracking.FoodList;
 import com.kevun1.solpotato.tracking.FoodTracker;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -22,45 +23,45 @@ public class FoodContainerItem extends Item {
     private int nslots;
 
     public FoodContainerItem(int nslots, String displayName) {
-        super(new Properties().group(ItemGroup.MISC).maxStackSize(1).setNoRepair());
+        super(new Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1).setNoRepair());
 
         this.displayName = displayName;
         this.nslots = nslots;
     }
 
     @Override
-    public boolean isFood() {
+    public boolean isEdible() {
         return true;
     }
 
     @Override
-    public Food getFood() {
-        return new Food.Builder().build();
+    public FoodProperties getFoodProperties() {
+        return new FoodProperties.Builder().build();
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        if (!world.isRemote && player.isCrouching()) {
-            NetworkHooks.openGui((ServerPlayerEntity) player, new FoodContainerProvider(displayName), player.getPosition());
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+        if (!world.isClientSide && player.isCrouching()) {
+            NetworkHooks.openGui((ServerPlayer) player, new FoodContainerProvider(displayName), player.blockPosition());
         }
 
         if (!player.isCrouching()) {
             return processRightClick(world, player, hand);
         }
-        return ActionResult.resultPass(player.getHeldItem(hand));
+        return InteractionResultHolder.pass(player.getItemInHand(hand));
     }
 
-    private ActionResult<ItemStack> processRightClick(World world, PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getHeldItem(hand);
+    private InteractionResultHolder<ItemStack> processRightClick(Level world, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
         if (isInventoryEmpty(stack)) {
-            return ActionResult.resultPass(stack);
+            return InteractionResultHolder.pass(stack);
         }
 
         if (player.canEat(false)) {
-            player.setActiveHand(hand);
-            return ActionResult.resultConsume(stack);
+            player.startUsingItem(hand);
+            return InteractionResultHolder.consume(stack);
         }
-        return ActionResult.resultFail(stack);
+        return InteractionResultHolder.fail(stack);
     }
 
     private static boolean isInventoryEmpty(ItemStack container) {
@@ -71,7 +72,7 @@ public class FoodContainerItem extends Item {
 
         for (int i = 0; i < handler.getSlots(); i++) {
             ItemStack stack = handler.getStackInSlot(i);
-            if (!stack.isEmpty() && stack.isFood()) {
+            if (!stack.isEmpty() && stack.isEdible()) {
                 return false;
             }
         }
@@ -80,7 +81,7 @@ public class FoodContainerItem extends Item {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new FoodContainerCapabilityProvider(stack, nslots);
     }
 
@@ -92,12 +93,12 @@ public class FoodContainerItem extends Item {
     }
 
     @Override
-    public ItemStack onItemUseFinish(ItemStack stack, World world, LivingEntity entity) {
-        if (!(entity instanceof PlayerEntity)) {
+    public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity entity) {
+        if (!(entity instanceof Player)) {
             return stack;
         }
 
-        PlayerEntity player = (PlayerEntity) entity;
+        Player player = (Player) entity;
         ItemStackHandler handler = getInventory(stack);
         if (handler == null) {
             return stack;
@@ -109,20 +110,21 @@ public class FoodContainerItem extends Item {
         }
 
         ItemStack bestFood = handler.getStackInSlot(bestFoodSlot);
-        if (bestFood.isFood() && !bestFood.isEmpty()) {
-            ItemStack result = bestFood.onItemUseFinish(world, entity);
+        if (bestFood.isEdible() && !bestFood.isEmpty()) {
+            Item bestFoodItem = bestFood.getItem();
+            ItemStack result = bestFood.finishUsingItem(world, entity);
             // put bowls/bottles etc. into player inventory
-            if (!result.isFood()) {
+            if (!result.isEdible()) {
                 handler.setStackInSlot(bestFoodSlot, ItemStack.EMPTY);
-                PlayerEntity playerEntity = (PlayerEntity) entity;
+                Player playerEntity = (Player) entity;
 
-                if (!playerEntity.inventory.addItemStackToInventory(result)) {
-                    playerEntity.dropItem(result, false);
+                if (!playerEntity.getInventory().add(result)) {
+                    playerEntity.drop(result, false);
                 }
             }
 
-            if (!world.isRemote) {
-                FoodTracker.updateFoodList(bestFood.getItem(), player);
+            if (!world.isClientSide) {
+                FoodTracker.updateFoodList(bestFoodItem, player);
             }
         }
 
@@ -134,7 +136,7 @@ public class FoodContainerItem extends Item {
         return 32;
     }
 
-    public static int getBestFoodSlot(ItemStackHandler handler, PlayerEntity player) {
+    public static int getBestFoodSlot(ItemStackHandler handler, Player player) {
         FoodList foodList = FoodList.get(player);
 
         double maxDiversity = -Double.MAX_VALUE;
@@ -142,7 +144,7 @@ public class FoodContainerItem extends Item {
         for (int i = 0; i < handler.getSlots(); i++) {
             ItemStack food = handler.getStackInSlot(i);
 
-            if (!food.isFood() || food.isEmpty())
+            if (!food.isEdible() || food.isEmpty())
                 continue;
             double diversityChange = foodList.simulateFoodAdd(food.getItem());
             if (diversityChange > maxDiversity) {

@@ -3,12 +3,12 @@ package com.kevun1.solpotato.client.gui;
 import com.kevun1.solpotato.client.gui.elements.UILabel;
 import com.kevun1.solpotato.tracking.benefits.BenefitInfo;
 import com.kevun1.solpotato.utils.RomanNumber;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.potion.Effect;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.ResourceLocationException;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.ResourceLocationException;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
@@ -94,12 +94,12 @@ public class BenefitsPage extends Page {
             return "Invalid: " + name;
         }
 
-        return I18n.format(attribute.getAttributeName());
+        return I18n.get(attribute.getDescriptionId());
     }
 
     private String getEffectName(String name) {
-        Effect effect;
-        IForgeRegistry<net.minecraft.potion.Effect> registry = RegistryManager.ACTIVE.getRegistry(ForgeRegistries.Keys.EFFECTS);
+        MobEffect effect;
+        IForgeRegistry<MobEffect> registry = RegistryManager.ACTIVE.getRegistry(Registry.MOB_EFFECT_REGISTRY);
         try {
             effect = registry.getValue(new ResourceLocation(name));
         }
@@ -111,6 +111,6 @@ public class BenefitsPage extends Page {
             return "Invalid: " + name;
         }
 
-        return I18n.format(effect.getDisplayName().getString());
+        return I18n.get(effect.getDisplayName().getString());
     }
 }

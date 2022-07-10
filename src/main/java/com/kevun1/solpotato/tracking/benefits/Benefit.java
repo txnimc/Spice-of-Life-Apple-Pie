@@ -1,8 +1,8 @@
 package com.kevun1.solpotato.tracking.benefits;
 
 import com.kevun1.solpotato.SOLPotato;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
 
 public abstract class Benefit {
     protected final String benefitType;
@@ -18,9 +18,9 @@ public abstract class Benefit {
         this.threshold = threshold;
     }
 
-    public abstract void applyTo(PlayerEntity player);
+    public abstract void applyTo(Player player);
 
-    public abstract void removeFrom(PlayerEntity player);
+    public abstract void removeFrom(Player player);
 
     public boolean isInvalid() {
         return invalid;
@@ -43,7 +43,7 @@ public abstract class Benefit {
         return value;
     }
 
-    public abstract CompoundNBT serializeNBT();
+    public abstract CompoundTag serializeNBT();
 
     @Override
     public String toString() {

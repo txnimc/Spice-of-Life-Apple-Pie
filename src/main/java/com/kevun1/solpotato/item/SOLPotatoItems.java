@@ -2,7 +2,7 @@ package com.kevun1.solpotato.item;
 
 import com.kevun1.solpotato.SOLPotato;
 import com.kevun1.solpotato.item.foodcontainer.FoodContainerItem;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

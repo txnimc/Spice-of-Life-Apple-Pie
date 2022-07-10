@@ -1,8 +1,8 @@
 package com.kevun1.solpotato.tracking;
 
 import com.kevun1.solpotato.SOLPotato;
-import net.minecraft.item.*;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -26,7 +26,7 @@ public final class FoodInstance {
 			return null;
 		}
 		
-		if (!item.isFood()) {
+		if (!item.isEdible()) {
 			SOLPotato.LOGGER.warn("attempting to load item into food list that is no longer edible: " + encoded + " (ignoring in case it becomes edible again later)");
 		}
 		

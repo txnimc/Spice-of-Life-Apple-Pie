@@ -7,10 +7,9 @@ import com.kevun1.solpotato.tracking.CapabilityHandler;
 import com.kevun1.solpotato.tracking.FoodList;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.world.GameType;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,14 +28,14 @@ public class BenefitsHandler {
             return;
         }
 
-        PlayerEntity player = (PlayerEntity) event.getEntity();
+        Player player = (Player) event.getEntity();
 
         EffectBenefitsCapability effectBenefits = EffectBenefitsCapability.get(player);
         effectBenefits.forEach(b -> b.onTick(player));
     }
 
-    public static void updateBenefits(PlayerEntity player, double diversity) {
-        if (player.getEntityWorld().isRemote) {
+    public static void updateBenefits(Player player, double diversity) {
+        if (player.getCommandSenderWorld().isClientSide) {
             return;
         }
 
@@ -76,7 +75,7 @@ public class BenefitsHandler {
         removeAllBenefits(event.getPlayer());
     }
 
-    public static void removeAllBenefits(PlayerEntity player) {
+    public static void removeAllBenefits(Player player) {
         List<List<Benefit>> benefitsList = ConfigHandler.getBenefitsList();
         benefitsList.forEach(bt -> bt.forEach(b -> b.removeFrom(player)));
     }
@@ -86,13 +85,13 @@ public class BenefitsHandler {
             return;
         }
 
-        PlayerEntity player = (PlayerEntity) event.getEntity();
+        Player player = (Player) event.getEntity();
 
         updatePlayer(player);
     }
 
-    public static void updatePlayer(PlayerEntity player) {
-        if (player.world.isRemote) {
+    public static void updatePlayer(Player player) {
+        if (player.level.isClientSide) {
             return;
         }
 
@@ -103,17 +102,17 @@ public class BenefitsHandler {
     }
 
     public static boolean checkEvent(LivingEvent event) {
-        if (!(event.getEntity() instanceof PlayerEntity))
+        if (!(event.getEntity() instanceof Player))
             return false;
 
-        PlayerEntity player = (PlayerEntity) event.getEntity();
+        Player player = (Player) event.getEntity();
 
-        if (player.world.isRemote)
+        if (player.level.isClientSide)
             return false;
-        ServerWorld world = (ServerWorld) player.world;
+        ServerLevel world = (ServerLevel) player.level;
 
-        ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-        boolean isInSurvival = serverPlayer.interactionManager.getGameType() == GameType.SURVIVAL;
+        ServerPlayer serverPlayer = (ServerPlayer) player;
+        boolean isInSurvival = serverPlayer.gameMode.isSurvival();
         return !SOLPotatoConfig.limitProgressionToSurvival() || isInSurvival;
     }
 

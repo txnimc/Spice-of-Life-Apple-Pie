@@ -6,16 +6,15 @@ import com.kevun1.solpotato.tracking.benefits.Benefit;
 import com.kevun1.solpotato.tracking.benefits.BenefitList;
 import com.kevun1.solpotato.utils.BenefitsParser;
 import com.kevun1.solpotato.utils.ComplexityParser;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.nbt.*;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.network.NetworkDirection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,57 +36,57 @@ public class ConfigHandler {
 
     public static boolean isFirstAid = false;
 
-    public static CompoundNBT serializeComplexityMap() {
-        CompoundNBT tag = new CompoundNBT();
-        ListNBT list = new ListNBT();
+    public static CompoundTag serializeComplexityMap() {
+        CompoundTag tag = new CompoundTag();
+        ListTag list = new ListTag();
         for (Map.Entry<FoodInstance, Double> entry : complexityMap.entrySet()) {
-            CompoundNBT entryTag = new CompoundNBT();
+            CompoundTag entryTag = new CompoundTag();
             String encoded = entry.getKey().encode();
-            entryTag.put(FOOD_KEY, StringNBT.valueOf(encoded));
-            entryTag.put(COMPLEXITY_VALUE_KEY, DoubleNBT.valueOf(entry.getValue()));
+            entryTag.put(FOOD_KEY, StringTag.valueOf(encoded));
+            entryTag.put(COMPLEXITY_VALUE_KEY, DoubleTag.valueOf(entry.getValue()));
             list.add(entryTag);
         }
         tag.put(ENTRY_KEY, list);
         return tag;
     }
 
-    public static ListNBT serializeThresholds() {
-        ListNBT tag = new ListNBT();
+    public static ListTag serializeThresholds() {
+    	ListTag tag = new ListTag();
 
         for (double t : thresholds) {
-            tag.add(DoubleNBT.valueOf(t));
+            tag.add(DoubleTag.valueOf(t));
         }
 
         return tag;
     }
 
-    public static CompoundNBT serializeBenefitsList() {
+    public static CompoundTag serializeBenefitsList() {
         return benefitsList.serializeNBT();
     }
 
-    public static CompoundNBT serializeConfig() {
-        CompoundNBT tag = new CompoundNBT();
+    public static CompoundTag serializeConfig() {
+        CompoundTag tag = new CompoundTag();
         tag.put(COMPLEXITY_MAP_KEY, serializeComplexityMap());
         tag.put(THRESHOLDS_KEY, serializeThresholds());
         tag.put(BENEFITS_KEY, serializeBenefitsList());
         return tag;
     }
 
-    public static void deserializeConfig(CompoundNBT tag) {
+    public static void deserializeConfig(CompoundTag tag) {
         deserializeComplexityMap(tag.getCompound(COMPLEXITY_MAP_KEY));
-        deserializeThresholds(tag.getList(THRESHOLDS_KEY, Constants.NBT.TAG_DOUBLE));
+        deserializeThresholds(tag.getList(THRESHOLDS_KEY, Tag.TAG_DOUBLE));
         deserializeBenefitsList(tag.getCompound(BENEFITS_KEY));
     }
 
-    public static void deserializeBenefitsList(CompoundNBT tag) {
+    public static void deserializeBenefitsList(CompoundTag tag) {
         benefitsList.deserializeNBT(tag);
     }
 
-    public static void deserializeComplexityMap(CompoundNBT tag) {
-        ListNBT list = tag.getList(ENTRY_KEY, Constants.NBT.TAG_COMPOUND);
+    public static void deserializeComplexityMap(CompoundTag tag) {
+    	ListTag list = tag.getList(ENTRY_KEY, Tag.TAG_COMPOUND);
         Map<FoodInstance, Double> newComplexityMap = new HashMap<>();
-        for (INBT nbt : list) {
-            CompoundNBT cnbt = (CompoundNBT) nbt;
+        for (Tag nbt : list) {
+            CompoundTag cnbt = (CompoundTag) nbt;
             String foodString = cnbt.getString(FOOD_KEY);
             FoodInstance food = FoodInstance.decode(foodString);
             double complexity = cnbt.getDouble(COMPLEXITY_VALUE_KEY);
@@ -96,14 +95,14 @@ public class ConfigHandler {
         complexityMap = newComplexityMap;
     }
 
-    public static void deserializeThresholds(ListNBT tag) {
+    public static void deserializeThresholds(ListTag tag) {
         List<Double> newThresholds = new ArrayList<>();
-        tag.stream().map(nbt -> (DoubleNBT) nbt).map(DoubleNBT::getDouble).forEach(newThresholds::add);
+        tag.stream().map(nbt -> (DoubleTag) nbt).map(DoubleTag::getAsDouble).forEach(newThresholds::add);
         thresholds = newThresholds;
     }
 
     @SubscribeEvent
-    public static void onServerStart(FMLServerStartingEvent event) {
+    public static void onServerStart(ServerStartingEvent event) {
         complexityMap = ComplexityParser.parse(SOLPotatoConfig.getComplexityUnparsed());
         thresholds = SOLPotatoConfig.getThresholds();
         List<List<Benefit>> benefits = BenefitsParser.parse(SOLPotatoConfig.getBenefitsUnparsed());
@@ -121,13 +120,13 @@ public class ConfigHandler {
         return benefitsList.getBenefits();
     }
 
-    public static void syncConfig(PlayerEntity player) {
-        if (player.world.isRemote) return;
+    public static void syncConfig(Player player) {
+        if (player.level.isClientSide) return;
 
-        ServerPlayerEntity target = (ServerPlayerEntity) player;
+        ServerPlayer target = (ServerPlayer) player;
         SOLPotato.channel.sendTo(
                 new ConfigMessage(),
-                target.connection.getNetworkManager(),
+                target.connection.getConnection(),
                 NetworkDirection.PLAY_TO_CLIENT
         );
     }

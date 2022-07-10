@@ -1,17 +1,21 @@
 package com.kevun1.solpotato;
 
+import com.kevun1.solpotato.client.ContainerScreenRegistry;
 import com.kevun1.solpotato.client.SOLClientRegistry;
 import com.kevun1.solpotato.communication.ConfigMessage;
 import com.kevun1.solpotato.communication.FoodListMessage;
-import net.minecraft.util.ResourceLocation;
+import com.kevun1.solpotato.item.foodcontainer.FoodContainerScreen;
+
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,6 +59,7 @@ public final class SOLPotato {
 	public static void setupClient(FMLClientSetupEvent event) {
 		SOLClientRegistry.setup();
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> SOLClientRegistry::registerKeybinds);
+		event.enqueueWork(() -> { MenuScreens.register(ContainerScreenRegistry.food_container, FoodContainerScreen::new); });
 	}
 
 	public SOLPotato() {

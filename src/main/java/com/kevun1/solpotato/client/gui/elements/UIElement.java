@@ -1,14 +1,14 @@
 package com.kevun1.solpotato.client.gui.elements;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.gui.GuiUtils;
+import net.minecraftforge.client.gui.GuiUtils;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -20,11 +20,11 @@ import static java.util.Collections.singletonList;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class UIElement {
-	public static void render(MatrixStack matrices, UIElement element, int mouseX, int mouseY) {
+	public static void render(PoseStack matrices, UIElement element, int mouseX, int mouseY) {
 		render(matrices, singletonList(element), mouseX, mouseY);
 	}
 	
-	public static void render(MatrixStack matrices, List<UIElement> elements, int mouseX, int mouseY) {
+	public static void render(PoseStack matrices, List<UIElement> elements, int mouseX, int mouseY) {
 		elements.forEach(element -> element.render(matrices));
 		
 		elements.stream()
@@ -35,7 +35,7 @@ public abstract class UIElement {
 	}
 	
 	protected static final Minecraft mc = Minecraft.getInstance();
-	protected static final FontRenderer fontRenderer = mc.fontRenderer;
+	protected static final Font fontRenderer = mc.font;
 	
 	public Rectangle frame;
 	@Nullable
@@ -49,7 +49,7 @@ public abstract class UIElement {
 	/**
 	 Renders the element to the screen. Note that no transforms have been applied, so you should take your position into account!
 	 */
-	protected void render(MatrixStack matrices) {
+	protected void render(PoseStack matrices) {
 		children.forEach(child -> child.render(matrices));
 	}
 	
@@ -73,10 +73,10 @@ public abstract class UIElement {
 	 @param mouseX the mouse's x position
 	 @param mouseY the mouse's y position
 	 */
-	protected void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
+	protected void renderTooltip(PoseStack matrices, int mouseX, int mouseY) {
 		if (tooltip == null) return;
 		
-		renderTooltip(matrices, ItemStack.EMPTY, Collections.singletonList(new StringTextComponent(tooltip)), mouseX, mouseY);
+		renderTooltip(matrices, ItemStack.EMPTY, Collections.singletonList(new TextComponent(tooltip)), mouseX, mouseY);
 	}
 	
 	/**
@@ -87,7 +87,8 @@ public abstract class UIElement {
 	 @param mouseX the mouse's x position
 	 @param mouseY the mouse's y position
 	 */
-	protected final void renderTooltip(MatrixStack matrices, ItemStack itemStack, List<ITextComponent> tooltip, int mouseX, int mouseY) {
+	protected final void renderTooltip(PoseStack matrices, ItemStack itemStack, List<Component> tooltip, int mouseX, int mouseY) {
+		/*
 		if (!itemStack.isEmpty()) {
 			GuiUtils.preItemToolTip(itemStack);
 		}
@@ -97,15 +98,15 @@ public abstract class UIElement {
 			matrices,
 			tooltip,
 			mouseX, mouseY,
-			mc.getMainWindow().getScaledWidth(),
-			mc.getMainWindow().getScaledHeight(),
+			mc.getWindow().getGuiScaledWidth(),
+			mc.getWindow().getGuiScaledHeight(),
 			-1,
 			fontRenderer
 		);
 		
 		if (!itemStack.isEmpty()) {
 			GuiUtils.postItemToolTip();
-		}
+		} */
 	}
 	
 	/** calculates and sets the frame to the smallest rectangle enclosing all children's frames */

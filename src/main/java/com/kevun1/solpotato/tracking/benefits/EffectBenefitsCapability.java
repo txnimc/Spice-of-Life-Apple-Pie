@@ -1,34 +1,28 @@
 package com.kevun1.solpotato.tracking.benefits;
 
-import com.kevun1.solpotato.api.FoodCapability;
-import com.kevun1.solpotato.api.SOLPotatoAPI;
 import com.kevun1.solpotato.tracking.CapabilityHandler;
-import com.kevun1.solpotato.tracking.FoodList;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Set;
 
-public class EffectBenefitsCapability implements ICapabilitySerializable<CompoundNBT>, Iterable<EffectBenefit>{
+public class EffectBenefitsCapability implements ICapabilitySerializable<CompoundTag>, Iterable<EffectBenefit> {
     private final Set<EffectBenefit> effectBenefits = new HashSet<>();
 
     private final LazyOptional<EffectBenefitsCapability> capabilityOptional = LazyOptional.of(() -> this);
     private static final String NBT_KEY_EFFECT_BENEFITS = "effect_benefits";
 
-    public static EffectBenefitsCapability get(PlayerEntity player) {
+    public static EffectBenefitsCapability get(Player player) {
         return player.getCapability(CapabilityHandler.effectBenefitsCapability)
                 .orElseThrow(EffectBenefitsCapability.EffectsBenefitsNotFoundException::new);
     }
@@ -57,10 +51,10 @@ public class EffectBenefitsCapability implements ICapabilitySerializable<Compoun
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT tag = new CompoundNBT();
+    public CompoundTag serializeNBT() {
+        CompoundTag tag = new CompoundTag();
 
-        ListNBT list = new ListNBT();
+        ListTag list = new ListTag();
         effectBenefits.stream().map(EffectBenefit::serializeNBT).forEach(list::add);
         tag.put(NBT_KEY_EFFECT_BENEFITS, list);
 
@@ -68,12 +62,12 @@ public class EffectBenefitsCapability implements ICapabilitySerializable<Compoun
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT tag) {
-        ListNBT list = tag.getList(NBT_KEY_EFFECT_BENEFITS, Constants.NBT.TAG_COMPOUND);
+    public void deserializeNBT(CompoundTag tag) {
+    	ListTag list = tag.getList(NBT_KEY_EFFECT_BENEFITS, Tag.TAG_COMPOUND);
 
         effectBenefits.clear();
         list.stream()
-                .map(nbt-> (CompoundNBT) nbt)
+                .map(nbt-> (CompoundTag) nbt)
                 .map(EffectBenefit::fromNBT)
                 .forEach(effectBenefits::add);
     }
@@ -82,20 +76,6 @@ public class EffectBenefitsCapability implements ICapabilitySerializable<Compoun
     @Override
     public Iterator<EffectBenefit> iterator() {
         return effectBenefits.iterator();
-    }
-
-    public static final class Storage implements Capability.IStorage<EffectBenefitsCapability> {
-        @Override
-        public INBT writeNBT(Capability<EffectBenefitsCapability> capability, EffectBenefitsCapability instance,
-                             Direction side) {
-            return instance.serializeNBT();
-        }
-
-        @Override
-        public void readNBT(Capability<EffectBenefitsCapability> capability, EffectBenefitsCapability instance,
-                            Direction side, INBT tag) {
-            instance.deserializeNBT((CompoundNBT) tag);
-        }
     }
 
     public static class EffectsBenefitsNotFoundException extends RuntimeException {

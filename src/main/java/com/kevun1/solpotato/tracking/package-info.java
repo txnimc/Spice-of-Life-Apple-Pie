@@ -5,6 +5,6 @@
 @ParametersAreNonnullByDefault
 package com.kevun1.solpotato.tracking;
 
-import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;

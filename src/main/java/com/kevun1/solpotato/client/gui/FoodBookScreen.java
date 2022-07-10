@@ -7,15 +7,15 @@ import com.kevun1.solpotato.tracking.FoodInstance;
 import com.kevun1.solpotato.tracking.FoodList;
 import com.kevun1.solpotato.tracking.benefits.BenefitInfo;
 import com.kevun1.solpotato.tracking.benefits.BenefitsHandler;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import org.apache.commons.lang3.tuple.Pair;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -31,11 +31,6 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 	private static final ResourceLocation texture = SOLPotato.resourceLocation("textures/gui/food_book.png");
 	private static final UIImage.Image bookImage = new UIImage.Image(texture, new Rectangle(0, 0, 186, 192));
 	static final UIImage.Image carrotImage = new UIImage.Image(texture, new Rectangle(0, 240, 16, 16));
-	static final UIImage.Image spiderEyeImage = new UIImage.Image(texture, new Rectangle(16, 240, 16, 16));
-	static final UIImage.Image heartImage = new UIImage.Image(texture, new Rectangle(0, 224, 15, 15));
-	static final UIImage.Image drumstickImage = new UIImage.Image(texture, new Rectangle(16, 224, 15, 15));
-	static final UIImage.Image blacklistImage = new UIImage.Image(texture, new Rectangle(32, 224, 15, 15));
-	static final UIImage.Image whitelistImage = new UIImage.Image(texture, new Rectangle(48, 224, 15, 15));
 	
 	static final Color fullBlack = Color.BLACK;
 	static final Color lessBlack = new Color(0, 0, 0, 128);
@@ -50,18 +45,18 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 	private PageFlipButton nextPageButton;
 	private PageFlipButton prevPageButton;
 	
-	private PlayerEntity player;
+	private Player player;
 	private Set<Map.Entry<FoodInstance, Integer>> foodData;
 	
 	private final List<Page> pages = new ArrayList<>();
 	private int currentPageNumber = 0;
 	
-	public static void open(PlayerEntity player) {
-		Minecraft.getInstance().displayGuiScreen(new FoodBookScreen(player));
+	public static void open(Player player) {
+		Minecraft.getInstance().setScreen(new FoodBookScreen(player));
 	}
 	
-	public FoodBookScreen(PlayerEntity player) {
-		super(new StringTextComponent(""));
+	public FoodBookScreen(Player player) {
+		super(new TextComponent(""));
 		this.player = player;
 	}
 	
@@ -76,7 +71,7 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 		background.setCenterY(height / 2);
 		
 		elements.clear();
-		
+				
 		// page number
 		pageNumberLabel = new UILabel("1");
 		pageNumberLabel.setCenterX(background.getCenterX());
@@ -86,13 +81,13 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 		initPages();
 		
 		int pageFlipButtonSpacing = 50;
-		prevPageButton = addButton(new PageFlipButton(
+		prevPageButton = addRenderableWidget(new PageFlipButton(
 			background.getCenterX() - pageFlipButtonSpacing / 2 - PageFlipButton.width,
 			background.getMinY() + 152,
 			PageFlipButton.Direction.BACKWARD,
 			this
 		));
-		nextPageButton = addButton(new PageFlipButton(
+		nextPageButton = addRenderableWidget(new PageFlipButton(
 			background.getCenterX() + pageFlipButtonSpacing / 2,
 			background.getMinY() + 152,
 			PageFlipButton.Direction.FORWARD,
@@ -143,7 +138,7 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 	}
 	
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrices, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(matrices);
 		
 		UIElement.render(matrices, background, mouseX, mouseY);

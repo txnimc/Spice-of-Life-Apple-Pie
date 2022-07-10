@@ -6,29 +6,29 @@
 package com.kevun1.solpotato.item.foodcontainer;
 
 import com.kevun1.solpotato.SOLPotato;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class FoodContainerScreen extends ContainerScreen<FoodContainer> {
-    public FoodContainerScreen(FoodContainer container, PlayerInventory playerInventory, ITextComponent title) {
+public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> {
+    public FoodContainerScreen(FoodContainer container, Inventory playerInventory, Component title) {
         super(container, playerInventory, title);
     }
 
     @Override
-    public void render(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(ms);
         super.render(ms, mouseX, mouseY, partialTicks);
-        this.renderHoveredTooltip(ms, mouseX, mouseY);
+        this.renderTooltip(ms, mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrices, float partialTicks, int x, int y) {
+    protected void renderBg(PoseStack matrices, float partialTicks, int x, int y) {
         this.drawBackground(matrices, new ResourceLocation(SOLPotato.MOD_ID, "textures/gui/inventory.png"));
-        this.container.containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+        this.menu.containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             int slotsPerRow = h.getSlots();
             if (h.getSlots() > 9) {
                 slotsPerRow = h.getSlots() / 2;
@@ -49,19 +49,19 @@ public class FoodContainerScreen extends ContainerScreen<FoodContainer> {
         });
     }
 
-    protected void drawBackground(MatrixStack ms, ResourceLocation gui) {
-        this.minecraft.getTextureManager().bindTexture(gui);
-        int relX = (this.width - this.xSize) / 2;
-        int relY = (this.height - this.ySize) / 2;
-        this.blit(ms, relX, relY, 0, 0, this.xSize, this.ySize);
+    protected void drawBackground(PoseStack ms, ResourceLocation gui) {
+        this.minecraft.getTextureManager().bindForSetup(gui);
+        int relX = (this.width - this.getXSize()) / 2;
+        int relY = (this.height - this.getYSize()) / 2;
+        this.blit(ms, relX, relY, 0, 0, this.getXSize(), this.getYSize());
     }
 
-    protected void drawSlot(MatrixStack ms, int x, int y, ResourceLocation texture, int size) {
-        this.minecraft.getTextureManager().bindTexture(texture);
-        blit(ms, guiLeft + x, guiTop + y, 0, 0, size, size, size, size);
+    protected void drawSlot(PoseStack ms, int x, int y, ResourceLocation texture, int size) {
+        this.minecraft.getTextureManager().bindForSetup(texture);
+        blit(ms, this.getGuiLeft() + x, this.getGuiTop() + y, 0, 0, size, size, size, size);
     }
 
-    protected void drawSlot(MatrixStack ms, int x, int y) {
+    protected void drawSlot(PoseStack ms, int x, int y) {
         drawSlot(ms, x, y, new ResourceLocation(SOLPotato.MOD_ID, "textures/gui/slot.png"), 18);
     }
 }

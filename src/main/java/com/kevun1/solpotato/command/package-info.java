@@ -5,6 +5,6 @@
 @MethodsReturnNonnullByDefault
 package com.kevun1.solpotato.command;
 
-import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;

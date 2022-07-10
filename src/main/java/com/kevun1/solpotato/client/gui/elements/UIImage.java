@@ -1,9 +1,9 @@
 package com.kevun1.solpotato.client.gui.elements;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.gui.GuiUtils;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.client.gui.GuiUtils;
 
 import java.awt.*;
 
@@ -22,20 +22,21 @@ public class UIImage extends UIElement {
 	}
 	
 	@Override
-	protected void render(MatrixStack matrices) {
+	protected void render(PoseStack matrices) {
 		super.render(matrices);
 		
 		int imageWidth = image.partOfTexture.width;
 		int imageHeight = image.partOfTexture.height;
 		
 		RenderSystem.enableBlend();
-		RenderSystem.color4f(1, 1, 1, alpha);
-		mc.getTextureManager().bindTexture(image.textureLocation);
+		RenderSystem.setShaderColor(1, 1, 1, alpha);
+		RenderSystem.setShaderTexture(0, image.textureLocation);
 		GuiUtils.drawTexturedModalRect(
+			matrices,
 			frame.x + (int) Math.floor((frame.width - imageWidth) / 2d),
 			frame.y + (int) Math.floor((frame.height - imageHeight) / 2d),
 			image.partOfTexture.x, image.partOfTexture.y,
-			image.partOfTexture.width, image.partOfTexture.height,
+			imageWidth, imageHeight,
 			0
 		);
 	}

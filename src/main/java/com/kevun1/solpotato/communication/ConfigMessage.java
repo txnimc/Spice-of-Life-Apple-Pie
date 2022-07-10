@@ -1,29 +1,27 @@
 package com.kevun1.solpotato.communication;
 
 import com.kevun1.solpotato.ConfigHandler;
-import com.kevun1.solpotato.tracking.benefits.BenefitList;
-import com.kevun1.solpotato.tracking.benefits.BenefitsHandler;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
 public class ConfigMessage {
-    private CompoundNBT configNBT;
+    private CompoundTag configNBT;
 
     public ConfigMessage() {
         this.configNBT = ConfigHandler.serializeConfig();
     }
 
-    public ConfigMessage(PacketBuffer buffer) {
-        this.configNBT = buffer.readCompoundTag();
+    public ConfigMessage(FriendlyByteBuf buffer) {
+        this.configNBT = buffer.readNbt();
     }
 
-    public void write(PacketBuffer buffer) {
-        buffer.writeCompoundTag(configNBT);
+    public void write(FriendlyByteBuf buffer) {
+        buffer.writeNbt(configNBT);
     }
 
     public void handle(Supplier<NetworkEvent.Context> context) {

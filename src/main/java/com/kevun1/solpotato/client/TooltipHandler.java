@@ -4,9 +4,10 @@ import com.kevun1.solpotato.SOLPotato;
 import com.kevun1.solpotato.SOLPotatoConfig;
 import com.kevun1.solpotato.tracking.FoodInstance;
 import com.kevun1.solpotato.tracking.FoodList;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.util.text.*;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.*;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -25,19 +26,19 @@ public final class TooltipHandler {
 	public static void onItemTooltip(ItemTooltipEvent event) {
 		if (!SOLPotatoConfig.isFoodTooltipEnabled()) return;
 		
-		PlayerEntity player = event.getPlayer();
+		Player player = event.getPlayer();
 		if (player == null) return;
 		
 		Item food = event.getItemStack().getItem();
-		if (!food.isFood()) return;
+		if (!food.isEdible()) return;
 		
 		FoodList foodList = FoodList.get(player);
 		boolean hasBeenEaten = foodList.hasEaten(food);
 		boolean isAllowed = SOLPotatoConfig.isAllowed(food);
 
-		List<ITextComponent> tooltip = event.getToolTip();
+		List<Component> tooltip = event.getToolTip();
 		if (!isAllowed) {
-			tooltip.add(localizedTooltip("disabled", TextFormatting.DARK_GRAY));
+			tooltip.add(localizedTooltip("disabled", ChatFormatting.DARK_GRAY));
 		} else {
 			if (hasBeenEaten) {
 				int lastEaten = foodList.getLastEaten(food);
@@ -48,20 +49,20 @@ public final class TooltipHandler {
 		}
 	}
 	
-	private static ITextComponent localizedTooltip(String path, TextFormatting color) {
-		return localizedComponent("tooltip", path).modifyStyle(style -> style.applyFormatting(color));
+	private static Component localizedTooltip(String path, ChatFormatting color) {
+		return localizedComponent("tooltip", path).withStyle(style -> style.applyFormat(color));
 	}
 
-	public static List<ITextComponent> addDiversityInfoTooltips(List<ITextComponent> tooltip, double contribution, int lastEaten) {
+	public static List<Component> addDiversityInfoTooltips(List<Component> tooltip, double contribution, int lastEaten) {
 		String contribution_path = "food_book.queue.tooltip.contribution_label";
-		tooltip.add(new StringTextComponent(localized("gui", contribution_path)
-				+ ": " + String.format("%.2f", contribution)).mergeStyle(TextFormatting.GRAY));
+		tooltip.add(new TextComponent(localized("gui", contribution_path)
+				+ ": " + String.format("%.2f", contribution)).withStyle(ChatFormatting.GRAY));
 		String last_eaten_path = "food_book.queue.tooltip.last_eaten_label";
 		if (lastEaten == 1) {
 			last_eaten_path = "food_book.queue.tooltip.last_eaten_label_singular";
 		}
-		tooltip.add(new StringTextComponent(localized("gui", last_eaten_path, lastEaten))
-				.mergeStyle(TextFormatting.GRAY));
+		tooltip.add(new TextComponent(localized("gui", last_eaten_path, lastEaten))
+				.withStyle(ChatFormatting.GRAY));
 		return tooltip;
 	}
 	

@@ -2,15 +2,15 @@ package com.kevun1.solpotato.tracking.benefits;
 
 import com.kevun1.solpotato.ConfigHandler;
 import com.kevun1.solpotato.SOLPotato;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.DoubleNBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.ResourceLocationException;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.ResourceLocationException;
 import net.minecraftforge.registries.ForgeRegistries;
 
 
@@ -20,7 +20,7 @@ import java.util.UUID;
 /**
  * Each instance represents a specific attribute and modifier. Handles logic for application to player.
  */
-public final class AttributeBenefit extends Benefit{
+public final class AttributeBenefit extends Benefit {
     private final AttributeModifier modifier;
     private final UUID id;
     private Attribute attribute;
@@ -46,13 +46,13 @@ public final class AttributeBenefit extends Benefit{
         isMaxHealth = name.equals("generic.max_health");
     }
 
-    public void applyTo(PlayerEntity player) {
-        if (!checkUsage() || player.world.isRemote)
+    public void applyTo(Player player) {
+        if (!checkUsage() || player.level.isClientSide)
             return;
 
         float oldMax = player.getMaxHealth();
 
-        ModifiableAttributeInstance attr;
+        AttributeInstance attr;
         try {
             attr = Objects.requireNonNull(player.getAttribute(attribute));
         }
@@ -62,7 +62,7 @@ public final class AttributeBenefit extends Benefit{
         }
 
         attr.removeModifier(modifier);
-        attr.applyPersistentModifier(modifier);
+        attr.addPermanentModifier(modifier);
 
         if (isMaxHealth && !ConfigHandler.isFirstAid) {
             // increase current health proportionally
@@ -71,11 +71,11 @@ public final class AttributeBenefit extends Benefit{
         }
     }
 
-    public void removeFrom(PlayerEntity player) {
-        if (!checkUsage() || player.world.isRemote)
+    public void removeFrom(Player player) {
+        if (!checkUsage() || player.level.isClientSide)
             return;
 
-        ModifiableAttributeInstance attr;
+        AttributeInstance attr;
         try {
             attr = Objects.requireNonNull(player.getAttribute(attribute));
         }
@@ -113,14 +113,14 @@ public final class AttributeBenefit extends Benefit{
         }
     }
 
-    public CompoundNBT serializeNBT() {
-        CompoundNBT tag = new CompoundNBT();
+    public CompoundTag serializeNBT() {
+        CompoundTag tag = new CompoundTag();
 
-        StringNBT type = StringNBT.valueOf(benefitType);
-        StringNBT n = StringNBT.valueOf(name);
-        DoubleNBT v = DoubleNBT.valueOf(value);
-        StringNBT uuid = StringNBT.valueOf(id.toString());
-        DoubleNBT thresh = DoubleNBT.valueOf(threshold);
+        StringTag type = StringTag.valueOf(benefitType);
+        StringTag n = StringTag.valueOf(name);
+        DoubleTag v = DoubleTag.valueOf(value);
+        StringTag uuid = StringTag.valueOf(id.toString());
+        DoubleTag thresh = DoubleTag.valueOf(threshold);
 
         tag.put("type", type);
         tag.put("name", n);
@@ -131,7 +131,7 @@ public final class AttributeBenefit extends Benefit{
         return tag;
     }
 
-    public static AttributeBenefit fromNBT(CompoundNBT tag) {
+    public static AttributeBenefit fromNBT(CompoundTag tag) {
         String type = tag.getString("type");
         if (!type.equals("attribute")) {
             throw new RuntimeException("Mismatching benefit type");

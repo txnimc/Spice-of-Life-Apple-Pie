@@ -1,33 +1,26 @@
 package com.kevun1.solpotato;
 
 import com.kevun1.solpotato.tracking.CapabilityHandler;
-import com.kevun1.solpotato.tracking.FoodInstance;
-import com.kevun1.solpotato.tracking.benefits.Benefit;
 import com.kevun1.solpotato.tracking.benefits.BenefitsHandler;
-import com.kevun1.solpotato.utils.BenefitsParser;
 import com.google.common.collect.Lists;
-import com.kevun1.solpotato.utils.ComplexityParser;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Food;
-import net.minecraft.item.Item;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PlayerList;
+import net.minecraft.server.players.PlayerList;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.sql.SQLOutput;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 
 @Mod.EventBusSubscriber(modid = SOLPotato.MOD_ID)
 public final class SOLPotatoConfig {
@@ -60,12 +53,12 @@ public final class SOLPotatoConfig {
 	}
 	
 	@SubscribeEvent
-	public static void onConfigReload(ModConfig.Reloading event) {
+	public static void onConfigReload(ModConfigEvent.Reloading event) {
 		MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
 		if (currentServer == null) return;
 		
 		PlayerList players = currentServer.getPlayerList();
-		for (PlayerEntity player : players.getPlayers()) {
+		for (Player player : players.getPlayers()) {
 			BenefitsHandler.removeAllBenefits(player);
 			BenefitsHandler.updatePlayer(player);
 			CapabilityHandler.syncFoodList(player);

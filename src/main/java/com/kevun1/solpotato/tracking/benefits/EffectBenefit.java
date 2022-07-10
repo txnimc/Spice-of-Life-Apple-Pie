@@ -1,23 +1,23 @@
 package com.kevun1.solpotato.tracking.benefits;
 
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.DoubleNBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.ResourceLocationException;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.DoubleTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.ResourceLocationException;
+import net.minecraft.core.Registry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 
 /**
  * Each instance represents a specific potion effect. Handles logic for application to player.
  */
 public final class EffectBenefit extends Benefit{
-    private Effect effect;
+    private MobEffect effect;
     private final int DEFAULT_DURATION = 300;
     private final int REAPPLY_DURATION = 200;
 
@@ -25,30 +25,30 @@ public final class EffectBenefit extends Benefit{
         super("effect", name, value, threshold);
     }
 
-    public void applyTo(PlayerEntity player) {
-        if (!checkUsage() || player.world.isRemote)
+    public void applyTo(Player player) {
+        if (!checkUsage() || player.level.isClientSide)
             return;
 
         EffectBenefitsCapability effectBenefits = EffectBenefitsCapability.get(player);
         effectBenefits.addEffectBenefitUnique(this);
     }
 
-    public void onTick(PlayerEntity player) {
-        if (!checkUsage() || player.world.isRemote)
+    public void onTick(Player player) {
+        if (!checkUsage() || player.level.isClientSide)
             return;
 
         // Only refresh this effect when less than REAPPLY_DURATION ticks remaining
-        EffectInstance currentEffect = player.getActivePotionEffect(effect);
+        MobEffectInstance currentEffect = player.getEffect(effect);
         if (currentEffect != null && currentEffect.getAmplifier() >= (int) value
                 && currentEffect.getDuration() > REAPPLY_DURATION) {
             return;
         }
 
-        player.addPotionEffect(new EffectInstance(effect, DEFAULT_DURATION, (int) value, false, false));
+        player.addEffect(new MobEffectInstance(effect, DEFAULT_DURATION, (int) value, false, false));
     }
 
-    public void removeFrom(PlayerEntity player) {
-        if (!checkUsage() || player.world.isRemote)
+    public void removeFrom(Player player) {
+        if (!checkUsage() || player.level.isClientSide)
             return;
 
         EffectBenefitsCapability effectBenefits = EffectBenefitsCapability.get(player);
@@ -69,7 +69,7 @@ public final class EffectBenefit extends Benefit{
     }
 
     private void createEffect() {
-        IForgeRegistry<Effect> registry = RegistryManager.ACTIVE.getRegistry(ForgeRegistries.Keys.EFFECTS);
+        IForgeRegistry<MobEffect> registry = RegistryManager.ACTIVE.getRegistry(Registry.MOB_EFFECT_REGISTRY);
         try {
             effect = registry.getValue(new ResourceLocation(name));
         }
@@ -89,13 +89,13 @@ public final class EffectBenefit extends Benefit{
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT tag = new CompoundNBT();
+    public CompoundTag serializeNBT() {
+        CompoundTag tag = new CompoundTag();
 
-        StringNBT type = StringNBT.valueOf(benefitType);
-        StringNBT n = StringNBT.valueOf(name);
-        DoubleNBT v = DoubleNBT.valueOf(value);
-        DoubleNBT thresh = DoubleNBT.valueOf(threshold);
+        StringTag type = StringTag.valueOf(benefitType);
+        StringTag n = StringTag.valueOf(name);
+        DoubleTag v = DoubleTag.valueOf(value);
+        DoubleTag thresh = DoubleTag.valueOf(threshold);
 
         tag.put("type", type);
         tag.put("name", n);
@@ -105,7 +105,7 @@ public final class EffectBenefit extends Benefit{
         return tag;
     }
 
-    public static EffectBenefit fromNBT(CompoundNBT tag) {
+    public static EffectBenefit fromNBT(CompoundTag tag) {
         String type = tag.getString("type");
         if (!type.equals("effect")) {
             throw new RuntimeException("Mismatching benefit type");

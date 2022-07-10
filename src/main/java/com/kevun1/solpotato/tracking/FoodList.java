@@ -6,13 +6,11 @@ import com.kevun1.solpotato.api.FoodCapability;
 import com.kevun1.solpotato.api.SOLPotatoAPI;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Food;
-import net.minecraft.item.Item;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.*;
-import net.minecraft.util.Direction;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nullable;
@@ -26,7 +24,7 @@ public final class FoodList implements FoodCapability {
 	private static final String NBT_KEY_LAST_EATEN = "lastEaten";
 	private static final String NBT_KEY_FOODS_EATEN = "foodsEaten";
 	
-	public static FoodList get(PlayerEntity player) {
+	public static FoodList get(Player player) {
 		return (FoodList) player.getCapability(SOLPotatoAPI.foodCapability)
 			.orElseThrow(FoodListNotFoundException::new);
 	}
@@ -46,7 +44,7 @@ public final class FoodList implements FoodCapability {
 	}
 
 	@Nullable
-	private CompoundNBT serializeUniqueFood(Map.Entry<FoodInstance, Integer> foodPair) {
+	private CompoundTag serializeUniqueFood(Map.Entry<FoodInstance, Integer> foodPair) {
 		FoodInstance food = foodPair.getKey();
 		Integer lastEaten = foodPair.getValue();
 
@@ -55,9 +53,9 @@ public final class FoodList implements FoodCapability {
 			return null;
 		}
 
-		CompoundNBT tag = new CompoundNBT();
-		StringNBT s = StringNBT.valueOf(encodedFood);
-		FloatNBT i = FloatNBT.valueOf(lastEaten);
+		CompoundTag tag = new CompoundTag();
+		StringTag s = StringTag.valueOf(encodedFood);
+		FloatTag i = FloatTag.valueOf(lastEaten);
 		tag.put(NBT_KEY_UNIQUE_FOOD, s);
 		tag.put(NBT_KEY_LAST_EATEN, i);
 
@@ -66,17 +64,17 @@ public final class FoodList implements FoodCapability {
 	
 	/** used for persistent storage */
 	@Override
-	public CompoundNBT serializeNBT() {
-		CompoundNBT tag = new CompoundNBT();
+	public CompoundTag serializeNBT() {
+		CompoundTag tag = new CompoundTag();
 		
-		ListNBT list = new ListNBT();
+		ListTag list = new ListTag();
 
 		uniqueFoods.entrySet().stream()
 			.map(this::serializeUniqueFood)
 			.filter(Objects::nonNull)
 			.forEach(list::add);
 		tag.put(NBT_KEY_FOOD_LIST, list);
-		tag.put(NBT_KEY_FOODS_EATEN, IntNBT.valueOf(foodsEaten));
+		tag.put(NBT_KEY_FOODS_EATEN, IntTag.valueOf(foodsEaten));
 
 		return tag;
 	}
@@ -94,12 +92,12 @@ public final class FoodList implements FoodCapability {
 
 	/** used for persistent storage */
 	@Override
-	public void deserializeNBT(CompoundNBT tag) {
-		ListNBT list = tag.getList(NBT_KEY_FOOD_LIST, Constants.NBT.TAG_COMPOUND);
+	public void deserializeNBT(CompoundTag tag) {
+		ListTag list = tag.getList(NBT_KEY_FOOD_LIST, Tag.TAG_COMPOUND);
 
 		uniqueFoods.clear();
 		list.stream()
-			.map(nbt-> (CompoundNBT) nbt)
+			.map(nbt-> (CompoundTag) nbt)
 			.map(nbt -> new ImmutablePair<>(nbt.getString(NBT_KEY_UNIQUE_FOOD), nbt.getFloat(NBT_KEY_LAST_EATEN)))
 			.map(this::deserializeUniqueFood)
 			.filter(Objects::nonNull)
@@ -246,7 +244,7 @@ public final class FoodList implements FoodCapability {
 
 	@Override
 	public boolean hasEaten(Item food) {
-		if (!food.isFood()) return false;
+		if (!food.isEdible()) return false;
 		return uniqueFoods.containsKey(new FoodInstance(food));
 	}
 	
@@ -264,18 +262,6 @@ public final class FoodList implements FoodCapability {
 
 	public void resetFoodsEaten() {
 		foodsEaten = 0;
-	}
-
-	public static final class Storage implements Capability.IStorage<FoodCapability> {
-		@Override
-		public INBT writeNBT(Capability<FoodCapability> capability, FoodCapability instance, Direction side) {
-			return instance.serializeNBT();
-		}
-		
-		@Override
-		public void readNBT(Capability<FoodCapability> capability, FoodCapability instance, Direction side, INBT tag) {
-			instance.deserializeNBT((CompoundNBT) tag);
-		}
 	}
 	
 	public static class FoodListNotFoundException extends RuntimeException {

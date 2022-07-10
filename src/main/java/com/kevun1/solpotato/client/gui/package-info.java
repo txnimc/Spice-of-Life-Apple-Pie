@@ -5,6 +5,6 @@
 @ParametersAreNonnullByDefault
 package com.kevun1.solpotato.client.gui;
 
-import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;
