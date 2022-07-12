@@ -88,25 +88,9 @@ public abstract class UIElement {
 	 @param mouseY the mouse's y position
 	 */
 	protected final void renderTooltip(PoseStack matrices, ItemStack itemStack, List<Component> tooltip, int mouseX, int mouseY) {
-		/*
-		if (!itemStack.isEmpty()) {
-			GuiUtils.preItemToolTip(itemStack);
-		}
+		assert mc.screen != null;
 		
-		GuiUtils.drawHoveringText(
-			itemStack,
-			matrices,
-			tooltip,
-			mouseX, mouseY,
-			mc.getWindow().getGuiScaledWidth(),
-			mc.getWindow().getGuiScaledHeight(),
-			-1,
-			fontRenderer
-		);
-		
-		if (!itemStack.isEmpty()) {
-			GuiUtils.postItemToolTip();
-		} */
+		mc.screen.renderComponentTooltip(matrices, tooltip, mouseX, mouseY, itemStack);
 	}
 	
 	/** calculates and sets the frame to the smallest rectangle enclosing all children's frames */
