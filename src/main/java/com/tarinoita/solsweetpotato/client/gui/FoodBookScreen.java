@@ -141,10 +141,16 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 	public void render(PoseStack matrices, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(matrices);
 		
-		UIElement.render(matrices, background, mouseX, mouseY);
-		
 		super.render(matrices, mouseX, mouseY, partialTicks);
 		
+		UIElement.render(matrices, background, mouseX, mouseY);
+		// The arrow buttons already got rendered in super.render(), but we need to draw them
+		// again here or they will be underneath the book page (not visible). If we draw the 
+		// book page before the super.render() call to try to avoid that, it looks all funky.
+		// No clue why.
+		prevPageButton.render(matrices, mouseX, mouseY, partialTicks);
+		nextPageButton.render(matrices, mouseX, mouseY, partialTicks);
+				
 		if (!pages.isEmpty()) { // might not be loaded yet; race condition
 			// current page
 			UIElement.render(matrices, elements, mouseX, mouseY);
