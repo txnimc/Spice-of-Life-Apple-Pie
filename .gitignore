@@ -6,6 +6,7 @@
 *.project
 *.launch
 *.psd
+*.DS_Store
 /output
 
 #ForgeGradle
