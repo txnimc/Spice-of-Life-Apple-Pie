@@ -2,8 +2,9 @@ package com.tarinoita.solsweetpotato.client.gui.elements;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.gui.GuiUtils;
 
 import java.awt.*;
 
@@ -28,16 +29,17 @@ public class UIImage extends UIElement {
 		int imageWidth = image.partOfTexture.width;
 		int imageHeight = image.partOfTexture.height;
 		
-		RenderSystem.enableBlend();
-		RenderSystem.setShaderColor(1, 1, 1, alpha);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, image.textureLocation);
-		GuiUtils.drawTexturedModalRect(
+
+		GuiComponent.blit(
 			matrices,
 			frame.x + (int) Math.floor((frame.width - imageWidth) / 2d),
 			frame.y + (int) Math.floor((frame.height - imageHeight) / 2d),
+			0,
 			image.partOfTexture.x, image.partOfTexture.y,
 			imageWidth, imageHeight,
-			0
+			256, 256
 		);
 	}
 	
