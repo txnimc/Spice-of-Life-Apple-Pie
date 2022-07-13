@@ -9,7 +9,6 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,6 +28,10 @@ public class BenefitsHandler {
         }
 
         Player player = (Player) event.getEntity();
+        
+        if (!player.isAlive()) {
+        	return;
+        }
 
         EffectBenefitsCapability effectBenefits = EffectBenefitsCapability.get(player);
         effectBenefits.forEach(b -> b.onTick(player));
@@ -72,7 +75,10 @@ public class BenefitsHandler {
 
     @SubscribeEvent
     public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
-        removeAllBenefits(event.getPlayer());
+    	Player player = event.getPlayer();
+    	player.reviveCaps();
+        removeAllBenefits(player);
+        player.invalidateCaps();
     }
 
     public static void removeAllBenefits(Player player) {
@@ -109,7 +115,6 @@ public class BenefitsHandler {
 
         if (player.level.isClientSide)
             return false;
-        ServerLevel world = (ServerLevel) player.level;
 
         ServerPlayer serverPlayer = (ServerPlayer) player;
         boolean isInSurvival = serverPlayer.gameMode.isSurvival();
