@@ -76,6 +76,45 @@ public class FoodContainer extends AbstractContainerMenu {
         
         super.clicked(slotId, dragType, clickTypeIn, player);
     }
+    
+    @Override
+    public ItemStack quickMoveStack(Player player, int slotId) {
+        Slot clickedSlot = slots.get(slotId);
+        if (clickedSlot == null || slotId < 0 || !clickedSlot.hasItem()) {
+            return ItemStack.EMPTY;
+        }
+        
+        ItemStack clickedStack = clickedSlot.getItem();
+        if (!FoodSlot.canHold(clickedStack)) {
+            return ItemStack.EMPTY;
+        }
+        
+        final ItemStack unchangedCopy = clickedStack.copy();
+        if (slotId < nslots) {
+            // Item is in the FoodContainer, move it to inventory
+            if (!moveItemStackTo(clickedStack, nslots, nslots + PLAYERSIZE, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else {
+            // Item is in the inventory, move it to the FoodContainer
+            if (!moveItemStackTo(clickedStack, 0, nslots, false)) {
+                return ItemStack.EMPTY;
+            }
+        }
+        
+        if (clickedStack.isEmpty()) {
+            clickedSlot.set(ItemStack.EMPTY);
+        } else {
+            clickedSlot.setChanged();
+        }
+
+        if (clickedStack.getCount() == unchangedCopy.getCount()) {
+            return ItemStack.EMPTY;
+        }
+
+        clickedSlot.onTake(player, clickedStack);
+        return clickedStack;
+     }
 
     private int addSlotRange(Inventory handler, int index, int x, int y, int amount, int dx) {
         for (int i = 0; i < amount; i++) {
@@ -104,6 +143,6 @@ public class FoodContainer extends AbstractContainerMenu {
     
     @Override
     public boolean stillValid(Player player) {
-    	return true;
+        return true;
     }
 }

@@ -14,9 +14,13 @@ public class FoodSlot extends SlotItemHandler {
     @Override
     public boolean mayPlace(@Nonnull ItemStack stack)
     {
-        if (!stack.isEdible()) {
+        if (!canHold(stack)) {
             return false;
         }
         return super.mayPlace(stack);
+    }
+    
+    public static boolean canHold(@Nonnull ItemStack stack) {
+    	return stack.isEdible();
     }
 }
