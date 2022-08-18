@@ -142,13 +142,16 @@ public class BenefitsHandler {
             }
             if (active_threshold >= thresh) {
                 benefitsList.get(i).forEach(b -> activeBenefitInfo.add(
-                        new BenefitInfo(b.getType(), b.getName(), b.getValue(), thresh)));
+                        new BenefitInfo(b.getType(), b.getName(), b.getValue(), thresh, b.isDetriment())));
             }
             else {
                 benefitsList.get(i).forEach(b -> inactiveBenefitInfo.add(
-                        new BenefitInfo(b.getType(), b.getName(), b.getValue(), thresh)));
+                        new BenefitInfo(b.getType(), b.getName(), b.getValue(), thresh, b.isDetriment())));
             }
         }
+
+        activeBenefitInfo.sort((bi1, bi2) -> Boolean.compare(bi1.detriment, bi2.detriment));
+        inactiveBenefitInfo.sort((bi1, bi2) -> Boolean.compare(bi1.detriment, bi2.detriment));
 
         return new ImmutablePair<>(activeBenefitInfo, inactiveBenefitInfo);
     }
