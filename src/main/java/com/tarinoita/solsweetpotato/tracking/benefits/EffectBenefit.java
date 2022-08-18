@@ -2,6 +2,7 @@ package com.tarinoita.solsweetpotato.tracking.benefits;
 
 
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.DoubleTag;
 import net.minecraft.nbt.StringTag;
@@ -21,8 +22,8 @@ public final class EffectBenefit extends Benefit{
     private final int DEFAULT_DURATION = 300;
     private final int REAPPLY_DURATION = 200;
 
-    public EffectBenefit(String name, double value, double threshold) {
-        super("effect", name, value, threshold);
+    public EffectBenefit(String name, double value, double threshold, boolean detriment) {
+        super("effect", name, value, threshold, detriment);
     }
 
     public void applyTo(Player player) {
@@ -96,11 +97,13 @@ public final class EffectBenefit extends Benefit{
         StringTag n = StringTag.valueOf(name);
         DoubleTag v = DoubleTag.valueOf(value);
         DoubleTag thresh = DoubleTag.valueOf(threshold);
+        ByteTag detr = ByteTag.valueOf((byte) (detriment ? 1 : 0));
 
         tag.put("type", type);
         tag.put("name", n);
         tag.put("value", v);
         tag.put("threshold", thresh);
+        tag.put("detriment", detr);
 
         return tag;
     }
@@ -113,7 +116,8 @@ public final class EffectBenefit extends Benefit{
         String n = tag.getString("name");
         double v = tag.getDouble("value");
         double thresh = tag.getDouble("threshold");
+        boolean detr = tag.getByte("detriment") == 1;
 
-        return new EffectBenefit(n, v, thresh);
+        return new EffectBenefit(n, v, thresh, detr);
     }
 }

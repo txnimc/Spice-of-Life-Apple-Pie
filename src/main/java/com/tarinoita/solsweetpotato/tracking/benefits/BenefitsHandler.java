@@ -58,12 +58,14 @@ public class BenefitsHandler {
             if (i >= benefitsList.size()) {
                 return;
             }
-            if (diversity >= thresh) {
-                benefitsList.get(i).forEach(b -> b.applyTo(player));
-            }
-            else {
-                benefitsList.get(i).forEach(b -> b.removeFrom(player));
-            }
+            benefitsList.get(i).forEach(b -> {
+                // != acts as XOR
+                if((diversity >= thresh) != b.isDetriment()) {
+                    b.applyTo(player);
+                } else {
+                    b.removeFrom(player);
+                }
+            });
         }
     }
 
