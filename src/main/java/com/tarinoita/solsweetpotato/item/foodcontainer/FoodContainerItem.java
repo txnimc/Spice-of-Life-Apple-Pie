@@ -42,7 +42,7 @@ public class FoodContainerItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         if (!world.isClientSide && player.isCrouching()) {
-            NetworkHooks.openGui((ServerPlayer) player, new FoodContainerProvider(displayName), player.blockPosition());
+            NetworkHooks.openScreen((ServerPlayer) player, new FoodContainerProvider(displayName), player.blockPosition());
         }
 
         if (!player.isCrouching()) {

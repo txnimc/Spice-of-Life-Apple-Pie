@@ -57,7 +57,7 @@ public final class AttributeBenefit extends Benefit {
             attr = Objects.requireNonNull(player.getAttribute(attribute));
         }
         catch (NullPointerException e) {
-            SOLSweetPotato.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getRegistryName());
+            SOLSweetPotato.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getDescriptionId());
             return;
         }
 
@@ -80,7 +80,7 @@ public final class AttributeBenefit extends Benefit {
             attr = Objects.requireNonNull(player.getAttribute(attribute));
         }
         catch (NullPointerException e) {
-            SOLSweetPotato.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getRegistryName());
+            SOLSweetPotato.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getDescriptionId());
             return;
         }
         attr.removeModifier(modifier);

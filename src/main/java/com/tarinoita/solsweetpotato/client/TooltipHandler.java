@@ -26,7 +26,7 @@ public final class TooltipHandler {
 	public static void onItemTooltip(ItemTooltipEvent event) {
 		if (!SOLSweetPotatoConfig.isFoodTooltipEnabled()) return;
 		
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		if (player == null) return;
 		
 		Item food = event.getItemStack().getItem();
@@ -55,13 +55,13 @@ public final class TooltipHandler {
 
 	public static List<Component> addDiversityInfoTooltips(List<Component> tooltip, double contribution, int lastEaten) {
 		String contribution_path = "food_book.queue.tooltip.contribution_label";
-		tooltip.add(new TextComponent(localized("gui", contribution_path)
+		tooltip.add(Component.literal(localized("gui", contribution_path)
 				+ ": " + String.format("%.2f", contribution)).withStyle(ChatFormatting.GRAY));
 		String last_eaten_path = "food_book.queue.tooltip.last_eaten_label";
 		if (lastEaten == 1) {
 			last_eaten_path = "food_book.queue.tooltip.last_eaten_label_singular";
 		}
-		tooltip.add(new TextComponent(localized("gui", last_eaten_path, lastEaten))
+		tooltip.add(Component.literal(localized("gui", last_eaten_path, lastEaten))
 				.withStyle(ChatFormatting.GRAY));
 		return tooltip;
 	}

@@ -1,7 +1,6 @@
 package com.tarinoita.solsweetpotato.item.foodcontainer;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -19,7 +18,7 @@ public class FoodContainerProvider implements MenuProvider {
 
     @Override
     public Component getDisplayName() {
-        return new TranslatableComponent(Localization.keyString("item", "container." + displayName));
+        return Component.translatable(Localization.keyString("item", "container." + displayName));
     }
 
     @Nullable

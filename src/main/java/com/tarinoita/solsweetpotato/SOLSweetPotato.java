@@ -8,12 +8,11 @@ import com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainerScreen;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
@@ -45,24 +44,23 @@ public final class SOLSweetPotato {
 		channel.messageBuilder(FoodListMessage.class, 0)
 			.encoder(FoodListMessage::write)
 			.decoder(FoodListMessage::new)
-			.consumer(FoodListMessage::handle)
+			.consumerMainThread(FoodListMessage::handle)
 			.add();
 
 		channel.messageBuilder(ConfigMessage.class, 1)
 				.encoder(ConfigMessage::write)
 				.decoder(ConfigMessage::new)
-				.consumer(ConfigMessage::handle)
+				.consumerMainThread(ConfigMessage::handle)
 				.add();
 	}
 
 	@SubscribeEvent
 	public static void setupClient(FMLClientSetupEvent event) {
-		SOLClientRegistry.setup();
-		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> SOLClientRegistry::registerKeybinds);
-		event.enqueueWork(() -> { MenuScreens.register(ContainerScreenRegistry.food_container, FoodContainerScreen::new); });
+		event.enqueueWork(() -> { MenuScreens.register(ContainerScreenRegistry.FOOD_CONTAINER.get(), FoodContainerScreen::new); });
 	}
 
 	public SOLSweetPotato() {
 		SOLSweetPotatoConfig.setUp();
+		ContainerScreenRegistry.MENU_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
 	}
 }

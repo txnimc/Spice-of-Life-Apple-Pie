@@ -47,7 +47,7 @@ public final class CapabilityHandler {
 	
 	@SubscribeEvent
 	public static void onPlayerDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
-		syncFoodList(event.getPlayer());
+		syncFoodList(event.getEntity());
 	}
 	
 	@SubscribeEvent
@@ -57,16 +57,16 @@ public final class CapabilityHandler {
 		Player originalPlayer = event.getOriginal();
 		originalPlayer.revive(); // so we can access the capabilities; entity will get removed either way
 		FoodList original = FoodList.get(originalPlayer);
-		FoodList newInstance = FoodList.get(event.getPlayer());
+		FoodList newInstance = FoodList.get(event.getEntity());
 		newInstance.deserializeNBT(original.serializeNBT());
 		// can't sync yet; client hasn't attached capabilities yet
 
-		BenefitsHandler.updatePlayer(event.getPlayer());
+		BenefitsHandler.updatePlayer(event.getEntity());
 	}
 	
 	@SubscribeEvent
 	public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-		syncFoodList(event.getPlayer());
+		syncFoodList(event.getEntity());
 	}
 	
 	public static void syncFoodList(Player player) {
