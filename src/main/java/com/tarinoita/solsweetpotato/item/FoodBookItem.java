@@ -10,8 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 
-import net.minecraft.world.item.Item.Properties;
-
 public final class FoodBookItem extends Item {
 	public FoodBookItem() {
 		super(new Properties().tab(CreativeModeTab.TAB_MISC));
