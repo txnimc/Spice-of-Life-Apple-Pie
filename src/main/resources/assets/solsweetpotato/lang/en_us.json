@@ -24,8 +24,6 @@
 	"gui.solsweetpotato.food_book.stats.min_warning2": "to activate benefits",
 	"gui.solsweetpotato.food_book.active_benefits_header": "Active Benefits",
 	"gui.solsweetpotato.food_book.inactive_benefits_header": "Inactive Benefits",
-	"gui.solsweetpotato.food_book.active_detriments_header": "Active Detriments",
-	"gui.solsweetpotato.food_book.inactive_detriments_header": "Inactive Detriments",
 	"gui.solsweetpotato.food_book.benefits.threshold_label": "Threshold",
 	"gui.solsweetpotato.food_book.benefits.active_tooltip": "Because your food diversity is greater than this threshold, this benefit is active.",
 	"gui.solsweetpotato.food_book.benefits.inactive_tooltip": "If your food diversity becomes greater than this threshold, this benefit will activate.",

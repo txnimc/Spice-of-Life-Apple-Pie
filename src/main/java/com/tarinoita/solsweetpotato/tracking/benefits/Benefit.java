@@ -9,15 +9,13 @@ public abstract class Benefit {
     protected final String name;
     protected final double value;
     protected boolean invalid = false;
-    protected boolean detriment = false;
     protected final double threshold;
 
-    public Benefit(String benefitType, String name, double value, double threshold, boolean detriment) {
+    public Benefit(String benefitType, String name, double value, double threshold) {
         this.benefitType = benefitType;
         this.name = name;
         this.value = value;
         this.threshold = threshold;
-        this.detriment = detriment;
     }
 
     public abstract void applyTo(Player player);
@@ -26,10 +24,6 @@ public abstract class Benefit {
 
     public boolean isInvalid() {
         return invalid;
-    }
-
-    public boolean isDetriment() {
-        return detriment;
     }
 
     protected void markInvalid() {

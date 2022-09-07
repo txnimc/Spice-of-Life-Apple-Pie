@@ -58,14 +58,12 @@ public class BenefitsHandler {
             if (i >= benefitsList.size()) {
                 return;
             }
-            benefitsList.get(i).forEach(b -> {
-                // != acts as XOR
-                if((diversity >= thresh) != b.isDetriment()) {
-                    b.applyTo(player);
-                } else {
-                    b.removeFrom(player);
-                }
-            });
+            if (diversity >= thresh) {
+                benefitsList.get(i).forEach(b -> b.applyTo(player));
+            }
+            else {
+                benefitsList.get(i).forEach(b -> b.removeFrom(player));
+            }
         }
     }
 
@@ -142,16 +140,13 @@ public class BenefitsHandler {
             }
             if (active_threshold >= thresh) {
                 benefitsList.get(i).forEach(b -> activeBenefitInfo.add(
-                        new BenefitInfo(b.getType(), b.getName(), b.getValue(), thresh, b.isDetriment())));
+                        new BenefitInfo(b.getType(), b.getName(), b.getValue(), thresh)));
             }
             else {
                 benefitsList.get(i).forEach(b -> inactiveBenefitInfo.add(
-                        new BenefitInfo(b.getType(), b.getName(), b.getValue(), thresh, b.isDetriment())));
+                        new BenefitInfo(b.getType(), b.getName(), b.getValue(), thresh)));
             }
         }
-
-        activeBenefitInfo.sort((bi1, bi2) -> Boolean.compare(bi1.detriment, bi2.detriment));
-        inactiveBenefitInfo.sort((bi1, bi2) -> Boolean.compare(bi1.detriment, bi2.detriment));
 
         return new ImmutablePair<>(activeBenefitInfo, inactiveBenefitInfo);
     }

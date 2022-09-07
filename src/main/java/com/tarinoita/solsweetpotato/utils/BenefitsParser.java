@@ -18,15 +18,6 @@ public class BenefitsParser {
             List<Benefit> thresholdBenefits = new ArrayList<>();
 
             for (String benefitString : thresholdBenefitsString) {
-                boolean is_detriment = false;
-                switch(benefitString.charAt(0)){
-                    case '-':
-                        is_detriment = true;
-                    case '+':
-                        benefitString = benefitString.substring(1);
-                    default:
-                        break;
-                }
                 String[] benefitArgs = benefitString.split(",", 0);
                 int len = benefitArgs.length;
 
@@ -55,10 +46,10 @@ public class BenefitsParser {
                 }
 
                 if (benefitType.equals("attribute")) {
-                    thresholdBenefits.add(new AttributeBenefit(benefitName, benefitValue, thresh, is_detriment));
+                    thresholdBenefits.add(new AttributeBenefit(benefitName, benefitValue, thresh));
                 }
                 else if (benefitType.equals("effect")) {
-                    thresholdBenefits.add(new EffectBenefit(benefitName, benefitValue, thresh, is_detriment));
+                    thresholdBenefits.add(new EffectBenefit(benefitName, benefitValue, thresh));
                 }
             }
             allBenefits.add(thresholdBenefits);

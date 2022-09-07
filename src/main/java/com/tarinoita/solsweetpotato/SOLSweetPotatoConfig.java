@@ -151,11 +151,7 @@ public final class SOLSweetPotatoConfig {
 							+" at the corresponding diversity threshold defined the list above. For example, the first entry in\n"
 							+" this list will be applied when the player's food diversity reaches the number in the first entry in\n"
 							+" the threshold list above.\n"
-							+" A benefit can also be marked as a detriment. In that case, its activation is reversed.\n"
-							+" A detriment is applied while the player has less diversity than the threshold,\n"
-							+" and will be removed when the threshold is reached.\n"
-							+" Each benefit is a string with the following form: [+/-][type],[registry name],[value] (without the brackets)\n"
-							+" A leading plus (or the of a symbol) denotes a benefit, while a minus denotes a detriment.\n"
+							+" Each benefit is a string with the following form: [type],[registry name],[value] (without the brackets)\n"
 							+" The type can either be 'attribute' for attribute modifiers or 'effect' for potion effects\n"
 							+" Registry names for common vanila attributes are \n"
 							+" generic.max_health, generic.knockback_resistance, generic.movement_speed, generic.luck, \n"
@@ -169,8 +165,6 @@ public final class SOLSweetPotatoConfig {
 							+" Make sure that you have NO SPACES!\n"
 							+" As an example, 'attribute,generic.max_health,2;effect,strength,1' will give both +2 max hp\n"
 							+" and Strength II at the corresponding threshold.\n"
-							+" 'attribute,generic.attack_damage,1;-effect,slowness,0' will give +1 attack damage at the corresponding threshold\n"
-							+" and Slowness I below the corresponding threshold.\n"
 							+"\n")
 					.defineList("benefitsUnparsed", Lists.newArrayList(
 							"attribute,generic.max_health,2",
