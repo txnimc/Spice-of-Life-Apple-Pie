@@ -282,7 +282,7 @@ public final class SOLSweetPotatoConfig {
 							+" Note that tags are NOT currently supported.\n"
 							+"\n")
 					.defineList("complexityUnparsed", Lists.newArrayList(
-							"minecraft:golden_carrot,2", "minecraft:golden_carrot,2", "minecraft:enchanted_golden_apple,5"),
+							"minecraft:golden_carrot,2", "minecraft:golden_apple,2", "minecraft:enchanted_golden_apple,5"),
 							e -> e instanceof String);
 
 			builder.pop();
