@@ -46,9 +46,9 @@ public final class FoodTracker {
 		// e.g. Farmer's Delight cut off a slice with a knife.
 		if (event.isCanceled()) return;
 
-		BlockState state = event.getWorld().getBlockState(event.getPos());
+		BlockState state = event.getLevel().getBlockState(event.getPos());
 		Block clickedBlock = state.getBlock();
-		Player player = event.getPlayer();
+		Player player = (Player)event.getEntity();
 
 		Item eatenItem = Items.CAKE;
 		// If Farmer's Delight is installed, replace "cake" with FD's "cake slice"
@@ -58,7 +58,7 @@ public final class FoodTracker {
 		ItemStack eatenItemStack = new ItemStack(eatenItem);
 
 		if (clickedBlock == Blocks.CAKE && player.canEat(false) &&
-				event.getHand() == InteractionHand.MAIN_HAND && !event.getWorld().isClientSide) {
+				event.getHand() == InteractionHand.MAIN_HAND && !event.getLevel().isClientSide) {
 			// Fire an event instead of directly updating the food list, so that
 			// SoL: Carrot Edition registers the eaten food too.
 			ForgeEventFactory.onItemUseFinish(player, eatenItemStack, 0, ItemStack.EMPTY);
