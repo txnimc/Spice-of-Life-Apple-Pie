@@ -3,6 +3,7 @@ package com.tarinoita.solsweetpotato.tracking;
 import com.tarinoita.solsweetpotato.SOLSweetPotato;
 import com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainerItem;
 import com.tarinoita.solsweetpotato.tracking.benefits.BenefitsHandler;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -14,7 +15,9 @@ import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 @Mod.EventBusSubscriber(modid = SOLSweetPotato.MOD_ID)
@@ -45,9 +48,15 @@ public final class FoodTracker {
 		Block clickedBlock = state.getBlock();
 		Player player = event.getPlayer();
 
+		Item eatenItem = Items.CAKE;
+		// If Farmer's Delight is installed, replace "cake" with FD's "cake slice"
+		if (ModList.get().isLoaded("farmersdelight")) {
+			eatenItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation("farmersdelight:cake_slice"));
+		}
+
 		if (clickedBlock == Blocks.CAKE && player.canEat(false) &&
 				event.getHand() == InteractionHand.MAIN_HAND) {
-			updateFoodList(Items.CAKE, player);
+			updateFoodList(eatenItem, player);
 		}
 	}
 
