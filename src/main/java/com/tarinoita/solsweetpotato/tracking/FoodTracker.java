@@ -3,9 +3,16 @@ package com.tarinoita.solsweetpotato.tracking;
 import com.tarinoita.solsweetpotato.SOLSweetPotato;
 import com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainerItem;
 import com.tarinoita.solsweetpotato.tracking.benefits.BenefitsHandler;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -26,6 +33,22 @@ public final class FoodTracker {
 		if (usedItem instanceof FoodContainerItem) return;
 
 		updateFoodList(usedItem, player);
+	}
+
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public static void onCakeBlockEaten(PlayerInteractEvent.RightClickBlock event) {
+		// Canceled means some other mod already resolved this event,
+		// e.g. Farmer's Delight cut off a slice with a knife.
+		if (event.isCanceled()) return;
+
+		BlockState state = event.getWorld().getBlockState(event.getPos());
+		Block clickedBlock = state.getBlock();
+		Player player = event.getPlayer();
+
+		if (clickedBlock == Blocks.CAKE && player.canEat(false) &&
+				event.getHand() == InteractionHand.MAIN_HAND) {
+			updateFoodList(Items.CAKE, player);
+		}
 	}
 
 	public static void updateFoodList(Item food, Player player) {
