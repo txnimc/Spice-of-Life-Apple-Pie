@@ -1,7 +1,6 @@
 package com.tarinoita.solsweetpotato.item.foodcontainer;
 
 import com.tarinoita.solsweetpotato.tracking.FoodList;
-import com.tarinoita.solsweetpotato.tracking.FoodTracker;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,6 +11,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -110,8 +110,8 @@ public class FoodContainerItem extends Item {
         }
 
         ItemStack bestFood = handler.getStackInSlot(bestFoodSlot);
+        ItemStack foodCopy = bestFood.copy();
         if (bestFood.isEdible() && !bestFood.isEmpty()) {
-            Item bestFoodItem = bestFood.getItem();
             ItemStack result = bestFood.finishUsingItem(world, entity);
             // put bowls/bottles etc. into player inventory
             if (!result.isEdible()) {
@@ -124,7 +124,9 @@ public class FoodContainerItem extends Item {
             }
 
             if (!world.isClientSide) {
-                FoodTracker.updateFoodList(bestFoodItem, player);
+                // Fire an event instead of directly updating the food list, so that
+                // SoL: Carrot Edition registers the eaten food too.
+                ForgeEventFactory.onItemUseFinish(player, foodCopy, 0, result);
             }
         }
 
