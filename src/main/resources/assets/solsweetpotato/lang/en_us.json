@@ -6,6 +6,9 @@
 	"command.solsweetpotato.solsweetpotato.clear.success": "Food list reset!",
 	"command.solsweetpotato.solsweetpotato.diversity_feedback": "Food Diversity: %.2f",
 	"command.solsweetpotato.solsweetpotato.sync.success": "Food list synchronized!",
+	"command.solsweetpotato.solsweetpotato.origin.invalidated": "Cached origin for player reset!",
+	"command.solsweetpotato.solsweetpotato.origin.cleared": "All cached origins cleared!",
+	"command.solsweetpotato.solsweetpotato.origin.inapplicable": "Origins mod not installed. Cleared origin data anyway.",
 
 	"item.solsweetpotato.food_book": "Food Book",
 	"item.solsweetpotato.lunchbox": "Lunchbox",

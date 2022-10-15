@@ -1,5 +1,6 @@
 package com.tarinoita.solsweetpotato.item.foodcontainer;
 
+import com.tarinoita.solsweetpotato.integration.Origins;
 import com.tarinoita.solsweetpotato.tracking.FoodList;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -53,7 +55,8 @@ public class FoodContainerItem extends Item {
 
     private InteractionResultHolder<ItemStack> processRightClick(Level world, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (isInventoryEmpty(stack)) {
+        if (isInventoryEmpty(stack) ||
+                (ModList.get().isLoaded("origins") && Origins.hasRestrictedDiet(player))) {
             return InteractionResultHolder.pass(stack);
         }
 

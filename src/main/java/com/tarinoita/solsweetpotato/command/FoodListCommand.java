@@ -1,6 +1,7 @@
 package com.tarinoita.solsweetpotato.command;
 
 import com.tarinoita.solsweetpotato.SOLSweetPotato;
+import com.tarinoita.solsweetpotato.integration.Origins;
 import com.tarinoita.solsweetpotato.lib.Localization;
 import com.tarinoita.solsweetpotato.tracking.*;
 import com.tarinoita.solsweetpotato.tracking.benefits.BenefitsHandler;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.chat.*;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.Objects;
@@ -34,12 +36,19 @@ public final class FoodListCommand {
 				.then(withPlayerArgumentOrSender(literal("sync"), FoodListCommand::syncFoodList))
 				.then(withPlayerArgumentOrSender(literal("clear"), FoodListCommand::clearFoodList))
 				.then(withPlayerArgumentOrSender(literal("diversity"), FoodListCommand::displayDiversity))
+				.then(withPlayerArgumentOrSender(literal("resetOrigin"), FoodListCommand::resetPlayerOrigin))
+				.then(withNoArgument(literal("resetAllOrigins"), FoodListCommand::resetAllOrigins))
 		);
 	}
 	
 	@FunctionalInterface
 	private interface CommandWithPlayer {
 		int run(CommandContext<CommandSourceStack> context, Player target) throws CommandSyntaxException;
+	}
+
+	@FunctionalInterface
+	private interface CommandWithoutArgs {
+		int run(CommandContext<CommandSourceStack> context);
 	}
 	
 	static ArgumentBuilder<CommandSourceStack, ?> withPlayerArgumentOrSender(ArgumentBuilder<CommandSourceStack, ?> base, CommandWithPlayer command) {
@@ -49,6 +58,11 @@ public final class FoodListCommand {
 			.then(argument(target, EntityArgument.player())
 				.executes((context) -> command.run(context, EntityArgument.getPlayer(context, target)))
 			);
+	}
+
+	static ArgumentBuilder<CommandSourceStack, ?> withNoArgument(ArgumentBuilder<CommandSourceStack, ?> base, CommandWithoutArgs command) {
+		return base
+				.executes((context) -> command.run(context));
 	}
 
 	static int displayDiversity(CommandContext<CommandSourceStack> context, Player target) {
@@ -89,6 +103,46 @@ public final class FoodListCommand {
 			target.displayClientMessage(applyFeedbackStyle(feedback), true);
 		}
 		
+		return Command.SINGLE_SUCCESS;
+	}
+
+	static int resetPlayerOrigin(CommandContext<CommandSourceStack> context, Player target) {
+		boolean isOp = context.getSource().hasPermission(2);
+		boolean isTargetingSelf = isTargetingSelf(context, target);
+		if (!isOp && !isTargetingSelf)
+			throw new CommandRuntimeException(localizedComponent("no_permissions"));
+
+		Origins.cacheInvalidate(target);
+
+		MutableComponent feedback;
+		if (ModList.get().isLoaded("origins")) {
+			feedback = localizedComponent("origin.invalidated");
+		} else {
+			feedback = localizedComponent("origin.inapplicable");
+		}
+		sendFeedback(context.getSource(), feedback);
+		if (!isTargetingSelf) {
+			target.displayClientMessage(applyFeedbackStyle(feedback), true);
+		}
+
+		return Command.SINGLE_SUCCESS;
+	}
+
+	static int resetAllOrigins(CommandContext<CommandSourceStack> context) {
+		boolean isOp = context.getSource().hasPermission(2);
+		if (!isOp)
+			throw new CommandRuntimeException(localizedComponent("no_permissions"));
+
+		Origins.clearCache();
+
+		MutableComponent feedback;
+		if (ModList.get().isLoaded("origins")) {
+			feedback = localizedComponent("origin.cleared");
+		} else {
+			feedback = localizedComponent("origin.inapplicable");
+		}
+		sendFeedback(context.getSource(), feedback);
+
 		return Command.SINGLE_SUCCESS;
 	}
 	
