@@ -1,9 +1,11 @@
 package com.tarinoita.solsweetpotato.integration;
 
 import com.tarinoita.solsweetpotato.SOLSweetPotato;
+import io.github.edwinmindcraft.origins.api.OriginsAPI;
 import io.github.edwinmindcraft.origins.api.capabilities.IOriginContainer;
 import io.github.edwinmindcraft.origins.api.origin.Origin;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
@@ -28,21 +30,26 @@ public class Origins {
 
         IOriginContainer originContainer = IOriginContainer.get(player).orElse(null);
         if (originContainer == null) {
-            SOLSweetPotato.LOGGER.warn("No IOriginContainer found for player " + player.getName().getContents());
+            SOLSweetPotato.LOGGER.warn("No IOriginContainer found for player: " + player.getName().getContents());
             return false;
         }
 
-        ResourceLocation vegetarian = ResourceLocation.tryParse("origins:vegetarian");
-        ResourceLocation carnivore = ResourceLocation.tryParse("origins:carnivore");
+        String vegetarian = "[origins:vegetarian]";
+        String carnivore = "[origins:carnivore]";
 
-        for(Origin origin : originContainer.getOrigins().values()) {
-            for (ResourceLocation power : origin.getPowers()) {
-                if (power.equals(vegetarian) || power.equals(carnivore)) {
-                    hasRestrictedDiet.put(player, Boolean.TRUE);
-                    return true;
-                }
+        Registry<Origin> originRegistry = OriginsAPI.getOriginsRegistry();
+        for(ResourceKey<Origin> originKey : originContainer.getOrigins().values()) {
+            Origin origin = originRegistry.get(originKey);
+            if (origin == null) {
+                SOLSweetPotato.LOGGER.warn("Player " + player.getName().getContents() +
+                        " has unregistered Origin: " + originKey.toString());
+                continue;
             }
-
+            String originAsString = origin.toString();
+            if (originAsString.contains(vegetarian) || originAsString.contains(carnivore)) {
+                hasRestrictedDiet.put(player, Boolean.TRUE);
+                return true;
+            }
         }
         hasRestrictedDiet.put(player, Boolean.FALSE);
         return false;
