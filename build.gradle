@@ -38,9 +38,11 @@ minecraft {
 			
 			// Recommended logging level for the console
 			property 'forge.logging.console.level', 'debug'
-			
+			property 'mixin.env.remapRefMap', 'true'
+			property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
 			mods {
-				solsweetpotato {
+				solapplepie {
 					source sourceSets.main
 				}
 			}
@@ -54,9 +56,11 @@ minecraft {
 			
 			// Recommended logging level for the console
 			property 'forge.logging.console.level', 'debug'
-			
+			property 'mixin.env.remapRefMap', 'true'
+			property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
 			mods {
-				solsweetpotato {
+				solapplepie {
 					source sourceSets.main
 				}
 			}
@@ -67,16 +71,28 @@ minecraft {
 			
 			// debug log spam
 			property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-			
+
 			property 'forge.logging.console.level', 'debug'
-			
-			args '--mod', 'solsweetpotato', '--all', '--output', file('src/generated/resources/')
+
+			property 'mixin.env.remapRefMap', 'true'
+			property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
+			args '--mod', 'solapplepie', '--all', '--output', file('src/generated/resources/')
 			
 			mods {
-				solsweetpotato {
+				solapplepie {
 					source sourceSets.main
 				}
 			}
+		}
+	}
+}
+
+repositories {
+	maven {
+		url "https://cursemaven.com"
+		content {
+			includeGroup "curse.maven"
 		}
 	}
 }
@@ -89,7 +105,15 @@ dependencies {
 	//minecraft "net.minecraftforge:forge:${forge_version}"
 	//minecraft "net.minecraftforge:forge:${project.forge_mc_version}-${project.forge_version}"
 	minecraft "net.minecraftforge:forge:${project.forge_version}"
-	
+
+	runtimeOnly fg.deobf("curse.maven:jei-238222:4062344")
+	runtimeOnly fg.deobf("curse.maven:appleskin-248787:3927564")
+
+	runtimeOnly fg.deobf("curse.maven:harvestcraft-372534:3951938")
+	runtimeOnly fg.deobf("curse.maven:farmersdelight-398521:3999153")
+	runtimeOnly fg.deobf("curse.maven:cookingforblockheads-231484:4065856")
+	runtimeOnly fg.deobf("curse.maven:balm-531761:3914491")
+
 	// You may put jars on which you depend on in ./libs or you may define them like so..
 	// compile "some.group:artifact:version:classifier"
 	// compile "some.group:artifact:version"
@@ -107,18 +131,19 @@ dependencies {
 	// For more info...
 	// http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
 	// http://www.gradle.org/docs/current/userguide/dependency_management.html
+
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
 jar {
 	manifest {
 		attributes([
-			"Specification-Title": "solsweetpotato",
-			"Specification-Vendor": "solsweetpotatotarinoita",
+			"Specification-Title": "solapplepie",
+			"Specification-Vendor": "solapplepietarinoita",
 			"Specification-Version": "1", // We are version 1 of ourselves
 			"Implementation-Title": project.name,
 			"Implementation-Version": "${version}",
-			"Implementation-Vendor" :"solsweetpotatotarinoita",
+			"Implementation-Vendor" :"solapplepietarinoita",
 			"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
 		])
 	}

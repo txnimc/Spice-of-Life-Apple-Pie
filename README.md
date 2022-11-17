@@ -11,7 +11,7 @@ Basically, instead of using the carrot, it used the potato! Whatever that means.
 
 Sweet Potato Edition aims to port Potato Edition to Minecraft 1.18, and eventually also include functionality from the original Spice of Life, plus maybe some of my own additions. Sweet Potato (or Potato on earlier Minecraft versions), Carrot, and the original Spice of Life are all compatible with each other and offer different incentive structures.
 
-[Example config here](https://github.com/tarinoita/Spice-of-Life-Sweet-Potato/blob/1.18/GitHub/solsweetpotato-server.toml)
+[Example config here](https://github.com/tarinoita/Spice-of-Life-Sweet-Potato/blob/1.18/GitHub/solapplepie-server.toml)
 
 Note that there are no dependencies for this mod, but [AttributeFix](https://www.curseforge.com/minecraft/mc-mods/attributefix) is necessary if you want certain attributes to go above the default maximum limit.
 
@@ -37,11 +37,11 @@ The ceiling for maxing out your diversity is very high (and can be configured to
 
 This mod also features 3 commands:
 
-- /solsweetpotato diversity  
+- /solapplepie diversity  
     Tells you your current diversity score. The score is easily accessed with the Food Book, but this offers another convenient way to do it.
-- /solsweetpotato clear  
+- /solapplepie clear  
     Clears the stored list of foods a player has eaten and resets their benefits. This is useful for testing when editing the config or when you want to start over.
-- /solsweetpotato sync  
+- /solapplepie sync  
     Forces a sync of the food list to the client, for when something went wrong and it's mismatched.
 
 ### FAQs

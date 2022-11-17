@@ -4,22 +4,21 @@ modLoader = "javafml"
 loaderVersion = "[40,)"
 
 issueTrackerURL = "https://github.com/tarinoita/Spice-of-Life-Sweet-Potato-Edition/issues"
-displayURL = "https://www.curseforge.com/minecraft/mc-mods/spice-of-life-sweet-potato-edition"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/spice-of-life-apple-pie-edition"
 logoFile = "logo 160.png"
 license = "LGPL-2.1"
-credits = "Kevun1, creator of Spice of Life: Potato Edition, and the Spice of Life: Carrot Edition team, which that project was forked from."
+credits = "Vice, creator of Apple Pie Edition, Kevun1, creator of Spice of Life: Potato Edition, and the Spice of Life: Carrot Edition team, which that project was forked from."
 authors = "tarinoita"
 
 [[mods]]
-	modId = "solsweetpotato"
+	modId = "solapplepie"
 	version = "${file.jarVersion}"
-	displayName = "Spice of Life: Sweet Potato Edition"
+	displayName = "Spice of Life: Apple Pie Edition"
 	description = '''
 A mod designed to encourage dietary variety!
 
 It does so by rewarding the player with customizable benefits depending on how diverse their diet is. These benefits
 require maintaining a diverse diet, rather than a one-time consumption.
-Instead of using the carrot, we use the (sweet) potato! Whatever that means...
 '''
 
 # Dependencies are optional.
