@@ -144,7 +144,7 @@ public final class SOLApplePieConfig
 					.comment(" A list of diversity value thresholds, in ascending order. When the player's food diversity reaches a threshold,\n"
 							+" they will get the benefits associated with that threshold.\n"
 							+"\n")
-					.defineList("thresholds", Lists.newArrayList(2.0, 5.0, 7.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0), e -> e instanceof Double);
+					.defineList("thresholds", Lists.newArrayList(2.0, 5.0, 7.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0), e -> e instanceof Double);
 
 			benefitsUnparsed = builder
 					.translation(localizationPath("benefits_unparsed"))
@@ -168,18 +168,23 @@ public final class SOLApplePieConfig
 							+" and Strength II at the corresponding threshold.\n"
 							+"\n")
 					.defineList("benefitsUnparsed", Lists.newArrayList(
-							"attribute,generic.max_health,2",
-							"attribute,generic.max_health,2;effect,speed,0",
-							"attribute,generic.max_health,2;effect,strength,0",
-							"attribute,generic.max_health,2;effect,regeneration,0",
-							"attribute,generic.max_health,2;attribute,generic.armor_toughness,2",
-							"attribute,generic.max_health,2;effect,haste,0",
-							"attribute,generic.max_health,2;effect,speed,1",
-							"attribute,generic.max_health,2;effect,strength,1",
-							"attribute,generic.max_health,2;attribute,generic.knockback_resistance,1",
-							"attribute,generic.max_health,2;attribute,generic.armor_toughness,2",
-							"attribute,generic.max_health,2;effect,haste,1",
-							"attribute,generic.max_health,2;attribute,generic.armor_toughness,2"),
+							"effect,speed,0",
+							"attribute,generic.max_health,1",
+							"attribute,generic.max_health,1;effect,haste,0",
+							"attribute,generic.max_health,1;effect,strength,0",
+							"attribute,generic.max_health,1;attribute,generic.armor_toughness,2",
+							"attribute,generic.max_health,1;effect,regeneration,0",
+							"attribute,generic.max_health,1;effect,speed,1",
+							"attribute,generic.max_health,1;effect,strength,0",
+							"attribute,generic.max_health,1;effect,luck,0",
+							"attribute,generic.max_health,1;attribute,generic.knockback_resistance,1",
+							"attribute,generic.max_health,1;attribute,generic.speed,2",
+							"attribute,generic.max_health,1;attribute,generic.armor_toughness,2",
+							"attribute,generic.max_health,1;effect,haste,1",
+							"attribute,generic.max_health,1;effect,strength,1",
+							"attribute,generic.max_health,1;attribute,generic.armor_toughness,2",
+							"attribute,generic.max_health,1;effect,strength,2",
+							"attribute,generic.max_health,1;effect,luck,1"),
 							e -> e instanceof String);
 
 			minFoodsToActivate = builder
@@ -284,8 +289,26 @@ public final class SOLApplePieConfig
 									"minecraft:cooked_porkchop,2",
 									"minecraft:cooked_beef,2",
 									"minecraft:golden_carrot,2",
-									"minecraft:golden_apple,3",
-									"minecraft:enchanted_golden_apple,5",
+									"minecraft:golden_apple,4",
+									"minecraft:enchanted_golden_apple,10",
+
+									"largemeals:sweet_berry_custard,5",
+									"largemeals:pufferfish_broth,5",
+									"largemeals:mushroom_pot_pie,5",
+									"largemeals:hearty_lunch,6",
+
+									"farmersrespite:green_tea,3",
+									"farmersrespite:yellow_tea,3",
+									"farmersrespite:coffee,3",
+									"farmersrespite:black_tea,3",
+									"farmersrespite:rose_hip_tea,3",
+									"farmersrespite:dandelion_tea,3",
+									"farmersrespite:black_tea,3",
+
+									"farmersrespite:rose_hip_pie_slice,4",
+									"farmersrespite:coffee_cake_slice,4",
+									"farmersrespite:blazing_chili,5",
+
 									"farmersdelight:cake_slice,4",
 									"farmersdelight:chocolate_pie_slice,4",
 									"farmersdelight:apple_pie_slice,4",
