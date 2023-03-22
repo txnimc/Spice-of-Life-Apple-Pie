@@ -1,0 +1,44 @@
+{
+  "tooltip.solapplepie.disabled": "Эта еда не способствует пищевому разнообразию.",
+
+	"command.solapplepie.solapplepie.no_permissions": "У Вас нет необходимых прав для использования этой команды на других игроках!",
+
+	"command.solapplepie.solapplepie.clear.success": "Пищевой список сброшен!",
+	"command.solapplepie.solapplepie.diversity_feedback": "Пищевое разнообразие: %.2f",
+	"command.solapplepie.solapplepie.sync.success": "Пищевой список синхронизирован!",
+
+	"item.solapplepie.food_book": "Кулинарная книга",
+	"item.solapplepie.lunchbox": "Пищевой контейнер",
+	"item.solapplepie.container.lunchbox": "Пищевой контейнер",
+  "item.solapplepie.golden_lunchbox": "Золотой пищевой контейнер",
+  "item.solapplepie.container.golden_lunchbox": "Золотой пищевой контейнер",
+	"item.solapplepie.lunchbag": "Пищевой мешочек",
+	"item.solapplepie.container.lunchbag": "Пищевой мешочек",
+
+	"key.solapplepie.open_food_book": "Открыть кулинарную книгу",
+	"key.solapplepie.category": "Spice of Life: Apple Pie Edition",
+
+	"gui.solapplepie.food_book.stats": "Обзор",
+	"gui.solapplepie.food_book.stats.current_diversity": "Текущее пищевое разнообразие",
+	"gui.solapplepie.food_book.stats.min_warning1": "Нужно скушать ещё %d раз,",
+	"gui.solapplepie.food_book.stats.min_warning2": "чтобы активировать преимущества.",
+	"gui.solapplepie.food_book.active_benefits_header": "Активные преимущества",
+	"gui.solapplepie.food_book.inactive_benefits_header": "Неактивные преимущества",
+	"gui.solapplepie.food_book.benefits.threshold_label": "Порог",
+	"gui.solapplepie.food_book.benefits.active_tooltip": "Поскольку Ваше питание разнообразнее, чем этот порог, это преимущество активно.",
+	"gui.solapplepie.food_book.benefits.inactive_tooltip": "Если Ваше пищевое разнообразие превысит этот порог, это преимущество станет активной.",
+	"gui.solapplepie.food_book.food_queue_label": "Съедено пищи",
+	"gui.solapplepie.food_book.queue.food_queue_tooltip": "Список всей пищи, которая была употреблена в прошлом и способствуют разнообразию Вашего питания.",
+
+	"gui.solapplepie.food_book.fraction": "%1$s/%2$s",
+
+	"gui.solapplepie.food_book.queue.tooltip.uneaten_contribution_label": "Пищевое разнообразие",
+	"gui.solapplepie.food_book.queue.tooltip.contribution_label": "Вклад в разнообразие",
+	"gui.solapplepie.food_book.queue.tooltip.last_eaten_label": "Последний приём пищи: %d приёмов назад",
+	"gui.solapplepie.food_book.queue.tooltip.last_eaten_label_singular": "Последний приём пищи: %d приём назад",
+
+	"config.solapplepie.is_food_tooltip_enabled": "Включить подсказку для еды",
+	"config.solapplepie.food_blacklist": "Чёрный список",
+	"config.solapplepie.food_whitelist": "Белый список (отключает чёрный список)",
+	"config.solapplepie.reset_on_death": "Сбросить при Смерти"
+}
