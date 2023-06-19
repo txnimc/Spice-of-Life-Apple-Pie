@@ -1,4 +1,4 @@
-package com.tarinoita.solapplepie.item.foodcontainer;
+package com.tarinoita.solsweetpotato.item.foodcontainer;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;

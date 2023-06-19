@@ -1,9 +1,9 @@
-package com.tarinoita.solapplepie.client;
+package com.tarinoita.solsweetpotato.client;
 
-import com.tarinoita.solapplepie.SOLApplePie;
-import com.tarinoita.solapplepie.SOLApplePieConfig;
-import com.tarinoita.solapplepie.tracking.FoodInstance;
-import com.tarinoita.solapplepie.tracking.FoodList;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
+import com.tarinoita.solsweetpotato.SOLSweetPotatoConfig;
+import com.tarinoita.solsweetpotato.tracking.FoodInstance;
+import com.tarinoita.solsweetpotato.tracking.FoodList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
 import net.minecraft.world.entity.player.Player;
@@ -16,15 +16,15 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 
-import static com.tarinoita.solapplepie.lib.Localization.localized;
-import static com.tarinoita.solapplepie.lib.Localization.localizedComponent;
+import static com.tarinoita.solsweetpotato.lib.Localization.localized;
+import static com.tarinoita.solsweetpotato.lib.Localization.localizedComponent;
 
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = SOLApplePie.MOD_ID)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = SOLSweetPotato.MOD_ID)
 public final class TooltipHandler {
 	@SubscribeEvent
 	public static void onItemTooltip(ItemTooltipEvent event) {
-		if (!SOLApplePieConfig.isFoodTooltipEnabled()) return;
+		if (!SOLSweetPotatoConfig.isFoodTooltipEnabled()) return;
 		
 		Player player = event.getPlayer();
 		if (player == null) return;
@@ -34,7 +34,7 @@ public final class TooltipHandler {
 		
 		FoodList foodList = FoodList.get(player);
 		boolean hasBeenEaten = foodList.hasEaten(food);
-		boolean isAllowed = SOLApplePieConfig.isAllowed(food);
+		boolean isAllowed = SOLSweetPotatoConfig.isAllowed(food);
 
 		List<Component> tooltip = event.getToolTip();
 		if (!isAllowed) {

@@ -1,12 +1,12 @@
-package com.tarinoita.solapplepie.client.gui;
+package com.tarinoita.solsweetpotato.client.gui;
 
-import com.tarinoita.solapplepie.SOLApplePie;
-import com.tarinoita.solapplepie.SOLApplePieConfig;
-import com.tarinoita.solapplepie.client.gui.elements.*;
-import com.tarinoita.solapplepie.tracking.FoodInstance;
-import com.tarinoita.solapplepie.tracking.FoodList;
-import com.tarinoita.solapplepie.tracking.benefits.BenefitInfo;
-import com.tarinoita.solapplepie.tracking.benefits.BenefitsHandler;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
+import com.tarinoita.solsweetpotato.SOLSweetPotatoConfig;
+import com.tarinoita.solsweetpotato.client.gui.elements.*;
+import com.tarinoita.solsweetpotato.tracking.FoodInstance;
+import com.tarinoita.solsweetpotato.tracking.FoodList;
+import com.tarinoita.solsweetpotato.tracking.benefits.BenefitInfo;
+import com.tarinoita.solsweetpotato.tracking.benefits.BenefitsHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.client.gui.screens.Screen;
@@ -24,11 +24,11 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.tarinoita.solapplepie.lib.Localization.localized;
+import static com.tarinoita.solsweetpotato.lib.Localization.localized;
 
 @OnlyIn(Dist.CLIENT)
 public final class FoodBookScreen extends Screen implements PageFlipButton.Pageable {
-	private static final ResourceLocation texture = SOLApplePie.resourceLocation("textures/gui/food_book.png");
+	private static final ResourceLocation texture = SOLSweetPotato.resourceLocation("textures/gui/food_book.png");
 	private static final UIImage.Image bookImage = new UIImage.Image(texture, new Rectangle(0, 0, 186, 192));
 	static final UIImage.Image carrotImage = new UIImage.Image(texture, new Rectangle(0, 240, 16, 16));
 	
@@ -115,7 +115,7 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 		
 		addPages("active_benefits_header", activeBenefits, activeGreen);
 
-		if (SOLApplePieConfig.shouldShowInactiveBenefits()) {
+		if (SOLSweetPotatoConfig.shouldShowInactiveBenefits()) {
 			addPages("inactive_benefits_header", inactiveBenefits, inactiveRed);
 		}
 	}

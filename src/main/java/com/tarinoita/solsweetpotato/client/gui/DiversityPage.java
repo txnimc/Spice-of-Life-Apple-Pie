@@ -1,13 +1,13 @@
-package com.tarinoita.solapplepie.client.gui;
+package com.tarinoita.solsweetpotato.client.gui;
 
-import com.tarinoita.solapplepie.SOLApplePieConfig;
-import com.tarinoita.solapplepie.client.gui.elements.UIBox;
-import com.tarinoita.solapplepie.client.gui.elements.UIElement;
-import com.tarinoita.solapplepie.client.gui.elements.UILabel;
+import com.tarinoita.solsweetpotato.SOLSweetPotatoConfig;
+import com.tarinoita.solsweetpotato.client.gui.elements.UIBox;
+import com.tarinoita.solsweetpotato.client.gui.elements.UIElement;
+import com.tarinoita.solsweetpotato.client.gui.elements.UILabel;
 
 import java.awt.*;
 
-import static com.tarinoita.solapplepie.lib.Localization.localized;
+import static com.tarinoita.solsweetpotato.lib.Localization.localized;
 
 public class DiversityPage extends Page {
     DiversityPage(double foodDiversity, int foodEaten, Rectangle frame) {
@@ -23,8 +23,8 @@ public class DiversityPage extends Page {
         );
         mainStack.addChild(diversityDisplay);
 
-        if (foodEaten < SOLApplePieConfig.minFoodsToActivate()) {
-            int diff = SOLApplePieConfig.minFoodsToActivate() - foodEaten;
+        if (foodEaten < SOLSweetPotatoConfig.minFoodsToActivate()) {
+            int diff = SOLSweetPotatoConfig.minFoodsToActivate() - foodEaten;
             mainStack.addChild(new UIBox(new Rectangle(0, 0, 1, 10), new Color(0, 0, 0, 0)));
             UILabel minFoodLabel1 = new UILabel(localized("gui", "food_book.stats.min_warning1", diff));
             minFoodLabel1.color = FoodBookScreen.inactiveRed;

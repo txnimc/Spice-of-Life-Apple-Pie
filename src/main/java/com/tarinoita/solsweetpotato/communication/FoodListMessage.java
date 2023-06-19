@@ -1,6 +1,6 @@
-package com.tarinoita.solapplepie.communication;
+package com.tarinoita.solsweetpotato.communication;
 
-import com.tarinoita.solapplepie.tracking.FoodList;
+import com.tarinoita.solsweetpotato.tracking.FoodList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.nbt.CompoundTag;

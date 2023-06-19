@@ -3,7 +3,7 @@
  * Copyright for portions of the code are held by Samson Basset (Lothrazar)
  * as part of Cyclic, under the MIT license.
  */
-package com.tarinoita.solapplepie.item.foodcontainer;
+package com.tarinoita.solsweetpotato.item.foodcontainer;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

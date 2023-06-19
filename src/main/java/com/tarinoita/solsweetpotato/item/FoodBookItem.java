@@ -1,6 +1,6 @@
-package com.tarinoita.solapplepie.item;
+package com.tarinoita.solsweetpotato.item;
 
-import com.tarinoita.solapplepie.client.gui.FoodBookScreen;
+import com.tarinoita.solsweetpotato.client.gui.FoodBookScreen;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;

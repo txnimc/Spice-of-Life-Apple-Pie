@@ -1,4 +1,4 @@
-package com.tarinoita.solapplepie.client.gui.elements;
+package com.tarinoita.solsweetpotato.client.gui.elements;
 
 import java.awt.*;
 import java.util.List;

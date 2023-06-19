@@ -1,9 +1,9 @@
-package com.tarinoita.solapplepie.command;
+package com.tarinoita.solsweetpotato.command;
 
-import com.tarinoita.solapplepie.SOLApplePie;
-import com.tarinoita.solapplepie.lib.Localization;
-import com.tarinoita.solapplepie.tracking.*;
-import com.tarinoita.solapplepie.tracking.benefits.BenefitsHandler;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
+import com.tarinoita.solsweetpotato.lib.Localization;
+import com.tarinoita.solsweetpotato.tracking.*;
+import com.tarinoita.solsweetpotato.tracking.benefits.BenefitsHandler;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -23,7 +23,7 @@ import java.util.Objects;
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
-@Mod.EventBusSubscriber(modid = SOLApplePie.MOD_ID)
+@Mod.EventBusSubscriber(modid = SOLSweetPotato.MOD_ID)
 public final class FoodListCommand {
 	private static final String name = "solapplepie";
 	

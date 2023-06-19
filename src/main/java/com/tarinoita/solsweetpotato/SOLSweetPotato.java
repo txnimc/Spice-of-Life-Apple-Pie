@@ -1,10 +1,10 @@
-package com.tarinoita.solapplepie;
+package com.tarinoita.solsweetpotato;
 
-import com.tarinoita.solapplepie.client.ContainerScreenRegistry;
-import com.tarinoita.solapplepie.client.SOLClientRegistry;
-import com.tarinoita.solapplepie.communication.ConfigMessage;
-import com.tarinoita.solapplepie.communication.FoodListMessage;
-import com.tarinoita.solapplepie.item.foodcontainer.FoodContainerScreen;
+import com.tarinoita.solsweetpotato.client.ContainerScreenRegistry;
+import com.tarinoita.solsweetpotato.client.SOLClientRegistry;
+import com.tarinoita.solsweetpotato.communication.ConfigMessage;
+import com.tarinoita.solsweetpotato.communication.FoodListMessage;
+import com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainerScreen;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
@@ -22,9 +22,9 @@ import org.apache.logging.log4j.Logger;
 
 import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 
-@Mod(SOLApplePie.MOD_ID)
-@Mod.EventBusSubscriber(modid = SOLApplePie.MOD_ID, bus = MOD)
-public final class SOLApplePie
+@Mod(SOLSweetPotato.MOD_ID)
+@Mod.EventBusSubscriber(modid = SOLSweetPotato.MOD_ID, bus = MOD)
+public final class SOLSweetPotato
 {
 	public static final String MOD_ID = "solapplepie";
 	
@@ -68,7 +68,7 @@ public final class SOLApplePie
 		event.enqueueWork(() -> { MenuScreens.register(ContainerScreenRegistry.food_container, FoodContainerScreen::new); });
 	}
 
-	public SOLApplePie() {
-		SOLApplePieConfig.setUp();
+	public SOLSweetPotato() {
+		SOLSweetPotatoConfig.setUp();
 	}
 }

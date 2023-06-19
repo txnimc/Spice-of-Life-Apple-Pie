@@ -1,9 +1,9 @@
-package com.tarinoita.solapplepie.tracking;
+package com.tarinoita.solsweetpotato.tracking;
 
-import com.tarinoita.solapplepie.ConfigHandler;
-import com.tarinoita.solapplepie.SOLApplePieConfig;
-import com.tarinoita.solapplepie.api.FoodCapability;
-import com.tarinoita.solapplepie.api.SOLApplePieAPI;
+import com.tarinoita.solsweetpotato.ConfigHandler;
+import com.tarinoita.solsweetpotato.SOLSweetPotatoConfig;
+import com.tarinoita.solsweetpotato.api.FoodCapability;
+import com.tarinoita.solsweetpotato.api.SOLSweetPotatoAPI;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.core.Direction;
@@ -25,7 +25,7 @@ public final class FoodList implements FoodCapability {
 	private static final String NBT_KEY_FOODS_EATEN = "foodsEaten";
 	
 	public static FoodList get(Player player) {
-		return (FoodList) player.getCapability(SOLApplePieAPI.foodCapability)
+		return (FoodList) player.getCapability(SOLSweetPotatoAPI.foodCapability)
 			.orElseThrow(FoodListNotFoundException::new);
 	}
 
@@ -40,7 +40,7 @@ public final class FoodList implements FoodCapability {
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction side) {
-		return capability == SOLApplePieAPI.foodCapability ? capabilityOptional.cast() : LazyOptional.empty();
+		return capability == SOLSweetPotatoAPI.foodCapability ? capabilityOptional.cast() : LazyOptional.empty();
 	}
 
 	@Nullable
@@ -106,7 +106,7 @@ public final class FoodList implements FoodCapability {
 	}
 
 	public void addFood(Item food, Map<FoodInstance, Integer> foodMap) {
-		if (!SOLApplePieConfig.shouldCount(food) && !SOLApplePieConfig.shouldForbiddenCount()) {
+		if (!SOLSweetPotatoConfig.shouldCount(food) && !SOLSweetPotatoConfig.shouldForbiddenCount()) {
 			return;
 		}
 
@@ -123,7 +123,7 @@ public final class FoodList implements FoodCapability {
 			lastEaten++;
 			foodMap.put(foodInstance, lastEaten);
 
-			if (lastEaten >= SOLApplePieConfig.size()) {
+			if (lastEaten >= SOLSweetPotatoConfig.size()) {
 				toRemove.add(foodInstance);
 			}
 		}
@@ -132,7 +132,7 @@ public final class FoodList implements FoodCapability {
 			foodMap.remove(foodInstance);
 		}
 
-		if (SOLApplePieConfig.shouldCount(food)) {
+		if (SOLSweetPotatoConfig.shouldCount(food)) {
 			FoodInstance newlyEaten = new FoodInstance(food);
 			foodMap.put(newlyEaten, 0);
 		}
@@ -146,7 +146,7 @@ public final class FoodList implements FoodCapability {
 	 * @return The change in food diversity from eating the food.
 	 */
 	public double simulateFoodAdd(Item food) {
-		if (!SOLApplePieConfig.shouldCount(food) && !SOLApplePieConfig.shouldForbiddenCount()) {
+		if (!SOLSweetPotatoConfig.shouldCount(food) && !SOLSweetPotatoConfig.shouldForbiddenCount()) {
 			return 0.0;
 		}
 		double change = 0.0;
@@ -161,7 +161,7 @@ public final class FoodList implements FoodCapability {
 			if (foodInstance.getItem().equals(food)) {
 				change -= diversityContribution;
 			}
-			else if (lastEaten >= SOLApplePieConfig.size()) {
+			else if (lastEaten >= SOLSweetPotatoConfig.size()) {
 				change -= diversityContribution;
 			}
 			else {
@@ -170,7 +170,7 @@ public final class FoodList implements FoodCapability {
 			}
 		}
 
-		if (SOLApplePieConfig.shouldCount(food)) {
+		if (SOLSweetPotatoConfig.shouldCount(food)) {
 			change += calculateDiversityContribution(new FoodInstance(food), 0);
 		}
 
@@ -200,10 +200,10 @@ public final class FoodList implements FoodCapability {
 	}
 
 	private static double calculateTimePenalty(int lastEaten) {
-		int size = SOLApplePieConfig.size();
-		int startDecay = SOLApplePieConfig.startDecay();
-		int endDecay = SOLApplePieConfig.endDecay();
-		double minContribution = SOLApplePieConfig.minContribution();
+		int size = SOLSweetPotatoConfig.size();
+		int startDecay = SOLSweetPotatoConfig.startDecay();
+		int endDecay = SOLSweetPotatoConfig.endDecay();
+		double minContribution = SOLSweetPotatoConfig.minContribution();
 
 		if (startDecay > endDecay || startDecay < 0 || endDecay > size ||
 				startDecay > size || minContribution > 1 || minContribution < 0) {
@@ -235,13 +235,13 @@ public final class FoodList implements FoodCapability {
 			var average = ((saturation + nutrition) / 2);
 
 			if (average < 5) {
-				return average * SOLApplePieConfig.defaultContribution() / 5f;
+				return average * SOLSweetPotatoConfig.defaultContribution() / 5f;
 			}
 
-			return SOLApplePieConfig.defaultContribution() * 4 * Math.log10(average - 4) + 1;
+			return SOLSweetPotatoConfig.defaultContribution() * 4 * Math.log10(average - 4) + 1;
 		}
 
-		return SOLApplePieConfig.defaultContribution();
+		return SOLSweetPotatoConfig.defaultContribution();
 	}
 
 	public Set<Map.Entry<FoodInstance, Integer>> getData() {

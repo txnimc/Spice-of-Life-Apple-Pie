@@ -1,7 +1,7 @@
-package com.tarinoita.solapplepie.client;
+package com.tarinoita.solsweetpotato.client;
 
-import com.tarinoita.solapplepie.SOLApplePie;
-import com.tarinoita.solapplepie.client.gui.FoodBookScreen;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
+import com.tarinoita.solsweetpotato.client.gui.FoodBookScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -9,9 +9,9 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static com.tarinoita.solapplepie.client.SOLClientRegistry.OPEN_FOOD_BOOK;
+import static com.tarinoita.solsweetpotato.client.SOLClientRegistry.OPEN_FOOD_BOOK;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = SOLApplePie.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = SOLSweetPotato.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ClientEvents {
     @SubscribeEvent
     public static void handleKeypress(TickEvent.ClientTickEvent event) {

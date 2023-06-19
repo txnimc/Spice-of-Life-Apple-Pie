@@ -1,4 +1,4 @@
-package com.tarinoita.solapplepie.item.foodcontainer;
+package com.tarinoita.solsweetpotato.item.foodcontainer;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.MenuProvider;
-import com.tarinoita.solapplepie.lib.Localization;
+import com.tarinoita.solsweetpotato.lib.Localization;
 
 import javax.annotation.Nullable;
 

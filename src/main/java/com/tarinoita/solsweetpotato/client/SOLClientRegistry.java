@@ -1,6 +1,6 @@
-package com.tarinoita.solapplepie.client;
+package com.tarinoita.solsweetpotato.client;
 
-import com.tarinoita.solapplepie.lib.Localization;
+import com.tarinoita.solsweetpotato.lib.Localization;
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

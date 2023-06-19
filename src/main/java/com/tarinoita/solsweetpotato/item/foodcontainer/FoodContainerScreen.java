@@ -3,9 +3,9 @@
  * Copyright for portions of the code are held by Samson Basset (Lothrazar)
  * as part of Cyclic, under the MIT license.
  */
-package com.tarinoita.solapplepie.item.foodcontainer;
+package com.tarinoita.solsweetpotato.item.foodcontainer;
 
-import com.tarinoita.solapplepie.SOLApplePie;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -29,7 +29,7 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
 
     @Override
     protected void renderBg(PoseStack matrices, float partialTicks, int x, int y) {
-        this.drawBackground(matrices, new ResourceLocation(SOLApplePie.MOD_ID, "textures/gui/inventory.png"));
+        this.drawBackground(matrices, new ResourceLocation(SOLSweetPotato.MOD_ID, "textures/gui/inventory.png"));
         this.menu.containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
             int slotsPerRow = h.getSlots();
             if (h.getSlots() > 9) {
@@ -68,6 +68,6 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
     }
 
     protected void drawSlot(PoseStack ms, int x, int y) {
-        drawSlot(ms, x, y, new ResourceLocation(SOLApplePie.MOD_ID, "textures/gui/slot.png"), 18);
+        drawSlot(ms, x, y, new ResourceLocation(SOLSweetPotato.MOD_ID, "textures/gui/slot.png"), 18);
     }
 }

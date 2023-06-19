@@ -1,7 +1,7 @@
-package com.tarinoita.solapplepie;
+package com.tarinoita.solsweetpotato;
 
-import com.tarinoita.solapplepie.tracking.CapabilityHandler;
-import com.tarinoita.solapplepie.tracking.benefits.BenefitsHandler;
+import com.tarinoita.solsweetpotato.tracking.CapabilityHandler;
+import com.tarinoita.solsweetpotato.tracking.benefits.BenefitsHandler;
 import com.google.common.collect.Lists;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.MinecraftServer;
@@ -22,11 +22,11 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 
-@Mod.EventBusSubscriber(modid = SOLApplePie.MOD_ID)
-public final class SOLApplePieConfig
+@Mod.EventBusSubscriber(modid = SOLSweetPotato.MOD_ID)
+public final class SOLSweetPotatoConfig
 {
 	private static String localizationPath(String path) {
-		return "config." + SOLApplePie.MOD_ID + "." + path;
+		return "config." + SOLSweetPotato.MOD_ID + "." + path;
 	}
 	
 	public static final Server SERVER;

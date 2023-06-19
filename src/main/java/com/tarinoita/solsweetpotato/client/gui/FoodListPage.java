@@ -1,8 +1,8 @@
-package com.tarinoita.solapplepie.client.gui;
+package com.tarinoita.solsweetpotato.client.gui;
 
-import com.tarinoita.solapplepie.client.gui.elements.UIFoodQueueItem;
-import com.tarinoita.solapplepie.client.gui.elements.UIItemStack;
-import com.tarinoita.solapplepie.tracking.FoodInstance;
+import com.tarinoita.solsweetpotato.client.gui.elements.UIFoodQueueItem;
+import com.tarinoita.solsweetpotato.client.gui.elements.UIItemStack;
+import com.tarinoita.solsweetpotato.tracking.FoodInstance;
 import net.minecraft.world.item.ItemStack;
 
 import java.awt.*;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.tarinoita.solapplepie.lib.Localization.localized;
+import static com.tarinoita.solsweetpotato.lib.Localization.localized;
 
 public final class FoodListPage extends ItemListPage {
     Map<FoodInstance, Integer> foodMap;

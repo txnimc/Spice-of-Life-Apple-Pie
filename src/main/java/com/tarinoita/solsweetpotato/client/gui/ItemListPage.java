@@ -1,6 +1,6 @@
-package com.tarinoita.solapplepie.client.gui;
+package com.tarinoita.solsweetpotato.client.gui;
 
-import com.tarinoita.solapplepie.client.gui.elements.UIItemStack;
+import com.tarinoita.solsweetpotato.client.gui.elements.UIItemStack;
 import net.minecraft.world.item.ItemStack;
 
 import java.awt.*;

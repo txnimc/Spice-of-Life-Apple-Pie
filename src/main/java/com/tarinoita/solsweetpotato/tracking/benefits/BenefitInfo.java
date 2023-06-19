@@ -1,4 +1,4 @@
-package com.tarinoita.solapplepie.tracking.benefits;
+package com.tarinoita.solsweetpotato.tracking.benefits;
 
 public class BenefitInfo {
     public String type;

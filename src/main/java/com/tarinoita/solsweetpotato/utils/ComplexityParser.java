@@ -1,7 +1,7 @@
-package com.tarinoita.solapplepie.utils;
+package com.tarinoita.solsweetpotato.utils;
 
-import com.tarinoita.solapplepie.SOLApplePie;
-import com.tarinoita.solapplepie.tracking.FoodInstance;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
+import com.tarinoita.solsweetpotato.tracking.FoodInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.world.item.Item;
@@ -18,7 +18,7 @@ public class ComplexityParser {
         for (String complexityString : unparsed) {
             String[] s = complexityString.split(",", 0);
             if (s.length != 2) {
-                SOLApplePie.LOGGER.warn("Invalid complexity specification: " + complexityString);
+                SOLSweetPotato.LOGGER.warn("Invalid complexity specification: " + complexityString);
                 continue;
             }
 
@@ -28,7 +28,7 @@ public class ComplexityParser {
                 complexity = Double.parseDouble(s[1]);
             }
             catch (NumberFormatException e) {
-                SOLApplePie.LOGGER.warn("Second argument in complexity specification needs to be a number: " + complexityString);
+                SOLSweetPotato.LOGGER.warn("Second argument in complexity specification needs to be a number: " + complexityString);
                 continue;
             }
 
@@ -37,23 +37,23 @@ public class ComplexityParser {
                 item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(foodString));
             }
             catch (ResourceLocationException e) {
-                SOLApplePie.LOGGER.warn("Invalid item name: " + foodString);
+                SOLSweetPotato.LOGGER.warn("Invalid item name: " + foodString);
                 continue;
             }
             if (item == null) {
-                SOLApplePie.LOGGER.warn("Invalid item name: " + foodString);
+                SOLSweetPotato.LOGGER.warn("Invalid item name: " + foodString);
                 continue;
             }
 
             if (!item.isEdible()) {
-                SOLApplePie.LOGGER.warn("Item is not food: " + foodString);
+                SOLSweetPotato.LOGGER.warn("Item is not food: " + foodString);
                 continue;
             }
 
             FoodInstance food = new FoodInstance(item);
 
             if (food.encode() == null) {
-                SOLApplePie.LOGGER.warn("Item does not exist: " + foodString);
+                SOLSweetPotato.LOGGER.warn("Item does not exist: " + foodString);
                 continue;
             }
 

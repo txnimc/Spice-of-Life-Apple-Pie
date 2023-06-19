@@ -1,6 +1,6 @@
-package com.tarinoita.solapplepie.tracking.benefits;
+package com.tarinoita.solsweetpotato.tracking.benefits;
 
-import com.tarinoita.solapplepie.SOLApplePie;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.nbt.CompoundTag;
 
@@ -27,7 +27,7 @@ public abstract class Benefit {
     }
 
     protected void markInvalid() {
-        SOLApplePie.LOGGER.warn("Invalid attribute specified in config: " + name);
+        SOLSweetPotato.LOGGER.warn("Invalid attribute specified in config: " + name);
         invalid = true;
     }
 

@@ -1,4 +1,4 @@
-package com.tarinoita.solapplepie.api;
+package com.tarinoita.solsweetpotato.api;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;

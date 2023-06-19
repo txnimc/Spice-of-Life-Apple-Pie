@@ -1,6 +1,6 @@
-package com.tarinoita.solapplepie.tracking;
+package com.tarinoita.solsweetpotato.tracking;
 
-import com.tarinoita.solapplepie.SOLApplePie;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
 import net.minecraft.world.item.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -22,12 +22,12 @@ public final class FoodInstance {
 		// TODO it'd be nice to store (and maybe even count) references to missing items, in case the mod is added back in later
 		Item item = ForgeRegistries.ITEMS.getValue(name);
 		if (item == null) {
-			SOLApplePie.LOGGER.warn("attempting to load item into food list that is no longer registered: " + encoded + " (removing from list)");
+			SOLSweetPotato.LOGGER.warn("attempting to load item into food list that is no longer registered: " + encoded + " (removing from list)");
 			return null;
 		}
 		
 		if (!item.isEdible()) {
-			SOLApplePie.LOGGER.warn("attempting to load item into food list that is no longer edible: " + encoded + " (ignoring in case it becomes edible again later)");
+			SOLSweetPotato.LOGGER.warn("attempting to load item into food list that is no longer edible: " + encoded + " (ignoring in case it becomes edible again later)");
 		}
 		
 		return new FoodInstance(item);

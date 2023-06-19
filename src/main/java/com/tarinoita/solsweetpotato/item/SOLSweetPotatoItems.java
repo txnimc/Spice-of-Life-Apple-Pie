@@ -1,7 +1,7 @@
-package com.tarinoita.solapplepie.item;
+package com.tarinoita.solsweetpotato.item;
 
-import com.tarinoita.solapplepie.SOLApplePie;
-import com.tarinoita.solapplepie.item.foodcontainer.FoodContainerItem;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
+import com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainerItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -11,8 +11,9 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 
-@Mod.EventBusSubscriber(modid = SOLApplePie.MOD_ID, bus = MOD)
-public final class SOLApplePieItems {
+@Mod.EventBusSubscriber(modid = SOLSweetPotato.MOD_ID, bus = MOD)
+public final class SOLSweetPotatoItems
+{
 
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
@@ -27,7 +28,7 @@ public final class SOLApplePieItems {
 	}
 	
 	public static <T extends IForgeRegistryEntry<T>> void register(IForgeRegistry<T> registry, T entry, String name) {
-		entry.setRegistryName(SOLApplePie.resourceLocation(name));
+		entry.setRegistryName(SOLSweetPotato.resourceLocation(name));
 		registry.register(entry);
 	}
 }

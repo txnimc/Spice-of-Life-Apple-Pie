@@ -1,4 +1,4 @@
-package com.tarinoita.solapplepie.tracking.benefits;
+package com.tarinoita.solsweetpotato.tracking.benefits;
 
 
 import net.minecraft.world.entity.player.Player;

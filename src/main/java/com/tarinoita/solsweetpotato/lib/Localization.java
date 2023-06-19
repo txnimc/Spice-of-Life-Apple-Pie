@@ -1,6 +1,6 @@
-package com.tarinoita.solapplepie.lib;
+package com.tarinoita.solsweetpotato.lib;
 
-import com.tarinoita.solapplepie.SOLApplePie;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.MutableComponent;
@@ -18,7 +18,7 @@ public final class Localization {
 	
 	/** e.g. keyString("tooltip", "eaten_status.not_eaten_1") -> "tooltip.solapplepie.eatenStatus.not_eaten_1") */
 	public static String keyString(String domain, String path) {
-		return domain + "." + SOLApplePie.MOD_ID + "." + path;
+		return domain + "." + SOLSweetPotato.MOD_ID + "." + path;
 	}
 	
 	@OnlyIn(Dist.CLIENT)

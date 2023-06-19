@@ -3,9 +3,9 @@
  * Copyright for portions of the code are held by Samson Basset (Lothrazar)
  * as part of Cyclic, under the MIT license.
  */
-package com.tarinoita.solapplepie.item.foodcontainer;
+package com.tarinoita.solsweetpotato.item.foodcontainer;
 
-import com.tarinoita.solapplepie.client.ContainerScreenRegistry;
+import com.tarinoita.solsweetpotato.client.ContainerScreenRegistry;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.*;

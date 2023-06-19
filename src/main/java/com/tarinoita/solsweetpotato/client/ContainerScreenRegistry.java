@@ -1,7 +1,7 @@
-package com.tarinoita.solapplepie.client;
+package com.tarinoita.solsweetpotato.client;
 
-import com.tarinoita.solapplepie.SOLApplePie;
-import com.tarinoita.solapplepie.item.foodcontainer.FoodContainer;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
+import com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainer;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.RegistryEvent;
@@ -21,6 +21,6 @@ public class ContainerScreenRegistry {
                 new FoodContainer(windowId, inv, inv.player))).setRegistryName("food_container"));
     }
 
-    @ObjectHolder(SOLApplePie.MOD_ID + ":food_container")
+    @ObjectHolder(SOLSweetPotato.MOD_ID + ":food_container")
     public static MenuType<FoodContainer> food_container;
 }

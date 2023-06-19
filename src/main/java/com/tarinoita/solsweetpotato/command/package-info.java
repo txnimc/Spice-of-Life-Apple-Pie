@@ -3,7 +3,7 @@
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.tarinoita.solapplepie.command;
+package com.tarinoita.solsweetpotato.command;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

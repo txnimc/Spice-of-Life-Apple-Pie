@@ -1,4 +1,4 @@
-package com.tarinoita.solapplepie.client.gui.elements;
+package com.tarinoita.solsweetpotato.client.gui.elements;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiComponent;

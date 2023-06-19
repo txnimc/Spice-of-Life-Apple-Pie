@@ -1,4 +1,4 @@
-package com.tarinoita.solapplepie.tracking.benefits;
+package com.tarinoita.solsweetpotato.tracking.benefits;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;

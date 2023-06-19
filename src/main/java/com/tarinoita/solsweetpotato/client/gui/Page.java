@@ -1,10 +1,10 @@
-package com.tarinoita.solapplepie.client.gui;
+package com.tarinoita.solsweetpotato.client.gui;
 
-import com.tarinoita.solapplepie.client.gui.elements.*;
+import com.tarinoita.solsweetpotato.client.gui.elements.*;
 
 import java.awt.*;
 
-import static com.tarinoita.solapplepie.lib.Localization.localized;
+import static com.tarinoita.solsweetpotato.lib.Localization.localized;
 
 abstract class Page extends UIElement {
 	final UIStack mainStack;

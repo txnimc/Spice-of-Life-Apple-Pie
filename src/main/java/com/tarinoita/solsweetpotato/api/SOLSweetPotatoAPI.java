@@ -1,7 +1,7 @@
-package com.tarinoita.solapplepie.api;
+package com.tarinoita.solsweetpotato.api;
 
-import com.tarinoita.solapplepie.tracking.CapabilityHandler;
-import com.tarinoita.solapplepie.tracking.FoodList;
+import com.tarinoita.solsweetpotato.tracking.CapabilityHandler;
+import com.tarinoita.solsweetpotato.tracking.FoodList;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -10,13 +10,14 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 /**
  Provides a stable API for interfacing with Spice of Life: Carrot Edition.
  */
-public final class SOLApplePieAPI {
+public final class SOLSweetPotatoAPI
+{
 	public static final Capability<FoodCapability> foodCapability = CapabilityManager.get(new CapabilityToken<>() {});;
 	
-	private SOLApplePieAPI() {}
+	private SOLSweetPotatoAPI() {}
 	
 	/**
-	 Retrieves the {@link com.tarinoita.solapplepie.api.FoodCapability} for the given player.
+	 Retrieves the {@link com.tarinoita.solsweetpotato.api.FoodCapability} for the given player.
 	 */
 	public static FoodCapability getFoodCapability(Player player) {
 		return FoodList.get(player);

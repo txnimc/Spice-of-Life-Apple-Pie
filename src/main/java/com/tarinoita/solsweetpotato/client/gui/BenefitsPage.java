@@ -1,8 +1,8 @@
-package com.tarinoita.solapplepie.client.gui;
+package com.tarinoita.solsweetpotato.client.gui;
 
-import com.tarinoita.solapplepie.client.gui.elements.UILabel;
-import com.tarinoita.solapplepie.tracking.benefits.BenefitInfo;
-import com.tarinoita.solapplepie.utils.RomanNumber;
+import com.tarinoita.solsweetpotato.client.gui.elements.UILabel;
+import com.tarinoita.solsweetpotato.tracking.benefits.BenefitInfo;
+import com.tarinoita.solsweetpotato.utils.RomanNumber;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +17,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.tarinoita.solapplepie.lib.Localization.localized;
+import static com.tarinoita.solsweetpotato.lib.Localization.localized;
 
 public class BenefitsPage extends Page {
     private static final int BENEFITS_PER_PAGE = 3;

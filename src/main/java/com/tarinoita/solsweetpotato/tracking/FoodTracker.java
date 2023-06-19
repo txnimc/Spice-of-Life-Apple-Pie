@@ -1,8 +1,8 @@
-package com.tarinoita.solapplepie.tracking;
+package com.tarinoita.solsweetpotato.tracking;
 
-import com.tarinoita.solapplepie.SOLApplePie;
-import com.tarinoita.solapplepie.item.foodcontainer.FoodContainerItem;
-import com.tarinoita.solapplepie.tracking.benefits.BenefitsHandler;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
+import com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainerItem;
+import com.tarinoita.solsweetpotato.tracking.benefits.BenefitsHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
 
-@Mod.EventBusSubscriber(modid = SOLApplePie.MOD_ID)
+@Mod.EventBusSubscriber(modid = SOLSweetPotato.MOD_ID)
 public final class FoodTracker {
 
 	@SubscribeEvent
@@ -52,7 +52,7 @@ public final class FoodTracker {
 
 			if (clickedBlock == Blocks.CAKE)
 			{
-				if (SOLApplePie.HasFarmersDelight())
+				if (SOLSweetPotato.HasFarmersDelight())
 					eatenItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation("farmersdelight:cake_slice"));
 
 				assert eatenItem != null;

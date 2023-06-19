@@ -3,7 +3,7 @@
  */
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package com.tarinoita.solapplepie.client;
+package com.tarinoita.solsweetpotato.client;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

@@ -1,7 +1,7 @@
-package com.tarinoita.solapplepie.tracking.benefits;
+package com.tarinoita.solsweetpotato.tracking.benefits;
 
-import com.tarinoita.solapplepie.ConfigHandler;
-import com.tarinoita.solapplepie.SOLApplePie;
+import com.tarinoita.solsweetpotato.ConfigHandler;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.DoubleTag;
@@ -57,7 +57,7 @@ public final class AttributeBenefit extends Benefit {
             attr = Objects.requireNonNull(player.getAttribute(attribute));
         }
         catch (NullPointerException e) {
-            SOLApplePie.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getRegistryName());
+            SOLSweetPotato.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getRegistryName());
             return;
         }
 
@@ -80,7 +80,7 @@ public final class AttributeBenefit extends Benefit {
             attr = Objects.requireNonNull(player.getAttribute(attribute));
         }
         catch (NullPointerException e) {
-            SOLApplePie.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getRegistryName());
+            SOLSweetPotato.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getRegistryName());
             return;
         }
         attr.removeModifier(modifier);

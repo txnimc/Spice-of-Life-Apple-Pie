@@ -1,11 +1,11 @@
-package com.tarinoita.solapplepie.tracking;
+package com.tarinoita.solsweetpotato.tracking;
 
-import com.tarinoita.solapplepie.SOLApplePie;
-import com.tarinoita.solapplepie.SOLApplePieConfig;
-import com.tarinoita.solapplepie.api.FoodCapability;
-import com.tarinoita.solapplepie.communication.FoodListMessage;
-import com.tarinoita.solapplepie.tracking.benefits.BenefitsHandler;
-import com.tarinoita.solapplepie.tracking.benefits.EffectBenefitsCapability;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
+import com.tarinoita.solsweetpotato.SOLSweetPotatoConfig;
+import com.tarinoita.solsweetpotato.api.FoodCapability;
+import com.tarinoita.solsweetpotato.communication.FoodListMessage;
+import com.tarinoita.solsweetpotato.tracking.benefits.BenefitsHandler;
+import com.tarinoita.solsweetpotato.tracking.benefits.EffectBenefitsCapability;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -22,13 +22,13 @@ import net.minecraftforge.network.NetworkDirection;
 
 import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
 
-@Mod.EventBusSubscriber(modid = SOLApplePie.MOD_ID)
+@Mod.EventBusSubscriber(modid = SOLSweetPotato.MOD_ID)
 public final class CapabilityHandler {
-	private static final ResourceLocation FOOD = SOLApplePie.resourceLocation("food");
-	private static final ResourceLocation EFFECT_BENEFITS = SOLApplePie.resourceLocation("effect_benefits");
+	private static final ResourceLocation FOOD = SOLSweetPotato.resourceLocation("food");
+	private static final ResourceLocation EFFECT_BENEFITS = SOLSweetPotato.resourceLocation("effect_benefits");
 	public static Capability<EffectBenefitsCapability> effectBenefitsCapability = CapabilityManager.get(new CapabilityToken<>() {});
 	
-	@Mod.EventBusSubscriber(modid = SOLApplePie.MOD_ID, bus = MOD)
+	@Mod.EventBusSubscriber(modid = SOLSweetPotato.MOD_ID, bus = MOD)
 	private static final class RegisterCapabilitiesSubscriber {
 		@SubscribeEvent
 		public static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -52,7 +52,7 @@ public final class CapabilityHandler {
 	
 	@SubscribeEvent
 	public static void onClone(PlayerEvent.Clone event) {
-		if (event.isWasDeath() && SOLApplePieConfig.shouldResetOnDeath()) return;
+		if (event.isWasDeath() && SOLSweetPotatoConfig.shouldResetOnDeath()) return;
 		
 		Player originalPlayer = event.getOriginal();
 		originalPlayer.revive(); // so we can access the capabilities; entity will get removed either way
@@ -73,7 +73,7 @@ public final class CapabilityHandler {
 		if (player.level.isClientSide) return;
 		
 		ServerPlayer target = (ServerPlayer) player;
-		SOLApplePie.channel.sendTo(
+		SOLSweetPotato.channel.sendTo(
 			new FoodListMessage(FoodList.get(player)),
 			target.connection.getConnection(),
 			NetworkDirection.PLAY_TO_CLIENT

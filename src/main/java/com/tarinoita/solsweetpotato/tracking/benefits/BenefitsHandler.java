@@ -1,10 +1,10 @@
-package com.tarinoita.solapplepie.tracking.benefits;
+package com.tarinoita.solsweetpotato.tracking.benefits;
 
-import com.tarinoita.solapplepie.ConfigHandler;
-import com.tarinoita.solapplepie.SOLApplePie;
-import com.tarinoita.solapplepie.SOLApplePieConfig;
-import com.tarinoita.solapplepie.tracking.CapabilityHandler;
-import com.tarinoita.solapplepie.tracking.FoodList;
+import com.tarinoita.solsweetpotato.ConfigHandler;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
+import com.tarinoita.solsweetpotato.SOLSweetPotatoConfig;
+import com.tarinoita.solsweetpotato.tracking.CapabilityHandler;
+import com.tarinoita.solsweetpotato.tracking.FoodList;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.world.entity.player.Player;
@@ -19,7 +19,7 @@ import java.util.*;
 /**
  * All updates to food diversity benefits go through this class.
  */
-@Mod.EventBusSubscriber(modid = SOLApplePie.MOD_ID)
+@Mod.EventBusSubscriber(modid = SOLSweetPotato.MOD_ID)
 public class BenefitsHandler {
     @SubscribeEvent
     public static void tickBenefits(LivingEvent.LivingUpdateEvent event) {
@@ -43,7 +43,7 @@ public class BenefitsHandler {
         }
 
         FoodList foodList = FoodList.get(player);
-        if (foodList.getFoodsEaten() < SOLApplePieConfig.minFoodsToActivate()) {
+        if (foodList.getFoodsEaten() < SOLSweetPotatoConfig.minFoodsToActivate()) {
             return;
         }
 
@@ -118,7 +118,7 @@ public class BenefitsHandler {
 
         ServerPlayer serverPlayer = (ServerPlayer) player;
         boolean isInSurvival = serverPlayer.gameMode.isSurvival();
-        return !SOLApplePieConfig.limitProgressionToSurvival() || isInSurvival;
+        return !SOLSweetPotatoConfig.limitProgressionToSurvival() || isInSurvival;
     }
 
     public static Pair<List<BenefitInfo>, List<BenefitInfo>> getBenefitInfo(double active_threshold, int foodEaten) {
@@ -126,7 +126,7 @@ public class BenefitsHandler {
         List<BenefitInfo> activeBenefitInfo = new ArrayList<>();
         List<BenefitInfo> inactiveBenefitInfo = new ArrayList<>();
 
-        if (foodEaten < SOLApplePieConfig.minFoodsToActivate()) {
+        if (foodEaten < SOLSweetPotatoConfig.minFoodsToActivate()) {
             active_threshold = -1;
         }
 

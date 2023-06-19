@@ -1,6 +1,6 @@
-package com.tarinoita.solapplepie.tracking.benefits;
+package com.tarinoita.solsweetpotato.tracking.benefits;
 
-import com.tarinoita.solapplepie.tracking.CapabilityHandler;
+import com.tarinoita.solsweetpotato.tracking.CapabilityHandler;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;

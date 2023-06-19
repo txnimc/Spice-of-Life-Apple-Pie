@@ -1,7 +1,7 @@
-package com.tarinoita.solapplepie.item.foodcontainer;
+package com.tarinoita.solsweetpotato.item.foodcontainer;
 
-import com.tarinoita.solapplepie.tracking.FoodList;
-import com.tarinoita.solapplepie.tracking.FoodTracker;
+import com.tarinoita.solsweetpotato.tracking.FoodList;
+import com.tarinoita.solsweetpotato.tracking.FoodTracker;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;

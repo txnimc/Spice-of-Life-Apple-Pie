@@ -1,6 +1,6 @@
-package com.tarinoita.solapplepie.communication;
+package com.tarinoita.solsweetpotato.communication;
 
-import com.tarinoita.solapplepie.ConfigHandler;
+import com.tarinoita.solsweetpotato.ConfigHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;

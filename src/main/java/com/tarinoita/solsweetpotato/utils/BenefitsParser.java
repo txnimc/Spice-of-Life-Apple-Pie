@@ -1,9 +1,9 @@
-package com.tarinoita.solapplepie.utils;
+package com.tarinoita.solsweetpotato.utils;
 
-import com.tarinoita.solapplepie.SOLApplePie;
-import com.tarinoita.solapplepie.tracking.benefits.AttributeBenefit;
-import com.tarinoita.solapplepie.tracking.benefits.Benefit;
-import com.tarinoita.solapplepie.tracking.benefits.EffectBenefit;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
+import com.tarinoita.solsweetpotato.tracking.benefits.AttributeBenefit;
+import com.tarinoita.solsweetpotato.tracking.benefits.Benefit;
+import com.tarinoita.solsweetpotato.tracking.benefits.EffectBenefit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,20 +22,20 @@ public class BenefitsParser {
                 int len = benefitArgs.length;
 
                 if (len < 2) {
-                    SOLApplePie.LOGGER.warn("Invalid benefit specification: " + benefitString);
+                    SOLSweetPotato.LOGGER.warn("Invalid benefit specification: " + benefitString);
                     continue;
                 }
 
                 String benefitType;
                 if (benefitArgs[0].equals("attribute")) {
                     if (len < 3) {
-                        SOLApplePie.LOGGER.warn("Need to specify a value when defining an attribute benefit: " + benefitString);
+                        SOLSweetPotato.LOGGER.warn("Need to specify a value when defining an attribute benefit: " + benefitString);
                     }
                     benefitType = "attribute";
                 } else if (benefitArgs[0].equals("effect")) {
                     benefitType = "effect";
                 } else {
-                    SOLApplePie.LOGGER.warn("Invalid benefit type: " + benefitArgs[0] + " in string " + benefitString);
+                    SOLSweetPotato.LOGGER.warn("Invalid benefit type: " + benefitArgs[0] + " in string " + benefitString);
                     continue;
                 }
 

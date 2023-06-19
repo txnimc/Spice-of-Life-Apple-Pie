@@ -1,11 +1,11 @@
-package com.tarinoita.solapplepie;
+package com.tarinoita.solsweetpotato;
 
-import com.tarinoita.solapplepie.communication.ConfigMessage;
-import com.tarinoita.solapplepie.tracking.FoodInstance;
-import com.tarinoita.solapplepie.tracking.benefits.Benefit;
-import com.tarinoita.solapplepie.tracking.benefits.BenefitList;
-import com.tarinoita.solapplepie.utils.BenefitsParser;
-import com.tarinoita.solapplepie.utils.ComplexityParser;
+import com.tarinoita.solsweetpotato.communication.ConfigMessage;
+import com.tarinoita.solsweetpotato.tracking.FoodInstance;
+import com.tarinoita.solsweetpotato.tracking.benefits.Benefit;
+import com.tarinoita.solsweetpotato.tracking.benefits.BenefitList;
+import com.tarinoita.solsweetpotato.utils.BenefitsParser;
+import com.tarinoita.solsweetpotato.utils.ComplexityParser;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.nbt.*;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Mod.EventBusSubscriber(modid = SOLApplePie.MOD_ID)
+@Mod.EventBusSubscriber(modid = SOLSweetPotato.MOD_ID)
 public class ConfigHandler {
     public static Map<FoodInstance, Double> complexityMap = new HashMap<>();
     public static List<Double> thresholds = new ArrayList<>();
@@ -103,9 +103,9 @@ public class ConfigHandler {
 
     @SubscribeEvent
     public static void onServerStart(ServerStartingEvent event) {
-        complexityMap = ComplexityParser.parse(SOLApplePieConfig.getComplexityUnparsed());
-        thresholds = SOLApplePieConfig.getThresholds();
-        List<List<Benefit>> benefits = BenefitsParser.parse(SOLApplePieConfig.getBenefitsUnparsed());
+        complexityMap = ComplexityParser.parse(SOLSweetPotatoConfig.getComplexityUnparsed());
+        thresholds = SOLSweetPotatoConfig.getThresholds();
+        List<List<Benefit>> benefits = BenefitsParser.parse(SOLSweetPotatoConfig.getBenefitsUnparsed());
         benefitsList = new BenefitList(benefits);
 
         isFirstAid = ModList.get().isLoaded("firstaid");
@@ -124,7 +124,7 @@ public class ConfigHandler {
         if (player.level.isClientSide) return;
 
         ServerPlayer target = (ServerPlayer) player;
-        SOLApplePie.channel.sendTo(
+        SOLSweetPotato.channel.sendTo(
                 new ConfigMessage(),
                 target.connection.getConnection(),
                 NetworkDirection.PLAY_TO_CLIENT

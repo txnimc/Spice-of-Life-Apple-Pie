@@ -1,6 +1,6 @@
-package com.tarinoita.solapplepie.client.gui;
+package com.tarinoita.solsweetpotato.client.gui;
 
-import com.tarinoita.solapplepie.SOLApplePie;
+import com.tarinoita.solsweetpotato.SOLSweetPotato;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 final class PageFlipButton extends Button {
-	private static final ResourceLocation texture = SOLApplePie.resourceLocation("textures/gui/food_book.png");
+	private static final ResourceLocation texture = SOLSweetPotato.resourceLocation("textures/gui/food_book.png");
 	public static final int width = 23;
 	public static final int height = 13;
 	
