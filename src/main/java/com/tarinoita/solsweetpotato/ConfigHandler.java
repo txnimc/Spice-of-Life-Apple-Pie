@@ -113,7 +113,7 @@ public class ConfigHandler {
 
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        syncConfig(event.getPlayer());
+        syncConfig(event.getEntity());
     }
 
     public static List<List<Benefit>> getBenefitsList() {

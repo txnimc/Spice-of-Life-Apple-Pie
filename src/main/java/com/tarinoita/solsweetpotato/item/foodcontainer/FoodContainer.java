@@ -22,7 +22,7 @@ public class FoodContainer extends AbstractContainerMenu {
     private Inventory playerInventory;
 
     public FoodContainer(int id, Inventory playerInventory, Player player) {
-        super(ContainerScreenRegistry.food_container, id);
+        super(ContainerScreenRegistry.FOOD_CONTAINER.get(), id);
 
         // When we hit the hotkey to open a food container, check held items first
         if (player.getMainHandItem().getItem() instanceof FoodContainerItem) {

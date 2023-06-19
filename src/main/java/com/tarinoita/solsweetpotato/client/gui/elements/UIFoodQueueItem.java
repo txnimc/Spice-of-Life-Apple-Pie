@@ -31,13 +31,13 @@ public class UIFoodQueueItem extends UIItemStack{
     }
 
     private List<Component> getFoodQueueTooltip() {
-        Component foodName =  new TranslatableComponent(itemStack.getItem().getDescriptionId(itemStack))
+        Component foodName =  Component.translatable(itemStack.getItem().getDescriptionId(itemStack))
                 .withStyle(itemStack.getRarity().color);
 
         List<Component> tooltip = new ArrayList<>();
         tooltip.add(foodName);
 
-        Component space = new TextComponent("");
+        Component space = Component.literal("");
         tooltip.add(space);
 
         double contribution = FoodList.calculateDiversityContribution(new FoodInstance(itemStack.getItem()), lastEaten);

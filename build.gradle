@@ -106,6 +106,8 @@ dependencies {
 	//minecraft "net.minecraftforge:forge:${project.forge_mc_version}-${project.forge_version}"
 	minecraft "net.minecraftforge:forge:${project.forge_version}"
 
+	compileOnly fg.deobf("curse.maven:origins-474438:${origins_file}")
+
 	runtimeOnly fg.deobf("curse.maven:jei-238222:4062344")
 	runtimeOnly fg.deobf("curse.maven:appleskin-248787:3927564")
 

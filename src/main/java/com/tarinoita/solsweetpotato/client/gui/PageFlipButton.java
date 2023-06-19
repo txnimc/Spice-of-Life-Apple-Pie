@@ -4,8 +4,11 @@ import com.tarinoita.solsweetpotato.SOLSweetPotato;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -19,7 +22,7 @@ final class PageFlipButton extends Button {
 	private final Pageable pageable;
 	
 	PageFlipButton(int x, int y, Direction direction, Pageable pageable) {
-		super(x, y, 23, 13, new TextComponent(""), (button) -> ((PageFlipButton) button).changePage());
+		super(x, y, 23, 13, Component.literal(""), (button) -> ((PageFlipButton) button).changePage());
 		
 		this.direction = direction;
 		this.pageable = pageable;
@@ -48,6 +51,11 @@ final class PageFlipButton extends Button {
 	
 	private void changePage() {
 		pageable.switchToPage(pageable.getCurrentPageNumber() + direction.distance);
+	}
+	
+	@Override
+	public void playDownSound(SoundManager soundManager) {
+		soundManager.play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
 	}
 	
 	enum Direction {

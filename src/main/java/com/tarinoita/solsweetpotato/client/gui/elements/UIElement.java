@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -75,7 +75,7 @@ public abstract class UIElement {
 	protected void renderTooltip(PoseStack matrices, int mouseX, int mouseY) {
 		if (tooltip == null) return;
 		
-		renderTooltip(matrices, ItemStack.EMPTY, Collections.singletonList(new TextComponent(tooltip)), mouseX, mouseY);
+		renderTooltip(matrices, ItemStack.EMPTY, Collections.singletonList(Component.literal(tooltip)), mouseX, mouseY);
 	}
 	
 	/**

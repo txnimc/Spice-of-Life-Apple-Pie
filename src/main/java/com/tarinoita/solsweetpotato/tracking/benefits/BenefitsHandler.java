@@ -22,7 +22,7 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = SOLSweetPotato.MOD_ID)
 public class BenefitsHandler {
     @SubscribeEvent
-    public static void tickBenefits(LivingEvent.LivingUpdateEvent event) {
+    public static void tickBenefits(LivingEvent.LivingTickEvent event) {
         if (!checkEvent(event)) {
             return;
         }
@@ -58,24 +58,26 @@ public class BenefitsHandler {
             if (i >= benefitsList.size()) {
                 return;
             }
-            if (diversity >= thresh) {
-                benefitsList.get(i).forEach(b -> b.applyTo(player));
-            }
-            else {
-                benefitsList.get(i).forEach(b -> b.removeFrom(player));
-            }
+            benefitsList.get(i).forEach(b -> {
+                // != acts as XOR
+                if((diversity >= thresh) != b.isDetriment()) {
+                    b.applyTo(player);
+                } else {
+                    b.removeFrom(player);
+                }
+            });
         }
     }
 
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         updatePlayer(event);
-        CapabilityHandler.syncFoodList(event.getPlayer());
+        CapabilityHandler.syncFoodList(event.getEntity());
     }
 
     @SubscribeEvent
     public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
-    	Player player = event.getPlayer();
+    	Player player = event.getEntity();
     	player.reviveCaps();
         removeAllBenefits(player);
         player.invalidateCaps();
@@ -140,13 +142,16 @@ public class BenefitsHandler {
             }
             if (active_threshold >= thresh) {
                 benefitsList.get(i).forEach(b -> activeBenefitInfo.add(
-                        new BenefitInfo(b.getType(), b.getName(), b.getValue(), thresh)));
+                        new BenefitInfo(b.getType(), b.getName(), b.getValue(), thresh, b.isDetriment())));
             }
             else {
                 benefitsList.get(i).forEach(b -> inactiveBenefitInfo.add(
-                        new BenefitInfo(b.getType(), b.getName(), b.getValue(), thresh)));
+                        new BenefitInfo(b.getType(), b.getName(), b.getValue(), thresh, b.isDetriment())));
             }
         }
+
+        activeBenefitInfo.sort((bi1, bi2) -> Boolean.compare(bi1.detriment, bi2.detriment));
+        inactiveBenefitInfo.sort((bi1, bi2) -> Boolean.compare(bi1.detriment, bi2.detriment));
 
         return new ImmutablePair<>(activeBenefitInfo, inactiveBenefitInfo);
     }

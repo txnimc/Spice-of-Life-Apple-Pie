@@ -3,6 +3,7 @@ package com.tarinoita.solsweetpotato.tracking.benefits;
 import com.tarinoita.solsweetpotato.ConfigHandler;
 import com.tarinoita.solsweetpotato.SOLSweetPotato;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.DoubleTag;
 import net.minecraft.nbt.StringTag;
@@ -26,8 +27,8 @@ public final class AttributeBenefit extends Benefit {
     private Attribute attribute;
     private final boolean isMaxHealth;
 
-    public AttributeBenefit(String name, double value, double threshold) {
-        super("attribute", name, value, threshold);
+    public AttributeBenefit(String name, double value, double threshold, boolean detriment) {
+        super("attribute", name, value, threshold, detriment);
 
         id = UUID.randomUUID();
 
@@ -36,8 +37,8 @@ public final class AttributeBenefit extends Benefit {
         isMaxHealth = name.equals("generic.max_health");
     }
 
-    public AttributeBenefit(String name, double value, double threshold, String uuid) {
-        super("attribute", name, value, threshold);
+    public AttributeBenefit(String name, double value, double threshold, String uuid, boolean detriment) {
+        super("attribute", name, value, threshold, detriment);
 
         id = UUID.fromString(uuid);
 
@@ -57,7 +58,7 @@ public final class AttributeBenefit extends Benefit {
             attr = Objects.requireNonNull(player.getAttribute(attribute));
         }
         catch (NullPointerException e) {
-            SOLSweetPotato.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getRegistryName());
+            SOLSweetPotato.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getDescriptionId());
             return;
         }
 
@@ -80,7 +81,7 @@ public final class AttributeBenefit extends Benefit {
             attr = Objects.requireNonNull(player.getAttribute(attribute));
         }
         catch (NullPointerException e) {
-            SOLSweetPotato.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getRegistryName());
+            SOLSweetPotato.LOGGER.warn("ERROR: player does not have attribute: " + attribute.getDescriptionId());
             return;
         }
         attr.removeModifier(modifier);
@@ -121,12 +122,14 @@ public final class AttributeBenefit extends Benefit {
         DoubleTag v = DoubleTag.valueOf(value);
         StringTag uuid = StringTag.valueOf(id.toString());
         DoubleTag thresh = DoubleTag.valueOf(threshold);
+        ByteTag detr = ByteTag.valueOf((byte) (detriment ? 1 : 0));
 
         tag.put("type", type);
         tag.put("name", n);
         tag.put("value", v);
         tag.put("id", uuid);
         tag.put("threshold", thresh);
+        tag.put("detriment", detr);
 
         return tag;
     }
@@ -140,7 +143,8 @@ public final class AttributeBenefit extends Benefit {
         double v = tag.getDouble("value");
         String uuid = tag.getString("id");
         double thresh = tag.getDouble("threshold");
+        boolean detr = tag.getByte("detriment") == 1;
 
-        return new AttributeBenefit(n, v, thresh, uuid);
+        return new AttributeBenefit(n, v, thresh, uuid, detr);
     }
 }

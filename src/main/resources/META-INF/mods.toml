@@ -1,7 +1,7 @@
 # The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
 modLoader = "javafml"
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion = "[40,)"
+loaderVersion = "[43,)"
 
 issueTrackerURL = "https://github.com/tarinoita/Spice-of-Life-Sweet-Potato-Edition/issues"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/spice-of-life-apple-pie-edition"
@@ -25,13 +25,13 @@ require maintaining a diverse diet, rather than a one-time consumption.
 [[dependencies]]
 	modId = "forge"
 	mandatory = true
-	versionRange = "[40,)"
+	versionRange = "[43,)"
 	ordering = "NONE" # BEFORE or AFTER required if the relationship is not mandatory
 	side = "BOTH" # BOTH, CLIENT or SERVER
 
 [[dependencies]]
 	modId = "minecraft"
 	mandatory = true
-	versionRange = "[1.18.2, )"
+	versionRange = "[1.19.2, )"
 	ordering = "NONE"
 	side = "BOTH"

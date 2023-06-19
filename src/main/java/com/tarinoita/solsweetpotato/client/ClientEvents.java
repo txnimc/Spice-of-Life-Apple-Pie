@@ -21,7 +21,7 @@ public class ClientEvents {
             return;
         }
 
-        if (OPEN_FOOD_BOOK.isDown()) {
+        if (OPEN_FOOD_BOOK != null && OPEN_FOOD_BOOK.isDown()) {
             FoodBookScreen.open(player);
         }
     }

@@ -11,6 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -22,11 +23,11 @@ import static com.tarinoita.solsweetpotato.lib.Localization.localizedComponent;
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = SOLSweetPotato.MOD_ID)
 public final class TooltipHandler {
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOW)
 	public static void onItemTooltip(ItemTooltipEvent event) {
 		if (!SOLSweetPotatoConfig.isFoodTooltipEnabled()) return;
 		
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		if (player == null) return;
 		
 		Item food = event.getItemStack().getItem();

@@ -11,7 +11,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -56,7 +56,7 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 	}
 	
 	public FoodBookScreen(Player player) {
-		super(new TextComponent(""));
+		super(Component.literal(""));
 		this.player = player;
 	}
 	
@@ -110,12 +110,16 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 		addPages("food_queue_label", foods);
 
 		Pair<List<BenefitInfo>, List<BenefitInfo>> benefits = BenefitsHandler.getBenefitInfo(foodDiversity, foodEaten);
-		List<BenefitInfo> activeBenefits = benefits.getKey();
-		List<BenefitInfo> inactiveBenefits = benefits.getValue();
+		List<BenefitInfo> activeBenefits = benefits.getKey().stream().filter(bi -> !bi.detriment).toList();
+		List<BenefitInfo> inactiveDetriments = benefits.getKey().stream().filter(bi -> bi.detriment).toList();
+		List<BenefitInfo> inactiveBenefits = benefits.getValue().stream().filter(bi -> !bi.detriment).toList();
+		List<BenefitInfo> activeDetriments = benefits.getValue().stream().filter(bi -> bi.detriment).toList();
 		
+		addPages("active_detriments_header", activeDetriments, inactiveRed);
 		addPages("active_benefits_header", activeBenefits, activeGreen);
 
 		if (SOLSweetPotatoConfig.shouldShowInactiveBenefits()) {
+			addPages("inactive_detriments_header", inactiveDetriments, activeGreen);
 			addPages("inactive_benefits_header", inactiveBenefits, inactiveRed);
 		}
 	}
