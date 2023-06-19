@@ -48,7 +48,7 @@ public final class AttributeBenefit extends Benefit {
     }
 
     public void applyTo(Player player) {
-        if (!checkUsage() || player.level.isClientSide)
+        if (!checkUsage() || player.level().isClientSide)
             return;
 
         float oldMax = player.getMaxHealth();
@@ -73,7 +73,7 @@ public final class AttributeBenefit extends Benefit {
     }
 
     public void removeFrom(Player player) {
-        if (!checkUsage() || player.level.isClientSide)
+        if (!checkUsage() || player.level().isClientSide)
             return;
 
         AttributeInstance attr;

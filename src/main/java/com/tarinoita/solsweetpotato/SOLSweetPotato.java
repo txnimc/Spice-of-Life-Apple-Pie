@@ -7,7 +7,10 @@ import com.tarinoita.solsweetpotato.communication.FoodListMessage;
 import com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainerScreen;
 
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -18,6 +21,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +38,6 @@ public final class SOLSweetPotato
 
 	public static boolean HasFarmersDelight() { return ModList.get().isLoaded("farmersdelight"); }
 	public static boolean HasPamsHarvestcraft() { return ModList.get().isLoaded("pamhc2foodcore"); }
-
 
 	private static final String PROTOCOL_VERSION = "1.0";
 	public static SimpleChannel channel = NetworkRegistry.ChannelBuilder

@@ -99,7 +99,7 @@ public class BenefitsHandler {
     }
 
     public static void updatePlayer(Player player) {
-        if (player.level.isClientSide) {
+        if (player.level().isClientSide) {
             return;
         }
 
@@ -115,7 +115,7 @@ public class BenefitsHandler {
 
         Player player = (Player) event.getEntity();
 
-        if (player.level.isClientSide)
+        if (player.level().isClientSide)
             return false;
 
         ServerPlayer serverPlayer = (ServerPlayer) player;

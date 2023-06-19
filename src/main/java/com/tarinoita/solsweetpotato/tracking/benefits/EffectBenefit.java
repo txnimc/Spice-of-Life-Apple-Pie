@@ -9,6 +9,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.core.Registry;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 import net.minecraft.world.effect.MobEffect;
@@ -27,7 +28,7 @@ public final class EffectBenefit extends Benefit{
     }
 
     public void applyTo(Player player) {
-        if (!checkUsage() || player.level.isClientSide)
+        if (!checkUsage() || player.level().isClientSide)
             return;
 
         EffectBenefitsCapability effectBenefits = EffectBenefitsCapability.get(player);
@@ -35,7 +36,7 @@ public final class EffectBenefit extends Benefit{
     }
 
     public void onTick(Player player) {
-        if (!checkUsage() || player.level.isClientSide)
+        if (!checkUsage() || player.level().isClientSide)
             return;
 
         // Only refresh this effect when less than REAPPLY_DURATION ticks remaining
@@ -49,7 +50,7 @@ public final class EffectBenefit extends Benefit{
     }
 
     public void removeFrom(Player player) {
-        if (!checkUsage() || player.level.isClientSide)
+        if (!checkUsage() || player.level().isClientSide)
             return;
 
         EffectBenefitsCapability effectBenefits = EffectBenefitsCapability.get(player);
@@ -70,7 +71,7 @@ public final class EffectBenefit extends Benefit{
     }
 
     private void createEffect() {
-        IForgeRegistry<MobEffect> registry = RegistryManager.ACTIVE.getRegistry(Registry.MOB_EFFECT_REGISTRY);
+        IForgeRegistry<MobEffect> registry = ForgeRegistries.MOB_EFFECTS;
         try {
             effect = registry.getValue(new ResourceLocation(name));
         }

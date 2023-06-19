@@ -121,7 +121,7 @@ public class ConfigHandler {
     }
 
     public static void syncConfig(Player player) {
-        if (player.level.isClientSide) return;
+        if (player.level().isClientSide) return;
 
         ServerPlayer target = (ServerPlayer) player;
         SOLSweetPotato.channel.sendTo(

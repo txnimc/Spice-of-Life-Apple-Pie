@@ -12,7 +12,7 @@ import net.minecraftforge.fml.DistExecutor;
 
 public final class FoodBookItem extends Item {
 	public FoodBookItem() {
-		super(new Properties().tab(CreativeModeTab.TAB_MISC));
+		super(new Properties());
 	}
 	
 	@Override

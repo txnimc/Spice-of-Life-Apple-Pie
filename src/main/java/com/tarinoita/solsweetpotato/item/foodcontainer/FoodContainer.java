@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 
 public class FoodContainer extends AbstractContainerMenu {
@@ -41,7 +41,7 @@ public class FoodContainer extends AbstractContainerMenu {
         }
 
         this.playerInventory = playerInventory;
-        containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+        containerItem.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
             nslots = h.getSlots();
             int slotsPerRow = h.getSlots();
             if (h.getSlots() > 9) {
