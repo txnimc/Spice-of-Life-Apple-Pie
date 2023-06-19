@@ -34,4 +34,10 @@ jobs:
             # Only include this section if you wish to publish
             # your assets on CurseForge.
           curseforge-id: 704584
-          curseforge-token: ${{ secrets.CF_API_TOKEN }} 
+          curseforge-token: ${{ secrets.CF_API_TOKEN }}
+          loaders: |
+            forge
+          game-versions: |
+            1.20.1
+          java: |
+            17

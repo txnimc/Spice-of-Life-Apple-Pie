@@ -31,6 +31,6 @@ require maintaining a diverse diet, rather than a one-time consumption.
 [[dependencies]]
 	modId = "minecraft"
 	mandatory = true
-	versionRange = "[1.20.1, )"
+	versionRange = "[1.20.1,)"
 	ordering = "NONE"
 	side = "BOTH"
