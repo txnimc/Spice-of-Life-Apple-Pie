@@ -108,13 +108,13 @@ dependencies {
 
 	compileOnly fg.deobf("curse.maven:origins-474438:${origins_file}")
 
-	runtimeOnly fg.deobf("curse.maven:jei-238222:4062344")
-	runtimeOnly fg.deobf("curse.maven:appleskin-248787:3927564")
-
-	runtimeOnly fg.deobf("curse.maven:harvestcraft-372534:3951938")
-	runtimeOnly fg.deobf("curse.maven:farmersdelight-398521:3999153")
-	runtimeOnly fg.deobf("curse.maven:cookingforblockheads-231484:4065856")
-	runtimeOnly fg.deobf("curse.maven:balm-531761:3914491")
+//	runtimeOnly fg.deobf("curse.maven:jei-238222:4062344")
+//	runtimeOnly fg.deobf("curse.maven:appleskin-248787:3927564")
+//
+//	runtimeOnly fg.deobf("curse.maven:harvestcraft-372534:3951938")
+//	runtimeOnly fg.deobf("curse.maven:farmersdelight-398521:3999153")
+//	runtimeOnly fg.deobf("curse.maven:cookingforblockheads-231484:4065856")
+//	runtimeOnly fg.deobf("curse.maven:balm-531761:3914491")
 
 	// You may put jars on which you depend on in ./libs or you may define them like so..
 	// compile "some.group:artifact:version:classifier"

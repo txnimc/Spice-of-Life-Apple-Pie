@@ -6,6 +6,7 @@ import com.tarinoita.solsweetpotato.tracking.FoodInstance;
 import com.tarinoita.solsweetpotato.tracking.FoodList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
@@ -59,7 +60,7 @@ public final class TooltipHandler {
 
 	public static List<Component> addDiversityInfoTooltips(List<Component> tooltip, double contribution, int lastEaten) {
 		String contribution_path = lastEaten == -1 ? "food_book.queue.tooltip.uneaten_contribution_label" : "food_book.queue.tooltip.contribution_label";
-		tooltip.add(new TextComponent(localized("gui", contribution_path) + ": " + String.format("%.2f", contribution)).withStyle(lastEaten == -1 ? ChatFormatting.GRAY : ChatFormatting.GOLD));
+		tooltip.add(Component.literal(localized("gui", contribution_path) + ": " + String.format("%.2f", contribution)).withStyle(lastEaten == -1 ? ChatFormatting.GRAY : ChatFormatting.GOLD));
 
 		if (lastEaten != -1)
 		{
@@ -68,7 +69,7 @@ public final class TooltipHandler {
 			{
 				last_eaten_path = "food_book.queue.tooltip.last_eaten_label_singular";
 			}
-			tooltip.add(new TextComponent(localized("gui", last_eaten_path, lastEaten)).withStyle(ChatFormatting.GRAY));
+			tooltip.add(Component.literal(localized("gui", last_eaten_path, lastEaten)).withStyle(ChatFormatting.GRAY));
 		}
 
 		return tooltip;
