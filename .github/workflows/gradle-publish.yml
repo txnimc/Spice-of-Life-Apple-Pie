@@ -33,6 +33,6 @@ jobs:
         with:
           file_path: "build/libs/${{ steps.mod-file-name.outputs.MOD_FILE_NAME }}"
           game_endpoint: "minecraft"
-          game_versions: "Minecraft 1.19.2,Java 17,Forge"
+          game_versions: "1.19.2,Java 17,Forge"
           project_id: "704584"
           token: "${{ secrets.CF_API_TOKEN }}"
