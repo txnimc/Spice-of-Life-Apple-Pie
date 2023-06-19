@@ -16,20 +16,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - { uses: actions/checkout@v2, with: { fetch-depth: 0 } }
-      - {
-          name: "Set up JDK 17",
-          uses: actions/setup-java@v2,
-          with: { distribution: "adopt", java-version: "17" },
-        }
-      - {
-          name: "Build with Gradle",
-          id: build,
-          run: "chmod +x gradlew && ./gradlew build publish",
-        }
+      - name: "Set up JDK 17"
+        uses: actions/setup-java@v2
+        with: { distribution: "adopt", java-version: "17" }
+        
+      - name: "Build with Gradle"
+        id: build
+        run: "chmod +x gradlew && ./gradlew build publish"
+        
+      - name: Mod File Name
+        id: mod-file-name
+        run: echo "MOD_FILE_NAME=$(ls build/libs/)" >> "$GITHUB_OUTPUT"
+        
       - name: "Upload to CurseForge"
         uses: itsmeow/curseforge-upload@v3
         with:
-          file_path: "build/libs/*.jar"
+          file_path: "build/libs/${{ steps.mod-file-name.outputs.MOD_FILE_NAME }}"
           game_endpoint: "minecraft"
           game_versions: "Minecraft 1.19.2,Java 17,Forge"
           project_id: "704584"
