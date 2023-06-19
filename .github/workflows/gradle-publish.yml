@@ -29,7 +29,7 @@ jobs:
       - name: "Upload to CurseForge"
         uses: itsmeow/curseforge-upload@v3
         with:
-          file_path: "build/libs/solapplepie-${{ steps.build.outputs.version }}.jar"
+          file_path: "build/libs/*.jar"
           game_endpoint: "minecraft"
           game_versions: "Minecraft 1.19.2,Java 17,Forge"
           project_id: "704584"
