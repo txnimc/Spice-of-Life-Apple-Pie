@@ -31,7 +31,6 @@ jobs:
         with:
           file_path: "build/libs/solapplepie-${{ steps.build.outputs.version }}.jar"
           game_endpoint: "minecraft"
-          relations: "fabric-api:requiredDependency"
           game_versions: "Minecraft 1.19.2,Java 17,Forge"
           project_id: "704584"
           token: "${{ secrets.CF_API_TOKEN }}"
