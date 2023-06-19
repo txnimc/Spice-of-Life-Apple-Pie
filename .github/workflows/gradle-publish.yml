@@ -23,16 +23,15 @@ jobs:
       - name: "Build with Gradle"
         id: build
         run: "chmod +x gradlew && ./gradlew build publish"
-        
-      - name: Mod File Name
-        id: mod-file-name
-        run: echo "MOD_FILE_NAME=$(ls build/libs/)" >> "$GITHUB_OUTPUT"
-        
-      - name: "Upload to CurseForge"
-        uses: itsmeow/curseforge-upload@v3
+
+      - uses: Kir-Antipov/mc-publish@v3.3
         with:
-          file_path: "build/libs/${{ steps.mod-file-name.outputs.MOD_FILE_NAME }}"
-          game_endpoint: "minecraft"
-          game_versions: "1.20.1,Java 17,Forge"
-          project_id: "704584"
-          token: "${{ secrets.CF_API_TOKEN }}"
+            # Only include this section if you wish to publish
+            # your assets on Modrinth.
+          modrinth-id: u1aDdOsQ
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+            # Only include this section if you wish to publish
+            # your assets on CurseForge.
+          curseforge-id: 704584
+          curseforge-token: ${{ secrets.CF_API_TOKEN }} 
