@@ -3,7 +3,8 @@ package com.tarinoita.solsweetpotato.client.gui.elements;
 import com.tarinoita.solsweetpotato.client.TooltipHandler;
 import com.tarinoita.solsweetpotato.tracking.FoodInstance;
 import com.tarinoita.solsweetpotato.tracking.FoodList;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.*;
 import net.minecraft.world.item.ItemStack;
 
@@ -25,7 +26,7 @@ public class UIFoodQueueItem extends UIItemStack{
     }
 
     @Override
-    protected void renderTooltip(PoseStack matrices, int mouseX, int mouseY) {
+    protected void renderTooltip(GuiGraphics matrices, int mouseX, int mouseY) {
         List<Component> tooltip = getFoodQueueTooltip();
         renderTooltip(matrices, itemStack, tooltip, mouseX, mouseY);
     }

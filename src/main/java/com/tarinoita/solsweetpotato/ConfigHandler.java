@@ -126,7 +126,7 @@ public class ConfigHandler {
         ServerPlayer target = (ServerPlayer) player;
         SOLSweetPotato.channel.sendTo(
                 new ConfigMessage(),
-                target.connection.getConnection(),
+                target.connection.connection,
                 NetworkDirection.PLAY_TO_CLIENT
         );
     }

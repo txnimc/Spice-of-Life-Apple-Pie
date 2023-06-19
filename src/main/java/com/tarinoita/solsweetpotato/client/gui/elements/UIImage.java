@@ -1,6 +1,6 @@
 package com.tarinoita.solsweetpotato.client.gui.elements;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -23,7 +23,7 @@ public class UIImage extends UIElement {
 	}
 	
 	@Override
-	protected void render(PoseStack matrices) {
+	protected void render(GuiGraphics matrices) {
 		super.render(matrices);
 		
 		int imageWidth = image.partOfTexture.width;
@@ -31,9 +31,9 @@ public class UIImage extends UIElement {
 		
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, image.textureLocation);
-		
-		blit(
-			matrices,
+
+		matrices.blit(
+			image.textureLocation,
 			frame.x + (int) Math.floor((frame.width - imageWidth) / 2d),
 			frame.y + (int) Math.floor((frame.height - imageHeight) / 2d),
 			0,

@@ -99,7 +99,7 @@ public class BenefitsPage extends Page {
 
     private String getEffectName(String name) {
         MobEffect effect;
-        IForgeRegistry<MobEffect> registry = RegistryManager.ACTIVE.getRegistry(Registry.MOB_EFFECT_REGISTRY);
+        IForgeRegistry<MobEffect> registry = ForgeRegistries.MOB_EFFECTS;
         try {
             effect = registry.getValue(new ResourceLocation(name));
         }

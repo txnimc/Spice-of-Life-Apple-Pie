@@ -11,11 +11,11 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
@@ -25,7 +25,7 @@ public class FoodContainerItem extends Item {
     private int nslots;
 
     public FoodContainerItem(int nslots, String displayName) {
-        super(new Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1).setNoRepair());
+        super(new Properties().stacksTo(1).setNoRepair());
 
         this.displayName = displayName;
         this.nslots = nslots;
@@ -90,8 +90,8 @@ public class FoodContainerItem extends Item {
 
     @Nullable
     public static ItemStackHandler getInventory(ItemStack bag) {
-        if (bag.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).isPresent())
-            return (ItemStackHandler) bag.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve().get();
+        if (bag.getCapability(ForgeCapabilities.ITEM_HANDLER).isPresent())
+            return (ItemStackHandler) bag.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().get();
         return null;
     }
 

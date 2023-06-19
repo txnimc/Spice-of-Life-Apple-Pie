@@ -7,13 +7,13 @@ package com.tarinoita.solsweetpotato.item.foodcontainer;
 
 import com.tarinoita.solsweetpotato.SOLSweetPotato;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> {
     public FoodContainerScreen(FoodContainer container, Inventory playerInventory, Component title) {
@@ -21,16 +21,16 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
     }
 
     @Override
-    public void render(PoseStack ms, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(ms);
         super.render(ms, mouseX, mouseY, partialTicks);
         this.renderTooltip(ms, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(PoseStack matrices, float partialTicks, int x, int y) {
+    protected void renderBg(GuiGraphics matrices, float partialTicks, int x, int y) {
         this.drawBackground(matrices, new ResourceLocation(SOLSweetPotato.MOD_ID, "textures/gui/inventory.png"));
-        this.menu.containerItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+        this.menu.containerItem.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
             int slotsPerRow = h.getSlots();
             if (h.getSlots() > 9) {
                 slotsPerRow = h.getSlots() / 2;
@@ -51,23 +51,23 @@ public class FoodContainerScreen extends AbstractContainerScreen<FoodContainer> 
         });
     }
 
-    protected void drawBackground(PoseStack ms, ResourceLocation gui) {
+    protected void drawBackground(GuiGraphics ms, ResourceLocation gui) {
         this.minecraft.getTextureManager().bindForSetup(gui);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, gui);
         int relX = (this.width - this.getXSize()) / 2;
         int relY = (this.height - this.getYSize()) / 2;
-        this.blit(ms, relX, relY, 0, 0, this.getXSize(), this.getYSize());
+        ms.blit(gui, relX, relY, 0, 0, this.getXSize(), this.getYSize());
     }
 
-    protected void drawSlot(PoseStack ms, int x, int y, ResourceLocation texture, int size) {
+    protected void drawSlot(GuiGraphics ms, int x, int y, ResourceLocation texture, int size) {
         this.minecraft.getTextureManager().bindForSetup(texture);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, texture);
-        blit(ms, this.getGuiLeft() + x, this.getGuiTop() + y, 0, 0, size, size, size, size);
+        ms.blit(texture, this.getGuiLeft() + x, this.getGuiTop() + y, 0, 0, size, size, size, size);
     }
 
-    protected void drawSlot(PoseStack ms, int x, int y) {
+    protected void drawSlot(GuiGraphics ms, int x, int y) {
         drawSlot(ms, x, y, new ResourceLocation(SOLSweetPotato.MOD_ID, "textures/gui/slot.png"), 18);
     }
 }

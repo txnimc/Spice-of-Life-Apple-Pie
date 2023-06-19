@@ -2,6 +2,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "solapplepie:items/food_book"
+    "layer0": "solapplepie:item/food_book"
   }
 }

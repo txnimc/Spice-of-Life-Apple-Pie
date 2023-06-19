@@ -7,7 +7,7 @@ import com.tarinoita.solsweetpotato.tracking.FoodInstance;
 import com.tarinoita.solsweetpotato.tracking.FoodList;
 import com.tarinoita.solsweetpotato.tracking.benefits.BenefitInfo;
 import com.tarinoita.solsweetpotato.tracking.benefits.BenefitsHandler;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.Minecraft;
@@ -142,7 +142,7 @@ public final class FoodBookScreen extends Screen implements PageFlipButton.Pagea
 	}
 	
 	@Override
-	public void render(PoseStack matrices, int mouseX, int mouseY, float partialTicks) {
+	public void render(GuiGraphics matrices, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(matrices);
 		
 		UIElement.render(matrices, background, mouseX, mouseY);

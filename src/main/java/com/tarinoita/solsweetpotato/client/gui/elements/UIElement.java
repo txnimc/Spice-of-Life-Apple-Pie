@@ -1,8 +1,10 @@
 package com.tarinoita.solsweetpotato.client.gui.elements;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.font.FontManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -19,11 +21,11 @@ import static java.util.Collections.singletonList;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class UIElement {
-	public static void render(PoseStack matrices, UIElement element, int mouseX, int mouseY) {
+	public static void render(GuiGraphics matrices, UIElement element, int mouseX, int mouseY) {
 		render(matrices, singletonList(element), mouseX, mouseY);
 	}
 	
-	public static void render(PoseStack matrices, List<UIElement> elements, int mouseX, int mouseY) {
+	public static void render(GuiGraphics matrices, List<UIElement> elements, int mouseX, int mouseY) {
 		elements.forEach(element -> element.render(matrices));
 		
 		elements.stream()
@@ -48,7 +50,7 @@ public abstract class UIElement {
 	/**
 	 Renders the element to the screen. Note that no transforms have been applied, so you should take your position into account!
 	 */
-	protected void render(PoseStack matrices) {
+	protected void render(GuiGraphics matrices) {
 		children.forEach(child -> child.render(matrices));
 	}
 	
@@ -72,7 +74,7 @@ public abstract class UIElement {
 	 @param mouseX the mouse's x position
 	 @param mouseY the mouse's y position
 	 */
-	protected void renderTooltip(PoseStack matrices, int mouseX, int mouseY) {
+	protected void renderTooltip(GuiGraphics matrices, int mouseX, int mouseY) {
 		if (tooltip == null) return;
 		
 		renderTooltip(matrices, ItemStack.EMPTY, Collections.singletonList(Component.literal(tooltip)), mouseX, mouseY);
@@ -86,10 +88,10 @@ public abstract class UIElement {
 	 @param mouseX the mouse's x position
 	 @param mouseY the mouse's y position
 	 */
-	protected final void renderTooltip(PoseStack matrices, ItemStack itemStack, List<Component> tooltip, int mouseX, int mouseY) {
+	protected final void renderTooltip(GuiGraphics matrices, ItemStack itemStack, List<Component> tooltip, int mouseX, int mouseY) {
 		assert mc.screen != null;
-		
-		mc.screen.renderComponentTooltip(matrices, tooltip, mouseX, mouseY, itemStack);
+
+		matrices.renderComponentTooltip(mc.font, tooltip, mouseX, mouseY, itemStack);
 	}
 	
 	/** calculates and sets the frame to the smallest rectangle enclosing all children's frames */

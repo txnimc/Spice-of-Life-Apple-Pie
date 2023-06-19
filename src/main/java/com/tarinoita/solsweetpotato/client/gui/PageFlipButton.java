@@ -2,15 +2,18 @@ package com.tarinoita.solsweetpotato.client.gui;
 
 import com.tarinoita.solsweetpotato.SOLSweetPotato;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
 final class PageFlipButton extends Button {
@@ -22,19 +25,19 @@ final class PageFlipButton extends Button {
 	private final Pageable pageable;
 	
 	PageFlipButton(int x, int y, Direction direction, Pageable pageable) {
-		super(x, y, 23, 13, Component.literal(""), (button) -> ((PageFlipButton) button).changePage());
+		super(x, y, 23, 13, Component.literal(""), (button) -> ((PageFlipButton) button).changePage(), p_253695_ -> Component.literal("Flip Page"));
 		
 		this.direction = direction;
 		this.pageable = pageable;
 	}
 	
 	@Override
-	public void renderButton(PoseStack matrices, int mouseX, int mouseY, float partialTicks) {
+	public void renderWidget(GuiGraphics matrices, int mouseX, int mouseY, float partialTicks) {
 		if (!visible) return;
 		
 		int textureX = 0;
 		
-		boolean isHovered = x <= mouseX && mouseX < x + width && y <= mouseY && mouseY < y + height;
+		boolean isHovered = getX() <= mouseX && mouseX < getX() + width && getY() <= mouseY && mouseY < getY() + height;
 		if (isHovered) {
 			textureX += 23;
 		}
@@ -42,7 +45,7 @@ final class PageFlipButton extends Button {
 		int textureY = direction == Direction.FORWARD ? 192 : 205;
 		
 		RenderSystem.setShaderTexture(0, texture);
-		blit(matrices, x, y, textureX, textureY, 23, 13);
+		matrices.blit(texture, getX(), getY(), textureX, textureY, 23, 13);
 	}
 	
 	public void updateState() {

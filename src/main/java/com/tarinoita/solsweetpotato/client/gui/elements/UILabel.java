@@ -1,7 +1,7 @@
 package com.tarinoita.solsweetpotato.client.gui.elements;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.awt.*;
 
@@ -25,7 +25,7 @@ public class UILabel extends UIElement {
 	}
 	
 	@Override
-	protected void render(PoseStack matrices) {
+	protected void render(GuiGraphics matrices) {
 		super.render(matrices);
 		
 		int textWidth = fontRenderer.width(text) - 1;
@@ -34,7 +34,8 @@ public class UILabel extends UIElement {
 		if (color.getTransparency() == Color.TRANSLUCENT) {
 			RenderSystem.enableBlend();
 		}
-		fontRenderer.draw(matrices, text, x, y, color.getRGB());
+
+		matrices.drawString(fontRenderer, text, x, y, color.getRGB(), false);
 	}
 	
 	enum TextAlignment {

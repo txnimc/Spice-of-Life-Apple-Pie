@@ -1,6 +1,6 @@
 package com.tarinoita.solsweetpotato.client.gui.elements;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -22,11 +22,10 @@ public class UIItemStack extends UIElement {
 	}
 	
 	@Override
-	protected void render(PoseStack matrices) {
+	protected void render(GuiGraphics matrices) {
 		super.render(matrices);
-		
-		mc.getItemRenderer().renderGuiItem(
-			// no PoseStack? oof
+
+		matrices.renderItem(
 			itemStack,
 			frame.x + (frame.width - size) / 2,
 			frame.y + (frame.height - size) / 2
@@ -39,7 +38,7 @@ public class UIItemStack extends UIElement {
 	}
 	
 	@Override
-	protected void renderTooltip(PoseStack matrices, int mouseX, int mouseY) {
+	protected void renderTooltip(GuiGraphics matrices, int mouseX, int mouseY) {
 		List<Component> tooltip = itemStack.getTooltipLines(mc.player, mc.options.advancedItemTooltips ? ADVANCED : NORMAL);
 		renderTooltip(matrices, itemStack, tooltip, mouseX, mouseY);
 	}
