@@ -1,0 +1,44 @@
+{
+	"tooltip.solapplepie.disabled": "该食物不能提供多样性。",
+
+	"command.solapplepie.solapplepie.no_permissions": "您没有将此命令应用于其他玩家的权限!",
+
+	"command.solapplepie.solapplepie.clear.success": "食物多样性清单已重置！",
+	"command.solapplepie.solapplepie.diversity_feedback": "当前多样性: %.2f",
+	"command.solapplepie.solapplepie.sync.success": "食物多样性清单已同步！",
+
+	"item.solapplepie.food_book": "食物多样性清单",
+	"item.solapplepie.lunchbox": "餐盒",
+	"item.solapplepie.container.lunchbox": "餐盒",
+	"item.solapplepie.golden_lunchbox": "金质餐盒",
+	"item.solapplepie.container.golden_lunchbox": "金质餐盒",
+	"item.solapplepie.lunchbag": "餐袋",
+	"item.solapplepie.container.lunchbag": "餐袋",
+
+	"key.solapplepie.open_food_book": "打开食物多样性清单",
+	"key.solapplepie.category": "生活调味料：苹果派版",
+
+	"gui.solapplepie.food_book.stats": "概要",
+	"gui.solapplepie.food_book.stats.current_diversity": "当前多样性等级",
+	"gui.solapplepie.food_book.stats.min_warning1": "需要再吃%d次",
+	"gui.solapplepie.food_book.stats.min_warning2": "来启用加成",
+	"gui.solapplepie.food_book.active_benefits_header": "已启用的加成",
+	"gui.solapplepie.food_book.inactive_benefits_header": "未启用的加成",
+	"gui.solapplepie.food_book.benefits.threshold_label": "多样性等级",
+	"gui.solapplepie.food_book.benefits.active_tooltip": "因为您的多样性等级大于此等级，该加成已经启用。",
+	"gui.solapplepie.food_book.benefits.inactive_tooltip": "当您的多样性等级大于此等级时启用该加成。",
+	"gui.solapplepie.food_book.food_queue_label": "已进食列表",
+	"gui.solapplepie.food_book.queue.food_queue_tooltip": "您最近吃过的食物（仅记录对多样性有贡献的食物）。",
+
+	"gui.solapplepie.food_book.fraction": "%1$s/%2$s",
+
+	"gui.solapplepie.food_book.queue.tooltip.uneaten_contribution_label": "多样性贡献值",
+	"gui.solapplepie.food_book.queue.tooltip.contribution_label": "当前多样性贡献值",
+	"gui.solapplepie.food_book.queue.tooltip.last_eaten_label": "上次食用：%d餐之前",
+	"gui.solapplepie.food_book.queue.tooltip.last_eaten_label_singular": "上次食用：%d餐之前",
+
+	"config.solapplepie.is_food_tooltip_enabled": "启用食物Tooltip",
+	"config.solapplepie.food_blacklist": "黑名单",
+	"config.solapplepie.food_whitelist": "白名单（禁用黑名单）",
+	"config.solapplepie.reset_on_death": "死亡重置多样性等级"
+}
