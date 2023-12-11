@@ -24,6 +24,8 @@
 	"gui.solapplepie.food_book.stats.min_warning2": "to activate benefits",
 	"gui.solapplepie.food_book.active_benefits_header": "Active Benefits",
 	"gui.solapplepie.food_book.inactive_benefits_header": "Inactive Benefits",
+	"gui.solapplepie.food_book.active_detriments_header": "Active Detriments",
+	"gui.solapplepie.food_book.inactive_detriments_header": "Inactive Detriments",
 	"gui.solapplepie.food_book.benefits.threshold_label": "Threshold",
 	"gui.solapplepie.food_book.benefits.active_tooltip": "Because your food diversity is greater than this threshold, this benefit is active.",
 	"gui.solapplepie.food_book.benefits.inactive_tooltip": "If your food diversity becomes greater than this threshold, this benefit will activate.",
