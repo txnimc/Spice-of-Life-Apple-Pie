@@ -184,7 +184,7 @@ public final class SOLSweetPotatoConfig
 							"attribute,generic.max_health,1;effect,strength,0",
 							"attribute,generic.max_health,1;effect,luck,0",
 							"attribute,generic.max_health,1;attribute,generic.knockback_resistance,1",
-							"attribute,generic.max_health,1;attribute,generic.speed,2",
+							"attribute,generic.max_health,1;attribute,generic.movement_speed,2",
 							"attribute,generic.max_health,1;attribute,generic.armor_toughness,2",
 							"attribute,generic.max_health,1;effect,haste,1",
 							"attribute,generic.max_health,1;effect,strength,1",
