@@ -2,31 +2,17 @@ package com.tarinoita.solsweetpotato.item;
 
 import com.tarinoita.solsweetpotato.SOLSweetPotato;
 import com.tarinoita.solsweetpotato.item.foodcontainer.FoodContainerItem;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryObject;
 
-import static net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD;
-
-@Mod.EventBusSubscriber(modid = SOLSweetPotato.MOD_ID, bus = MOD)
 public final class SOLSweetPotatoItems
 {
+	public static final DeferredRegister<Item> REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS, SOLSweetPotato.MOD_ID);
 
-	@SubscribeEvent
-	public static void registerItems(RegisterEvent event) {
-		event.register(ForgeRegistries.Keys.ITEMS,
-				helper -> {
-					helper.register(new ResourceLocation(SOLSweetPotato.MOD_ID, "food_book"),
-							new FoodBookItem());
-					helper.register(new ResourceLocation(SOLSweetPotato.MOD_ID, "lunchbox"),
-							new FoodContainerItem(9,"lunchbox"));
-					helper.register(new ResourceLocation(SOLSweetPotato.MOD_ID, "lunchbag"),
-							new FoodContainerItem(5,"lunchbag"));
-					helper.register(new ResourceLocation(SOLSweetPotato.MOD_ID, "golden_lunchbox"),
-							new FoodContainerItem(14,"golden_lunchbox"));
-				});
-	}
+	public static final RegistryObject<FoodBookItem> FOOD_BOOK = REGISTER.register("food_book", FoodBookItem::new);
+	public static final RegistryObject<FoodContainerItem> LUNCHBOX = REGISTER.register("lunchbox", () -> new FoodContainerItem(9,"lunchbox"));
+	public static final RegistryObject<FoodContainerItem> LUNCHBAG = REGISTER.register("lunchbag", () -> new FoodContainerItem(5,"lunchbag"));
+	public static final RegistryObject<FoodContainerItem> GOLDEN_LUNCHBOX = REGISTER.register("golden_lunchbox", () -> new FoodContainerItem(14,"golden_lunchbox"));
 }
